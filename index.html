@@ -239,15 +239,6 @@
   <button id="removeAllBtn">Remove All Images</button>
 </div>
 
-<div class="drop-zone" id="attachmentsDropZone">
-  <p>📎 Drag & Drop Attachments Here or Click to Select</p>
-</div>
-
-<div class="attachment-list-container" id="attachmentListContainer"></div>
-<div class="button-group">
-  <button id="removeAllAttachmentsBtn">Remove All Attachments</button>
-</div>
-
 <label for="vesselName">3LC_VesselName: <span class="required-label">*</span></label>
 <input type="text" id="vesselName" class="required" placeholder="e.g., NCL_RoyalClipper">
 
@@ -258,7 +249,7 @@
 <input type="text" id="antennaLocation" class="required" placeholder="e.g., Deck 1 Starboard">
 
 <label for="caseNumber">Case Number: <span class="required-label">*</span></label>
-<input type="text" id="caseNumber" class="required" placeholder="e.g., 35234">
+<input type="tel" id="caseNumber" class="required" inputmode="numeric" pattern="[0-9]*" placeholder="e.g., 35234">
 
 <label for="submittedBy">Submitted By: <span class="required-label">*</span></label>
 <input type="text" id="submittedBy" class="required" placeholder="e.g., Pablo Garcia">
@@ -276,6 +267,15 @@
 
 <div class="button-group">
   <button id="generatePDF">Generate PDF</button>
+</div>
+
+<div class="drop-zone" id="attachmentsDropZone">
+  <p>📎 Drag & Drop Attachments Here or Click to Select</p>
+</div>
+
+<div class="attachment-list-container" id="attachmentListContainer"></div>
+<div class="button-group">
+  <button id="removeAllAttachmentsBtn">Remove All Attachments</button>
 </div>
 
 <div class="status-message" id="statusMessage"></div>
