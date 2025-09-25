@@ -125,7 +125,7 @@
     margin-bottom: 15px;
     border-radius: 6px;
     background: #fafafa;
-    display: flex;
+	display: none; /* This hides the container initially */
     flex-wrap: wrap;
     gap: 10px;
     justify-content: flex-start;
@@ -282,7 +282,11 @@ dropZone.addEventListener('drop', e => {
   addImages(e.dataTransfer.files);
 });
 
+
 function addImages(fileList){
+  if(fileList.length > 0) {
+    imageListContainer.style.display = 'flex'; // This shows the container
+  }
   Array.from(fileList).forEach(file => {
     if(file.type.startsWith('image/')){
       images.push(file);
@@ -480,4 +484,3 @@ async function addImageToPDF(pdf, file, x, y, width, height){
 </script>
 </body>
 </html>
-
