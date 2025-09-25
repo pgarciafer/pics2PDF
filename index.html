@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pro-PDF Generator</title>
+<link rel="icon" href="https://raw.githubusercontent.com/pgarciafer/pics2PDF/main/logo1.png" type="image/png">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 <style>
@@ -28,37 +29,67 @@
   .container {
     max-width: 700px;
     width: 95%;
-    margin: 10px; /* Adjusted */
-    padding: 15px; /* Adjusted */
+    margin: 10px;
+    padding: 15px;
     background: #ffffff;
     border-radius: 12px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   }
-  h2 {
-    text-align: center;
-    margin-bottom: 15px; /* Adjusted */
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 3px solid var(--medium-gray);
+    padding-bottom: 15px;
+  }
+  .header-title {
+    display: flex;
+    align-items: center;
+  }
+  .header-title img {
+    height: 60px;
+    vertical-align: middle;
+    margin-right: 15px;
+  }
+  .header-title span {
     color: var(--dark-text);
-    font-size: 20px; /* Adjusted */
+    font-size: 20px;
     font-weight: 600;
+  }
+  .contact-btn {
+    padding: 8px 12px;
+    background-color: var(--primary-blue);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.3s;
+  }
+  .contact-btn:hover {
+    background-color: var(--dark-blue);
   }
   label {
     display: block;
-    margin-top: 10px; /* Adjusted */
+    margin-top: 10px;
     font-weight: 600;
     color: var(--dark-text);
-    font-size: 13px; /* Adjusted */
+    font-size: 13px;
   }
-  input, select {
+  input, select, textarea {
     width: 100%;
-    padding: 8px; /* Adjusted */
+    padding: 8px;
     margin-top: 5px;
     border-radius: 6px;
     border: 1px solid var(--medium-gray);
-    font-size: 13px; /* Adjusted */
+    font-size: 13px;
     box-sizing: border-box;
     transition: border-color 0.3s, box-shadow 0.3s;
   }
-  input:focus, select:focus {
+  input:focus, select:focus, textarea:focus {
     outline: none;
     border-color: var(--primary-blue);
     box-shadow: 0 0 0 2px rgba(0, 105, 217, 0.25);
@@ -69,7 +100,7 @@
   .drop-zone {
     border: 3px dashed var(--primary-blue);
     background: #e6f0ff;
-    padding: 20px; /* Adjusted */
+    padding: 20px;
     text-align: center;
     cursor: pointer;
     margin-bottom: 15px;
@@ -81,14 +112,14 @@
     border-color: var(--dark-blue);
   }
   .drop-zone p {
-    font-size: 14px; /* Adjusted */
+    font-size: 14px;
     color: var(--dark-blue);
     margin: 0;
   }
   .image-list-container {
     border: 1px solid var(--medium-gray);
-    min-height: 100px; /* Adjusted */
-    max-height: 150px; /* Adjusted */
+    min-height: 100px;
+    max-height: 150px;
     overflow-y: auto;
     padding: 10px;
     margin-bottom: 15px;
@@ -100,8 +131,8 @@
     justify-content: flex-start;
   }
   .image-item {
-    width: 50px; /* Adjusted */
-    height: 50px; /* Adjusted */
+    width: 50px;
+    height: 50px;
     object-fit: contain;
     border: 1px solid var(--medium-gray);
     border-radius: 6px;
@@ -113,17 +144,17 @@
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-top: 15px; /* Adjusted */
+    margin-top: 15px;
   }
   button {
     flex: 1;
-    padding: 10px 15px; /* Adjusted */
+    padding: 10px 15px;
     background-color: var(--primary-blue);
     color: white;
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 13px; /* Adjusted */
+    font-size: 13px;
     font-weight: 600;
     transition: background-color 0.3s, transform 0.1s;
   }
@@ -142,14 +173,26 @@
   }
   .status-message {
     text-align: center;
-    margin-top: 10px; /* Adjusted */
-    font-size: 12px; /* Adjusted */
+    margin-top: 10px;
+    font-size: 12px;
     color: var(--dark-text);
   }
   @media (max-width: 600px) {
     .container {
-      padding: 15px; /* Adjusted */
-      margin: 10px; /* Adjusted */
+      padding: 15px;
+      margin: 10px;
+    }
+    .header-container {
+      flex-direction: column;
+      align-items: center;
+    }
+    .header-title {
+      flex-direction: column;
+      margin-bottom: 10px;
+    }
+    .contact-btn {
+      width: 100%;
+      text-align: center;
     }
     .button-group button {
       flex: 1 1 100%;
@@ -159,7 +202,13 @@
 </head>
 <body>
 <div class="container">
-<h2>PDF from Pictures by Pablo Garcia</h2>
+<div class="header-container">
+  <div class="header-title">
+    <img src="https://raw.githubusercontent.com/pgarciafer/pics2PDF/main/logo.png" alt="Logo">
+    <span>Pictures Array to PDF</span>
+  </div>
+  <a href="contact.html" class="contact-btn">Contact</a>
+</div>
 
 <div class="drop-zone" id="dropZone">
   <p>📁 Drag & Drop Images Here or Click to Select</p>
@@ -299,30 +348,30 @@ generateBtn.addEventListener('click', async () => {
 
   await new Promise((resolve, reject) => {
     logo.onload = () => {
-      const logoWidth = 350; // Updated size
-      const logoHeight = (logo.height * logoWidth) / logo.width; // Maintain aspect ratio
+      const logoWidth = 350;
+      const logoHeight = (logo.height * logoWidth) / logo.width;
       const logoX = (pageWidth - logoWidth) / 2;
-      const logoY = 50; // Position it at the top of the page
+      const logoY = 50;
       pdf.addImage(logo, 'PNG', logoX, logoY, logoWidth, logoHeight);
       resolve();
     };
     logo.onerror = () => {
       console.error('Failed to load logo from URL');
-      resolve(); // Continue even if the logo fails to load
+      resolve();
     };
   });
 
   // Cover page - Text content
   pdf.setFontSize(26);
   pdf.setFont('helvetica', 'bold');
-  pdf.text(vessel, pageWidth/2, 250, { align: 'center' }); // Adjusted position
+  pdf.text(vessel, pageWidth/2, 250, { align: 'center' });
   pdf.setFontSize(22);
-  pdf.text(`${antenna} (${location})`, pageWidth/2, 290, { align: 'center' }); // Adjusted position
+  pdf.text(`${antenna} (${location})`, pageWidth/2, 290, { align: 'center' });
   pdf.setFontSize(18);
-  pdf.text(`Case Number: ${caseNum}`, pageWidth/2, 330, { align: 'center' }); // Adjusted position
+  pdf.text(`Case Number: ${caseNum}`, pageWidth/2, 330, { align: 'center' });
   pdf.setFontSize(14);
-  pdf.text(`Submitted By: ${submitted}`, pageWidth/2, 360, { align: 'center' }); // Adjusted position
-  pdf.text(`Date: ${dateStr}`, pageWidth/2, 385, { align: 'center' }); // Adjusted position
+  pdf.text(`Submitted By: ${submitted}`, pageWidth/2, 360, { align: 'center' });
+  pdf.text(`Date: ${dateStr}`, pageWidth/2, 385, { align: 'center' });
   pdf.addPage();
 
   let pageNum = 2;
