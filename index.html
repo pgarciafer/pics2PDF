@@ -6,6 +6,8 @@
 <title>Pictures to PDF Generator</title>
 <link rel="icon" href="https://raw.githubusercontent.com/pgarciafer/pics2PDF/main/logo1.png" type="image/png">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -140,6 +142,9 @@
     background: #fff;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
   }
+  .attachment-section {
+    margin-top: 30px; /* spacing from images section */
+  }
   .attachment-list-container {
     border: 1px solid var(--medium-gray);
     min-height: 50px;
@@ -188,7 +193,7 @@
   .required-label {
     color: var(--red-error);
   }
-  .required {
+  .invalid {
     border: 2px solid var(--red-error) !important;
   }
   .status-message {
@@ -239,31 +244,34 @@
   <button id="removeAllBtn">Remove All Images</button>
 </div>
 
-<div class="drop-zone" id="attachmentsDropZone">
-  <p>📎 Drag & Drop Attachments Here or Click to Select</p>
+<!-- Attachments section spaced lower -->
+<div class="attachment-section">
+  <div class="drop-zone" id="attachmentsDropZone">
+    <p>📎 Drag & Drop Attachments Here or Click to Select</p>
+  </div>
+  <div class="attachment-list-container" id="attachmentListContainer"></div>
+  <div class="button-group">
+    <button id="removeAllAttachmentsBtn">Remove All Attachments</button>
+  </div>
 </div>
 
-<div class="attachment-list-container" id="attachmentListContainer"></div>
-<div class="button-group">
-  <button id="removeAllAttachmentsBtn">Remove All Attachments</button>
-</div>
 <label for="vesselName">3LC_VesselName: <span class="required-label">*</span></label>
-<input type="text" id="vesselName" class="required" placeholder="e.g., NCL_RoyalClipper">
+<input type="text" id="vesselName" placeholder="e.g., NCL_RoyalClipper">
 
 <label for="antennaModel">AntennaBrandModel_SNxxx: <span class="required-label">*</span></label>
-<input type="text" id="antennaModel" class="required" placeholder="e.g., Intellian-v100_SN24536">
+<input type="text" id="antennaModel" placeholder="e.g., Intellian-v100_SN24536">
 
 <label for="antennaLocation">Antenna Location: <span class="required-label">*</span></label>
-<input type="text" id="antennaLocation" class="required" placeholder="e.g., Deck 1 Starboard">
+<input type="text" id="antennaLocation" placeholder="e.g., Deck 1 Starboard">
 
 <label for="caseNumber">Case Number: <span class="required-label">*</span></label>
-<input type="tel" id="caseNumber" class="required" inputmode="numeric" pattern="[0-9]*" placeholder="e.g., 35234">
+<input type="tel" id="caseNumber" inputmode="numeric" pattern="[0-9]*" placeholder="e.g., 35234">
 
 <label for="submittedBy">Submitted By: <span class="required-label">*</span></label>
-<input type="text" id="submittedBy" class="required" placeholder="e.g., Pablo Garcia">
+<input type="text" id="submittedBy" placeholder="e.g., Pablo Garcia">
 
 <label for="dateField">Date: <span class="required-label">*</span></label>
-<input type="date" id="dateField" class="required">
+<input type="date" id="dateField">
 
 <label for="imagesPerPage">Images per page (1-4):</label>
 <select id="imagesPerPage">
@@ -274,11 +282,10 @@
 </select>
 
 <div class="button-group">
-  <button id="generatePDF">Generate PDF</button>
+  <button id="generatePDF">Generate PDF & ZIP</button>
 </div>
 
 <div class="status-message" id="statusMessage"></div>
-
 </div>
 
 <script>
@@ -292,10 +299,10 @@ const attachmentListContainer = document.getElementById('attachmentListContainer
 const generateBtn = document.getElementById('generatePDF');
 const statusMessage = document.getElementById('statusMessage');
 
-// Default date to today
-document.getElementById('dateField').valueAsDate = new Date();
+// Default date
+document.getElementById("dateField").value = new Date().toISOString().split("T")[0];
 
-// Drag & Drop for Images
+// Drag-drop for images
 dropZone.addEventListener('click', () => {
   const fileInput = document.createElement('input');
   fileInput.type = 'file';
@@ -304,19 +311,12 @@ dropZone.addEventListener('click', () => {
   fileInput.onchange = () => addImages(fileInput.files);
   fileInput.click();
 });
-
 dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.style.backgroundColor = "#cce0ff"; });
 dropZone.addEventListener('dragleave', e => { e.preventDefault(); dropZone.style.backgroundColor = "#e6f0ff"; });
-dropZone.addEventListener('drop', e => {
-  e.preventDefault();
-  dropZone.style.backgroundColor = "#e6f0ff";
-  addImages(e.dataTransfer.files);
-});
+dropZone.addEventListener('drop', e => { e.preventDefault(); dropZone.style.backgroundColor = "#e6f0ff"; addImages(e.dataTransfer.files); });
 
 function addImages(fileList){
-  if(fileList.length > 0) {
-    imageListContainer.style.display = 'flex';
-  }
+  if(fileList.length > 0) imageListContainer.style.display = 'flex';
   Array.from(fileList).forEach(file => {
     if(file.type.startsWith('image/')){
       images.push(file);
@@ -327,8 +327,6 @@ function addImages(fileList){
     }
   });
 }
-
-// Remove all images
 document.getElementById('removeAllBtn').addEventListener('click', () => {
   images = [];
   imageListContainer.innerHTML = '';
@@ -336,7 +334,7 @@ document.getElementById('removeAllBtn').addEventListener('click', () => {
   statusMessage.textContent = 'All images removed.';
 });
 
-// Drag & Drop for Attachments
+// Drag-drop for attachments
 attachmentsDropZone.addEventListener('click', () => {
   const fileInput = document.createElement('input');
   fileInput.type = 'file';
@@ -344,19 +342,12 @@ attachmentsDropZone.addEventListener('click', () => {
   fileInput.onchange = () => addAttachments(fileInput.files);
   fileInput.click();
 });
-
 attachmentsDropZone.addEventListener('dragover', e => { e.preventDefault(); attachmentsDropZone.style.backgroundColor = "#cce0ff"; });
 attachmentsDropZone.addEventListener('dragleave', e => { e.preventDefault(); attachmentsDropZone.style.backgroundColor = "#e6f0ff"; });
-attachmentsDropZone.addEventListener('drop', e => {
-  e.preventDefault();
-  attachmentsDropZone.style.backgroundColor = "#e6f0ff";
-  addAttachments(e.dataTransfer.files);
-});
+attachmentsDropZone.addEventListener('drop', e => { e.preventDefault(); attachmentsDropZone.style.backgroundColor = "#e6f0ff"; addAttachments(e.dataTransfer.files); });
 
 function addAttachments(fileList){
-  if(fileList.length > 0) {
-    attachmentListContainer.style.display = 'block';
-  }
+  if(fileList.length > 0) attachmentListContainer.style.display = 'block';
   Array.from(fileList).forEach(file => {
     attachments.push(file);
     const item = document.createElement('div');
@@ -365,8 +356,6 @@ function addAttachments(fileList){
     attachmentListContainer.appendChild(item);
   });
 }
-
-// Remove all attachments
 document.getElementById('removeAllAttachmentsBtn').addEventListener('click', () => {
   attachments = [];
   attachmentListContainer.innerHTML = '';
@@ -379,16 +368,18 @@ generateBtn.addEventListener('click', async () => {
   statusMessage.textContent = '';
   generateBtn.disabled = true;
 
-  const requiredFields = document.querySelectorAll('.required');
+  const requiredIds = ["vesselName","antennaModel","antennaLocation","caseNumber","submittedBy","dateField"];
   let valid = true;
-  requiredFields.forEach(f => {
+  requiredIds.forEach(id => {
+    const f = document.getElementById(id);
     if(!f.value.trim()){
-      f.classList.add("required");
+      f.classList.add("invalid");
       valid = false;
-    } else { f.classList.remove("required"); }
+    } else {
+      f.classList.remove("invalid");
+    }
   });
-
-  if(!valid) {
+  if(!valid){
     statusMessage.textContent = "Please fill all required fields!";
     generateBtn.disabled = false;
     return;
@@ -399,7 +390,7 @@ generateBtn.addEventListener('click', async () => {
     return;
   }
 
-  statusMessage.textContent = "Generating PDF... Please wait.";
+  statusMessage.textContent = "Generating PDF and ZIP...";
 
   const vessel = document.getElementById('vesselName').value.trim();
   const antenna = document.getElementById('antennaModel').value.trim();
@@ -413,30 +404,15 @@ generateBtn.addEventListener('click', async () => {
   const pageWidth = pdf.internal.pageSize.getWidth();
   const pageHeight = pdf.internal.pageSize.getHeight();
 
-  // Cover page - Logo
+  // Cover page
   const logoUrl = 'https://raw.githubusercontent.com/pgarciafer/pics2PDF/main/logo.png';
-  const logo = new Image();
-  logo.crossOrigin = 'Anonymous';
-  logo.src = logoUrl;
-
-  await new Promise((resolve, reject) => {
-    logo.onload = () => {
-      const logoWidth = 350;
-      const logoHeight = (logo.height * logoWidth) / logo.width;
-      const logoX = (pageWidth - logoWidth) / 2;
-      const logoY = 50;
-      pdf.addImage(logo, 'PNG', logoX, logoY, logoWidth, logoHeight);
-      resolve();
-    };
-    logo.onerror = () => {
-      console.error('Failed to load logo from URL');
-      resolve();
-    };
-  });
-
-  // Cover page - Text content
-  pdf.setFontSize(26);
-  pdf.setFont('helvetica', 'bold');
+  const logo = await loadImage(logoUrl);
+  if (logo) {
+    const logoWidth = 350;
+    const logoHeight = (logo.height * logoWidth) / logo.width;
+    pdf.addImage(logo, 'PNG', (pageWidth - logoWidth) / 2, 50, logoWidth, logoHeight);
+  }
+  pdf.setFontSize(26).setFont('helvetica','bold');
   pdf.text(vessel, pageWidth/2, 250, { align: 'center' });
   pdf.setFontSize(22);
   pdf.text(`${antenna} (${location})`, pageWidth/2, 290, { align: 'center' });
@@ -445,169 +421,99 @@ generateBtn.addEventListener('click', async () => {
   pdf.setFontSize(14);
   pdf.text(`Submitted By: ${submitted}`, pageWidth/2, 360, { align: 'center' });
   pdf.text(`Date: ${dateStr}`, pageWidth/2, 385, { align: 'center' });
-  
-  if (images.length > 0 || attachments.length > 0) {
-      pdf.addPage();
-  }
+
+  if (images.length > 0 || attachments.length > 0) pdf.addPage();
 
   let pageNum = 2;
   for(let i=0;i<images.length;i+=perPage){
-    const chunk = images.slice(i, i+perPage);
-    const spacingX = 10, spacingY = 10;
+    const chunk = images.slice(i,i+perPage);
+    const spacingX=10, spacingY=10;
     let cellWidth, cellHeight;
-
     if(perPage===1){
-      cellWidth = pageWidth - 2 * spacingX;
-      cellHeight = pageHeight - 2 * spacingY;
-      await addImageToPDF(pdf, chunk[0], spacingX, spacingY, cellWidth, cellHeight);
+      cellWidth=pageWidth-2*spacingX; cellHeight=pageHeight-2*spacingY;
+      await addImageToPDF(pdf,chunk[0],spacingX,spacingY,cellWidth,cellHeight);
     } else if(perPage===4){
-      cellWidth = (pageWidth - 3 * spacingX) / 2;
-      cellHeight = (pageHeight - 3 * spacingY) / 2;
-      for(let idx=0; idx < chunk.length; idx++){
-        let row = Math.floor(idx/2);
-        let col = idx % 2;
-        let x = spacingX + col * (cellWidth + spacingX);
-        let y = spacingY + row * (cellHeight + spacingY);
-        await addImageToPDF(pdf, chunk[idx], x, y, cellWidth, cellHeight);
+      cellWidth=(pageWidth-3*spacingX)/2; cellHeight=(pageHeight-3*spacingY)/2;
+      for(let idx=0;idx<chunk.length;idx++){
+        let row=Math.floor(idx/2),col=idx%2;
+        await addImageToPDF(pdf,chunk[idx],
+          spacingX+col*(cellWidth+spacingX),
+          spacingY+row*(cellHeight+spacingY),
+          cellWidth,cellHeight);
       }
     } else {
-      cellWidth = (pageWidth - spacingX * (perPage + 1)) / perPage;
-      cellHeight = pageHeight - 2 * spacingY;
-      for(let idx = 0; idx < chunk.length; idx++){
-        let x = spacingX + idx * (cellWidth + spacingX);
-        let y = spacingY;
-        await addImageToPDF(pdf, chunk[idx], x, y, cellWidth, cellHeight);
+      cellWidth=(pageWidth-(perPage+1)*spacingX)/perPage;
+      cellHeight=pageHeight-2*spacingY;
+      for(let idx=0;idx<chunk.length;idx++){
+        await addImageToPDF(pdf,chunk[idx],
+          spacingX+idx*(cellWidth+spacingX),spacingY,
+          cellWidth,cellHeight);
       }
     }
-
-    pdf.setFontSize(12);
-    pdf.text(`Page ${pageNum}`, pageWidth/2, pageHeight-10, { align: 'center' });
-    if(i + perPage < images.length) pdf.addPage();
+    pdf.setFontSize(12).text(`Page ${pageNum}`, pageWidth/2,pageHeight-10,{align:'center'});
+    if(i+perPage<images.length) pdf.addPage();
     pageNum++;
   }
 
-  // Add attachments page
-  if (attachments.length > 0) {
-      if (images.length > 0) {
-          pdf.addPage();
-      }
-      await addAttachmentsToPDF(pdf, attachments);
-      pdf.setFontSize(12);
-      pdf.text(`Page ${pageNum}`, pageWidth/2, pageHeight-10, { align: 'center' });
+  // Attachments listing
+  if(attachments.length>0){
+    if(images.length>0) pdf.addPage();
+    pdf.setFontSize(20).setFont('helvetica','bold');
+    pdf.text("Attached Files", pageWidth/2, 30, { align: 'center' });
+    pdf.setFontSize(10).setFont('helvetica','normal');
+    let startY=60, iconSize=20, padding=20;
+    for(const att of attachments){
+      pdf.text(`📎 ${att.name}`, padding, startY);
+      startY+=iconSize+10;
+      if(startY>pageHeight-padding){ pdf.addPage(); startY=40; }
+    }
+    pdf.setFontSize(12).text(`Page ${pageNum}`, pageWidth/2,pageHeight-10,{align:'center'});
   }
 
-  pdf.save(`${vessel}_PictureArray.pdf`);
-  statusMessage.textContent = 'PDF generated successfully!';
-  generateBtn.disabled = false;
+  // Create ZIP with PDF + attachments
+  const zip = new JSZip();
+  const pdfBlob = pdf.output('blob');
+  zip.file(`${vessel}_PictureArray.pdf`, pdfBlob);
+  for(const att of attachments){
+    zip.file(att.name, att);
+  }
+  const zipBlob = await zip.generateAsync({type:'blob'});
+  saveAs(zipBlob, `${vessel}_Package.zip`);
+
+  statusMessage.textContent = 'ZIP (PDF + attachments) generated successfully!';
+  generateBtn.disabled=false;
 });
 
 // Helpers
 function fileToDataURL(file){
-  return new Promise(res => {
-    const reader = new FileReader();
-    reader.onload = () => res(reader.result);
+  return new Promise(res=>{
+    const reader=new FileReader();
+    reader.onload=()=>res(reader.result);
     reader.readAsDataURL(file);
   });
 }
-
 function loadImage(src){
-  return new Promise(res => {
-    const img = new Image();
-    img.crossOrigin = 'Anonymous';
-    img.src = src;
-    img.onload = () => res(img);
-    img.onerror = () => {
-        console.error("Failed to load image from URL:", src);
-        res(null);
-    };
+  return new Promise(res=>{
+    const img=new Image();
+    img.crossOrigin='Anonymous';
+    img.src=src;
+    img.onload=()=>res(img);
+    img.onerror=()=>res(null);
   });
 }
-
-async function addImageToPDF(pdf, file, x, y, width, height){
-  let src;
-  if(file instanceof File) {
-      src = await fileToDataURL(file);
-  } else {
-      src = file;
-  }
-  
-  const img = await loadImage(src);
-  if (!img) return;
-
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
-
-  // Downscale image to a reasonable size before compressing
-  let maxDim = 1000;
-  let scale = Math.min(maxDim / img.width, maxDim / img.height, 1);
-  canvas.width = img.width * scale;
-  canvas.height = img.height * scale;
-  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-  const compressed = canvas.toDataURL('image/jpeg', 0.7);
-
-  const cellAspect = width / height;
-  const imgAspect = img.width / img.height;
-  let finalWidth, finalHeight;
-
-  if (imgAspect > cellAspect) {
-    finalWidth = width * 0.95;
-    finalHeight = finalWidth / imgAspect;
-  } else {
-    finalHeight = height * 0.95;
-    finalWidth = finalHeight * imgAspect;
-  }
-
-  const xOffset = x + (width - finalWidth) / 2;
-  const yOffset = y + (height - finalHeight) / 2;
-
-  pdf.addImage(compressed, 'JPEG', xOffset, yOffset, finalWidth, finalHeight);
-}
-
-// New function to add attachments to the PDF
-async function addAttachmentsToPDF(pdf, attachments) {
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
-    const iconSize = 40;
-    const padding = 20;
-    const startX = padding;
-    let startY = 40;
-
-    pdf.setFontSize(20);
-    pdf.setFont('helvetica', 'bold');
-    pdf.text("Attached Files", pageWidth/2, 30, { align: 'center' });
-    startY += 20;
-
-    pdf.setFontSize(10);
-    pdf.setFont('helvetica', 'normal');
-
-    for (const attachment of attachments) {
-        // Embed the file
-        const data = await fileToDataURL(attachment);
-        pdf.addFileToDoc({
-            fileName: attachment.name,
-            fileData: data,
-            mimeType: attachment.type,
-            description: "Attached file"
-        });
-
-        // Add an icon and filename to the page
-        const fileIconURL = 'https://raw.githubusercontent.com/pgarciafer/pics2PDF/main/file-icon.png';
-        const fileIcon = await loadImage(fileIconURL);
-
-        if (fileIcon) {
-            pdf.addImage(fileIcon, 'PNG', startX, startY, iconSize, iconSize);
-            pdf.text(attachment.name, startX + iconSize + 10, startY + (iconSize / 2), { baseline: 'middle' });
-        } else {
-            pdf.text(`📎 ${attachment.name}`, startX, startY + (iconSize / 2), { baseline: 'middle' });
-        }
-
-        startY += iconSize + 10;
-        if (startY > pageHeight - padding) {
-            pdf.addPage();
-            startY = padding;
-        }
-    }
+async function addImageToPDF(pdf,file,x,y,width,height){
+  let src=file instanceof File?await fileToDataURL(file):file;
+  const img=await loadImage(src); if(!img) return;
+  const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');
+  let maxDim=1000,scale=Math.min(maxDim/img.width,maxDim/img.height,1);
+  canvas.width=img.width*scale; canvas.height=img.height*scale;
+  ctx.drawImage(img,0,0,canvas.width,canvas.height);
+  const compressed=canvas.toDataURL('image/jpeg',0.7);
+  const cellAspect=width/height, imgAspect=img.width/img.height;
+  let finalW,finalH;
+  if(imgAspect>cellAspect){finalW=width*0.95; finalH=finalW/imgAspect;}
+  else {finalH=height*0.95; finalW=finalH*imgAspect;}
+  pdf.addImage(compressed,'JPEG',x+(width-finalW)/2,y+(height-finalH)/2,finalW,finalH);
 }
 </script>
 </body>
