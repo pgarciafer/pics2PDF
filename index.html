@@ -290,17 +290,38 @@ generateBtn.addEventListener('click', async () => {
   const pageWidth = pdf.internal.pageSize.getWidth();
   const pageHeight = pdf.internal.pageSize.getHeight();
 
-  // Cover page
+  // Cover page - Logo
+  const logoUrl = 'https://raw.githubusercontent.com/pgarciafer/pics2PDF/main/logo.png'; 
+  const logo = new Image();
+  logo.crossOrigin = 'Anonymous';
+  logo.src = logoUrl;
+
+  await new Promise((resolve, reject) => {
+    logo.onload = () => {
+      const logoWidth = 350; // Updated size
+      const logoHeight = (logo.height * logoWidth) / logo.width; // Maintain aspect ratio
+      const logoX = (pageWidth - logoWidth) / 2;
+      const logoY = 50; // Position it at the top of the page
+      pdf.addImage(logo, 'PNG', logoX, logoY, logoWidth, logoHeight);
+      resolve();
+    };
+    logo.onerror = () => {
+      console.error('Failed to load logo from URL');
+      resolve(); // Continue even if the logo fails to load
+    };
+  });
+
+  // Cover page - Text content
   pdf.setFontSize(26);
   pdf.setFont('helvetica', 'bold');
-  pdf.text(vessel, pageWidth/2, 220, { align: 'center' });
+  pdf.text(vessel, pageWidth/2, 250, { align: 'center' }); // Adjusted position
   pdf.setFontSize(22);
-  pdf.text(`${antenna} (${location})`, pageWidth/2, 260, { align: 'center' });
+  pdf.text(`${antenna} (${location})`, pageWidth/2, 290, { align: 'center' }); // Adjusted position
   pdf.setFontSize(18);
-  pdf.text(`Case Number: ${caseNum}`, pageWidth/2, 300, { align: 'center' });
+  pdf.text(`Case Number: ${caseNum}`, pageWidth/2, 330, { align: 'center' }); // Adjusted position
   pdf.setFontSize(14);
-  pdf.text(`Submitted By: ${submitted}`, pageWidth/2, 330, { align: 'center' });
-  pdf.text(`Date: ${dateStr}`, pageWidth/2, 355, { align: 'center' });
+  pdf.text(`Submitted By: ${submitted}`, pageWidth/2, 360, { align: 'center' }); // Adjusted position
+  pdf.text(`Date: ${dateStr}`, pageWidth/2, 385, { align: 'center' }); // Adjusted position
   pdf.addPage();
 
   let pageNum = 2;
