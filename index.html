@@ -262,7 +262,9 @@
   <a href="contact.html" class="contact-btn">Contact</a>
 </div>
 
-
+<!-- Job Info Loader -->
+<label for="jobInfoFile">Load Current Job Info (.txt)</label>
+<input type="file" id="jobInfoFile" accept=".txt">
 
 <!-- Pictures section -->
 <div class="drop-zone-section">
@@ -271,12 +273,7 @@
   </div>
   <button id="removeAllBtn" class="remove-btn">Remove All Images</button>
 </div>
-
 <div class="image-list-container" id="imageListContainer"></div>
-
-
-
-
 
 <!-- Attachments section -->
 <div class="attachment-section">
@@ -286,15 +283,8 @@
     </div>
     <button id="removeAllAttachmentsBtn" class="remove-btn">Remove All Attachments</button>
   </div>
-  
   <div class="attachment-list-container" id="attachmentListContainer"></div>
 </div>
-
-
-
-
-
-
 
 <label for="vesselName">3LC_VesselName: <span class="required-label">*</span></label>
 <input type="text" id="vesselName" placeholder="e.g., NCL_RoyalClipper">
@@ -343,7 +333,75 @@ const statusMessage = document.getElementById('statusMessage');
 // Default date
 document.getElementById("dateField").value = new Date().toISOString().split("T")[0];
 
-// Drag-drop for images
+// === Helper: Format Vessel Name ===
+function formatVesselName(raw) {
+  if (!raw) return "";
+  let clean = raw.replace(/_/g, " ").replace(/\s+/g, " ").trim();
+  let firstThree = clean.slice(0,3).toUpperCase();
+  let rest = clean.slice(3).trim();
+  if (!rest) return firstThree;
+
+  let words = rest.split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
+  let formattedRest = words.join("");
+  return firstThree + "_" + formattedRest;
+}
+
+// === Helper: Format Antenna Model/SN ===
+function formatAntennaModel(model, sn) {
+  if (!model || !sn) return "";
+  let m = model.trim().replace(/\s+/g, "-");
+  return (m.charAt(0).toUpperCase() + m.slice(1)) + "_SN" + sn.trim().toUpperCase();
+}
+
+// === Helper: Format Antenna Location ===
+function formatAntennaLocation(loc) {
+  if (!loc) return "";
+  return loc.trim().toUpperCase();
+}
+
+// === Load Job Info file ===
+document.getElementById("jobInfoFile").addEventListener("change", e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const data = JSON.parse(reader.result);
+
+      // Vessel
+      if (data.VESSEL) {
+        document.getElementById("vesselName").value = formatVesselName(data.VESSEL);
+      }
+
+      // Case
+      if (data.INCIDENT) {
+        document.getElementById("caseNumber").value = data.INCIDENT;
+      }
+
+      // Antenna model + SN
+      if (data["ANTENNA MODEL"] && data["ANTENNA SN"]) {
+        document.getElementById("antennaModel").value = formatAntennaModel(
+          data["ANTENNA MODEL"],
+          data["ANTENNA SN"]
+        );
+      }
+
+      // Antenna location
+      if (data["ANTENNA LOCATION"]) {
+        document.getElementById("antennaLocation").value = formatAntennaLocation(
+          data["ANTENNA LOCATION"]
+        );
+      }
+
+    } catch(err) {
+      alert("Invalid Job Info file!");
+    }
+  };
+  reader.readAsText(file);
+});
+
+
+// === Drag-drop for images ===
 dropZone.addEventListener('click', () => {
   const fileInput = document.createElement('input');
   fileInput.type = 'file';
@@ -375,7 +433,7 @@ document.getElementById('removeAllBtn').addEventListener('click', () => {
   statusMessage.textContent = 'All images removed.';
 });
 
-// Drag-drop for attachments
+// === Drag-drop for attachments ===
 attachmentsDropZone.addEventListener('click', () => {
   const fileInput = document.createElement('input');
   fileInput.type = 'file';
@@ -404,7 +462,7 @@ document.getElementById('removeAllAttachmentsBtn').addEventListener('click', () 
   statusMessage.textContent = 'All attachments removed.';
 });
 
-// PDF generation
+// === PDF generation ===
 generateBtn.addEventListener('click', async () => {
   statusMessage.textContent = '';
   generateBtn.disabled = true;
@@ -433,9 +491,11 @@ generateBtn.addEventListener('click', async () => {
 
   statusMessage.textContent = "Generating PDF...";
 
-  const vessel = document.getElementById('vesselName').value.trim();
+
+  const vessel = formatVesselName(document.getElementById('vesselName').value.trim());
+  document.getElementById('vesselName').value = vessel; // sync UI
   const antenna = document.getElementById('antennaModel').value.trim();
-  const location = document.getElementById('antennaLocation').value.trim().toUpperCase(); // <-- Converted to uppercase here
+  const location = document.getElementById('antennaLocation').value.trim().toUpperCase();
   const caseNum = document.getElementById('caseNumber').value.trim();
   const submitted = document.getElementById('submittedBy').value.trim();
   const dateStr = document.getElementById('dateField').value;
@@ -458,32 +518,21 @@ generateBtn.addEventListener('click', async () => {
     pdf.addImage(logo, 'PNG', (pageWidth - logoWidth) / 2, 50, logoWidth, logoHeight);
   }
   pdf.setFontSize(26).setFont('helvetica', 'bold');
-  pdf.text(vessel, pageWidth / 2, 250, {
-    align: 'center'
-  });
+  pdf.text(vessel, pageWidth / 2, 250, { align: 'center' });
   pdf.setFontSize(22);
-  pdf.text(`${antenna} (${location})`, pageWidth / 2, 290, {
-    align: 'center'
-  });
+  pdf.text(`${antenna} (${location})`, pageWidth / 2, 290, { align: 'center' });
   pdf.setFontSize(18);
-  pdf.text(`Case Number: ${caseNum}`, pageWidth / 2, 330, {
-    align: 'center'
-  });
+  pdf.text(`Case Number: ${caseNum}`, pageWidth / 2, 330, { align: 'center' });
   pdf.setFontSize(14);
-  pdf.text(`Submitted By: ${submitted}`, pageWidth / 2, 360, {
-    align: 'center'
-  });
-  pdf.text(`Date: ${dateStr}`, pageWidth / 2, 385, {
-    align: 'center'
-  });
+  pdf.text(`Submitted By: ${submitted}`, pageWidth / 2, 360, { align: 'center' });
+  pdf.text(`Date: ${dateStr}`, pageWidth / 2, 385, { align: 'center' });
 
   if (images.length > 0 || attachments.length > 0) pdf.addPage();
 
   let pageNum = 2;
   for (let i = 0; i < images.length; i += perPage) {
     const chunk = images.slice(i, i + perPage);
-    const spacingX = 10,
-      spacingY = 10;
+    const spacingX = 10, spacingY = 10;
     let cellWidth, cellHeight;
     if (perPage === 1) {
       cellWidth = pageWidth - 2 * spacingX;
@@ -493,8 +542,7 @@ generateBtn.addEventListener('click', async () => {
       cellWidth = (pageWidth - 3 * spacingX) / 2;
       cellHeight = (pageHeight - 3 * spacingY) / 2;
       for (let idx = 0; idx < chunk.length; idx++) {
-        let row = Math.floor(idx / 2),
-          col = idx % 2;
+        let row = Math.floor(idx / 2), col = idx % 2;
         await addImageToPDF(pdf, chunk[idx],
           spacingX + col * (cellWidth + spacingX),
           spacingY + row * (cellHeight + spacingY),
@@ -509,9 +557,7 @@ generateBtn.addEventListener('click', async () => {
           cellWidth, cellHeight);
       }
     }
-    pdf.setFontSize(12).text(`Page ${pageNum}`, pageWidth / 2, pageHeight - 10, {
-      align: 'center'
-    });
+    pdf.setFontSize(12).text(`Page ${pageNum}`, pageWidth / 2, pageHeight - 10, { align: 'center' });
     if (i + perPage < images.length) pdf.addPage();
     pageNum++;
   }
@@ -520,13 +566,9 @@ generateBtn.addEventListener('click', async () => {
   if (attachments.length > 0) {
     if (images.length > 0) pdf.addPage();
     pdf.setFontSize(20).setFont('helvetica', 'bold');
-    pdf.text("Attached Files", pageWidth / 2, 30, {
-      align: 'center'
-    });
+    pdf.text("Attached Files", pageWidth / 2, 30, { align: 'center' });
     pdf.setFontSize(10).setFont('helvetica', 'normal');
-    let startY = 60,
-      iconSize = 20,
-      padding = 20;
+    let startY = 60, iconSize = 20, padding = 20;
     for (const att of attachments) {
       pdf.text(`📎 ${att.name}`, padding, startY);
       startY += iconSize + 10;
@@ -535,18 +577,15 @@ generateBtn.addEventListener('click', async () => {
         startY = 40;
       }
     }
-    pdf.setFontSize(12).text(`Page ${pageNum}`, pageWidth / 2, pageHeight - 10, {
-      align: 'center'
-    });
+    pdf.setFontSize(12).text(`Page ${pageNum}`, pageWidth / 2, pageHeight - 10, { align: 'center' });
   }
 
-  // Generate filename with desired format
+  // Generate filename
   const dateFormatted = dateStr.replace(/-/g, '');
   const filenamePrefix = `${vessel}_PicArray_${antenna}_${location.replace(/ /g, '')}_Case${caseNum}_${dateFormatted}`;
   const pdfFilename = `${filenamePrefix}.pdf`;
   const zipFilename = `${filenamePrefix}.zip`;
 
-  // Conditional PDF/ZIP generation logic
   if (attachments.length > 0) {
     statusMessage.textContent = "Generating ZIP...";
     const zip = new JSZip();
@@ -555,13 +594,10 @@ generateBtn.addEventListener('click', async () => {
     for (const att of attachments) {
       zip.file(att.name, att);
     }
-    const zipBlob = await zip.generateAsync({
-      type: 'blob'
-    });
+    const zipBlob = await zip.generateAsync({ type: 'blob' });
     saveAs(zipBlob, zipFilename);
     statusMessage.textContent = 'ZIP (PDF + attachments) generated successfully!';
   } else {
-    // Only save the PDF if no attachments are present
     const pdfBlob = pdf.output('blob');
     saveAs(pdfBlob, pdfFilename);
     statusMessage.textContent = 'PDF generated successfully!';
@@ -570,7 +606,7 @@ generateBtn.addEventListener('click', async () => {
   generateBtn.disabled = false;
 });
 
-// Helpers
+// === Helpers ===
 function fileToDataURL(file){
   return new Promise(res=>{
     const reader=new FileReader();
@@ -592,8 +628,7 @@ async function addImageToPDF(pdf, file, x, y, width, height) {
   const img = await loadImage(src);
   if (!img) return;
 
-  // --- Optional small resize only for very large images ---
-  const maxDim = 1800; // allow larger images for higher quality
+  const maxDim = 1800;
   let scale = Math.min(maxDim / img.width, maxDim / img.height, 1);
 
   const canvas = document.createElement('canvas');
@@ -603,10 +638,8 @@ async function addImageToPDF(pdf, file, x, y, width, height) {
   const ctx = canvas.getContext('2d');
   ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-  // --- High quality JPEG ---
-  const compressed = canvas.toDataURL('image/jpeg', 0.4); // 75% quality
+  const compressed = canvas.toDataURL('image/jpeg', 0.4);
 
-  // --- Fit image in PDF cell while maintaining aspect ratio ---
   const cellAspect = width / height;
   const imgAspect = img.width / img.height;
   let finalW, finalH;
@@ -627,7 +660,6 @@ async function addImageToPDF(pdf, file, x, y, width, height) {
     finalH
   );
 }
-
 </script>
 </body>
 </html>
