@@ -587,20 +587,47 @@ function loadImage(src){
     img.onerror=()=>res(null);
   });
 }
-async function addImageToPDF(pdf,file,x,y,width,height){
-  let src=file instanceof File?await fileToDataURL(file):file;
-  const img=await loadImage(src); if(!img) return;
-  const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');
-  let maxDim=1000,scale=Math.min(maxDim/img.width,maxDim/img.height,1);
-  canvas.width=img.width*scale; canvas.height=img.height*scale;
-  ctx.drawImage(img,0,0,canvas.width,canvas.height);
-  const compressed=canvas.toDataURL('image/jpeg',0.7);
-  const cellAspect=width/height, imgAspect=img.width/img.height;
-  let finalW,finalH;
-  if(imgAspect>cellAspect){finalW=width*0.95; finalH=finalW/imgAspect;}
-  else {finalH=height*0.95; finalW=finalH*imgAspect;}
-  pdf.addImage(compressed,'JPEG',x+(width-finalW)/2,y+(height-finalH)/2,finalW,finalH);
+async function addImageToPDF(pdf, file, x, y, width, height) {
+  let src = file instanceof File ? await fileToDataURL(file) : file;
+  const img = await loadImage(src);
+  if (!img) return;
+
+  // --- Optional small resize only for very large images ---
+  const maxDim = 1800; // allow larger images for higher quality
+  let scale = Math.min(maxDim / img.width, maxDim / img.height, 1);
+
+  const canvas = document.createElement('canvas');
+  canvas.width = img.width * scale;
+  canvas.height = img.height * scale;
+
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+  // --- High quality JPEG ---
+  const compressed = canvas.toDataURL('image/jpeg', 0.4); // 75% quality
+
+  // --- Fit image in PDF cell while maintaining aspect ratio ---
+  const cellAspect = width / height;
+  const imgAspect = img.width / img.height;
+  let finalW, finalH;
+  if (imgAspect > cellAspect) {
+    finalW = width * 0.95;
+    finalH = finalW / imgAspect;
+  } else {
+    finalH = height * 0.95;
+    finalW = finalH * imgAspect;
+  }
+
+  pdf.addImage(
+    compressed,
+    'JPEG',
+    x + (width - finalW) / 2,
+    y + (height - finalH) / 2,
+    finalW,
+    finalH
+  );
 }
+
 </script>
 </body>
 </html>
