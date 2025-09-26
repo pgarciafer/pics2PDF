@@ -359,6 +359,17 @@ function formatAntennaLocation(loc) {
   return loc.trim().toUpperCase();
 }
 
+// === Helper: Format Submitted by ===
+function formatSubmittedby(name) {
+  if (!name) return "";
+  return name
+    .trim()
+    .split(/\s+/)
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+}
+
+
 // === Load Job Info file ===
 document.getElementById("jobInfoFile").addEventListener("change", e => {
   const file = e.target.files[0];
@@ -379,17 +390,24 @@ document.getElementById("jobInfoFile").addEventListener("change", e => {
       }
 
       // Antenna model + SN
-      if (data["ANTENNA MODEL"] && data["ANTENNA SN"]) {
+      if (data["ANTENNA"] && data["ANTENNA SN"]) {
         document.getElementById("antennaModel").value = formatAntennaModel(
-          data["ANTENNA MODEL"],
+          data["ANTENNA"],
           data["ANTENNA SN"]
         );
       }
 
       // Antenna location
-      if (data["ANTENNA LOCATION"]) {
+      if (data["LOCATION"]) {
         document.getElementById("antennaLocation").value = formatAntennaLocation(
-          data["ANTENNA LOCATION"]
+          data["LOCATION"]
+        );
+      }
+	  
+	  // Submitted by
+      if (data["TECH"]) {
+        document.getElementById("submittedBy").value = formatSubmittedby(
+          data["TECH"]
         );
       }
 
