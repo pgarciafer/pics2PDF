@@ -530,33 +530,107 @@ generateBtn.addEventListener('click', async () => {
   statusMessage.textContent = '';
   generateBtn.disabled = true;
 
-  const requiredIds = ["vesselName", "antennaModel", "antennaLocation", "caseNumber", "submittedBy", "dateField"];
-  let valid = true;
-  requiredIds.forEach(id => {
-    const f = document.getElementById(id);
-    if (!f.value.trim()) {
-      f.classList.add("invalid");
-      valid = false;
-    } else {
-      f.classList.remove("invalid");
+  try {
+    // --- Validate required fields ---
+    const requiredIds = ["vesselName", "antennaModel", "antennaLocation", "caseNumber", "submittedBy", "dateField"];
+    let valid = true;
+    requiredIds.forEach(id => {
+      const f = document.getElementById(id);
+      if (!f.value.trim()) {
+        f.classList.add("invalid");
+        valid = false;
+      } else {
+        f.classList.remove("invalid");
+      }
+    });
+    if (!valid) throw new Error("Please fill all required fields!");
+
+    if (images.length === 0 && attachments.length === 0) throw new Error("Add at least one image or attachment.");
+
+    statusMessage.textContent = "Generating PDF...";
+
+    // --- Capture latest field values ---
+    const vessel = formatVesselName(document.getElementById('vesselName').value.trim());
+    const antenna = document.getElementById('antennaModel').value.trim();
+    const location = document.getElementById('antennaLocation').value.trim().toUpperCase();
+    const caseNum = document.getElementById('caseNumber').value.trim();
+    const submitted = formatSubmittedby(document.getElementById('submittedBy').value.trim());
+    const dateStr = document.getElementById('dateField').value;
+    const perPage = parseInt(document.getElementById('imagesPerPage').value);
+
+    // --- Create PDF ---
+    const pdf = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'a4' });
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+
+// --- Cover page logo ---
+const logoUrl = 'https://raw.githubusercontent.com/pgarciafer/pics2PDF/main/logo.png';
+const logo = await loadImage(logoUrl);
+if (logo) {
+  const logoWidth = 350;
+  const logoHeight = (logo.height * logoWidth) / logo.width;
+  pdf.addImage(logo, 'PNG', (pageWidth - logoWidth) / 2, 50, logoWidth, logoHeight);
+}
+
+// --- Cover page text ---
+pdf.setFontSize(26).setFont('helvetica', 'bold');
+pdf.text(vessel, pageWidth / 2, 250, { align: 'center' });
+pdf.setFontSize(18);
+pdf.text(`${antenna} (${location})`, pageWidth / 2, 290, { align: 'center' });
+pdf.setFontSize(14);
+pdf.text(`Case Number: ${caseNum}`, pageWidth / 2, 330, { align: 'center' });
+pdf.text(`Submitted By: ${submitted}`, pageWidth / 2, 360, { align: 'center' });
+pdf.text(`Date: ${dateStr}`, pageWidth / 2, 385, { align: 'center' });
+
+
+    // --- Add images ---
+    if (images.length > 0) pdf.addPage();
+    let pageNum = 2;
+    for (let i = 0; i < images.length; i += perPage) {
+      const chunk = images.slice(i, i + perPage);
+      let spacingX = 10, spacingY = 10;
+      let cellWidth = (pageWidth - (perPage + 1) * spacingX) / perPage;
+      let cellHeight = pageHeight - 2 * spacingY;
+
+      for (let idx = 0; idx < chunk.length; idx++) {
+        await addImageToPDF(pdf, chunk[idx], spacingX + idx * (cellWidth + spacingX), spacingY, cellWidth, cellHeight);
+      }
+
+      pdf.setFontSize(12).text(`Page ${pageNum}`, pageWidth / 2, pageHeight - 10, { align: 'center' });
+      if (i + perPage < images.length) pdf.addPage();
+      pageNum++;
     }
-  });
-  if (!valid) {
-    statusMessage.textContent = "Please fill all required fields!";
-    generateBtn.disabled = false;
-    return;
-  }
-  if (images.length === 0 && attachments.length === 0) {
-    statusMessage.textContent = "Add at least one image or attachment.";
-    generateBtn.disabled = false;
-    return;
-  }
 
-  statusMessage.textContent = "Generating PDF...";
+    // --- Attachments listing ---
+    if (attachments.length > 0) {
+      pdf.addPage();
+      pdf.setFontSize(16).setFont('helvetica', 'bold');
+      pdf.text("Attached Files", pageWidth / 2, 30, { align: 'center' });
+      pdf.setFontSize(12).setFont('helvetica', 'normal');
+      let startY = 60;
+      for (const att of attachments) {
+        pdf.text(`📎 ${att.name}`, 20, startY);
+        startY += 25;
+        if (startY > pageHeight - 40) {
+          pdf.addPage();
+          startY = 40;
+        }
+      }
+    }
 
-  // --- rest of your PDF generation logic remains unchanged ---
-  // This includes cover page, images, attachments, page numbering, and zip creation.
+    // --- Save PDF ---
+    const pdfFilename = `${vessel}_PicArray_${antenna}_${location.replace(/ /g, '')}_Case${caseNum}_${dateStr.replace(/-/g,'')}.pdf`;
+    pdf.save(pdfFilename);
+    statusMessage.textContent = 'PDF generated successfully!';
+
+  } catch (err) {
+    statusMessage.textContent = err.message || "Error generating PDF.";
+    console.error(err);
+  } finally {
+    generateBtn.disabled = false;
+  }
 });
+
 
 // === Helpers for PDF ===
 function fileToDataURL(file){
