@@ -217,6 +217,23 @@
     background-color: #ced4da;
     cursor: not-allowed;
   }
+  .job-info-btn {
+  background-color: #28a745; /* Green */
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 20px; /* Space below the button */
+  transition: background-color 0.3s;
+}
+
+.job-info-btn:hover {
+  background-color: #218838; /* Darker green on hover */
+}
+
   .required-label {
     color: var(--red-error);
   }
@@ -265,7 +282,8 @@
 </div>
 
 <!-- Job Info Loader -->
-<label id="jobInfoLabel" style="cursor:pointer;">Load Current Job Info (.txt)</label>
+<button id="jobInfoLabel" class="job-info-btn">Load Current Job Info (optional)</button>
+
 
 <!-- Pictures section -->
 <div class="drop-zone-section">
