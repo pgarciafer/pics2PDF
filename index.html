@@ -130,6 +130,29 @@
 .drop-zone-section .drop-zone {
   flex: 1;
 }
+.job-info-container {
+  display: flex;
+  justify-content: flex-start; /* align to left */
+  margin-bottom: 25px; /* spacing between button and drop zone */
+}
+
+.job-info-btn {
+  background-color: #28a745; /* Green */
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.1s;
+}
+
+.job-info-btn:hover {
+  background-color: #218838; /* Darker green */
+  transform: translateY(-1px); /* subtle hover lift */
+}
+
 
 .drop-zone-section .remove-btn {
   height: 100%;
@@ -281,9 +304,10 @@
   <a href="contact.html" class="contact-btn">Contact</a>
 </div>
 
-<!-- Job Info Loader -->
-<button id="jobInfoLabel" class="job-info-btn">Load Current Job Info (optional)</button>
-
+<!-- Job Info Loader Button -->
+<div class="job-info-container">
+  <button id="jobInfoLabel" class="job-info-btn">Load/Update Current Job Info (.txt)</button>
+</div>
 
 <!-- Pictures section -->
 <div class="drop-zone-section">
@@ -293,6 +317,7 @@
   <button id="removeAllBtn" class="remove-btn">Remove All Images</button>
 </div>
 <div class="image-list-container" id="imageListContainer"></div>
+
 
 <!-- Attachments section -->
 <div class="attachment-section">
@@ -384,39 +409,60 @@ function formatSubmittedby(name) {
 }
 
 // === Load Current Job Info using File System Access API ===
-let jobFileHandle = null;
+let jobFileHandle = null; // store file handle between loads
 
 document.getElementById("jobInfoLabel").addEventListener("click", async () => {
   try {
-    if (!window.showOpenFilePicker) {
-      alert("Your browser does not support automatic file access. Please select a file manually.");
-      return;
-    }
-    if (!jobFileHandle) {
-      [jobFileHandle] = await window.showOpenFilePicker({
-        types: [{
-          description: 'Job Info File',
-          accept: { 'text/plain': ['.txt'] },
-        }],
-        multiple: false
-      });
-    }
-    const file = await jobFileHandle.getFile();
-    const text = await file.text();
-    const data = JSON.parse(text);
+    // If File System Access API is supported (Chrome/Edge desktop)
+    if (window.showOpenFilePicker) {
+      if (!jobFileHandle) {
+        [jobFileHandle] = await window.showOpenFilePicker({
+          types: [{
+            description: 'Job Info File',
+            accept: { 'text/plain': ['.txt'] },
+          }],
+          multiple: false
+        });
+      }
 
-    if (data.VESSEL) document.getElementById("vesselName").value = formatVesselName(data.VESSEL);
-    if (data.INCIDENT) document.getElementById("caseNumber").value = data.INCIDENT;
-    if (data["ANTENNA"] && data["ANTENNA SN"]) document.getElementById("antennaModel").value = formatAntennaModel(data["ANTENNA"], data["ANTENNA SN"]);
-    if (data["LOCATION"]) document.getElementById("antennaLocation").value = formatAntennaLocation(data["LOCATION"]);
-    if (data["TECH"]) document.getElementById("submittedBy").value = formatSubmittedby(data["TECH"]);
+      const file = await jobFileHandle.getFile();
+      const text = await file.text();
+      const data = JSON.parse(text);
+      populateJobInfo(data);
 
-    statusMessage.textContent = "Current Job Info loaded successfully!";
+    } else {
+      // Fallback: create a hidden file input for manual selection
+      const fileInput = document.createElement('input');
+      fileInput.type = 'file';
+      fileInput.accept = '.txt';
+      fileInput.onchange = async () => {
+        if (!fileInput.files || fileInput.files.length === 0) return;
+        const file = fileInput.files[0];
+        const text = await file.text();
+        const data = JSON.parse(text);
+        populateJobInfo(data);
+      };
+      fileInput.click();
+    }
   } catch (err) {
     console.error(err);
     statusMessage.textContent = "Failed to load job info or permission denied.";
   }
 });
+
+// === Helper function to populate form fields ===
+function populateJobInfo(data) {
+  if (data.VESSEL) document.getElementById("vesselName").value = formatVesselName(data.VESSEL);
+  if (data.INCIDENT) document.getElementById("caseNumber").value = data.INCIDENT;
+  if (data["ANTENNA"] && data["ANTENNA SN"]) {
+    document.getElementById("antennaModel").value = formatAntennaModel(data["ANTENNA"], data["ANTENNA SN"]);
+  }
+  if (data["LOCATION"]) document.getElementById("antennaLocation").value = formatAntennaLocation(data["LOCATION"]);
+  if (data["TECH"]) document.getElementById("submittedBy").value = formatSubmittedby(data["TECH"]);
+
+  statusMessage.textContent = "Current Job Info loaded successfully!";
+}
+
 
 // === Drag-drop for images ===
 dropZone.addEventListener('click', () => {
