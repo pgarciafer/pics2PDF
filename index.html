@@ -59,6 +59,15 @@
     font-size: 20px;
     font-weight: 600;
   }
+  .remove-btn {
+    background-color: #ff6666;
+  }
+  .remove-btn:hover {
+    background-color: #e65c5c;
+  }
+  .remove-btn:disabled {
+    background-color: #ced4da;
+  }
   .contact-btn {
     padding: 8px 12px;
     background-color: var(--primary-blue);
@@ -109,6 +118,22 @@
     border-radius: 8px;
     transition: background 0.3s, border-color 0.3s;
   }
+  .drop-zone-section {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+	margin-bottom: 15px;
+}
+
+.drop-zone-section .drop-zone {
+  flex: 1;
+}
+
+.drop-zone-section .remove-btn {
+  height: 100%;
+  width: 12px; /* fixed width for buttons */
+}
+
   .drop-zone:hover {
     background: #cce0ff;
     border-color: var(--dark-blue);
@@ -237,25 +262,39 @@
   <a href="contact.html" class="contact-btn">Contact</a>
 </div>
 
-<div class="drop-zone" id="dropZone">
-  <p>📁 Drag & Drop Images Here or Click to Select</p>
+
+
+<!-- Pictures section -->
+<div class="drop-zone-section">
+  <div class="drop-zone" id="dropZone">
+    <p>📁 Pictures here</p>
+  </div>
+  <button id="removeAllBtn" class="remove-btn">Remove All Images</button>
 </div>
 
 <div class="image-list-container" id="imageListContainer"></div>
-<div class="button-group">
-  <button id="removeAllBtn">Remove All Images</button>
+
+
+
+
+
+<!-- Attachments section -->
+<div class="attachment-section">
+  <div class="drop-zone-section">
+    <div class="drop-zone" id="attachmentsDropZone">
+      <p>📎 Attachments Here</p>
+    </div>
+    <button id="removeAllAttachmentsBtn" class="remove-btn">Remove All Attachments</button>
+  </div>
+  
+  <div class="attachment-list-container" id="attachmentListContainer"></div>
 </div>
 
-<!-- Attachments section spaced lower -->
-<div class="attachment-section">
-  <div class="drop-zone" id="attachmentsDropZone">
-    <p>📎 Drag & Drop Attachments Here or Click to Select</p>
-  </div>
-  <div class="attachment-list-container" id="attachmentListContainer"></div>
-  <div class="button-group">
-    <button id="removeAllAttachmentsBtn">Remove All Attachments</button>
-  </div>
-</div>
+
+
+
+
+
 
 <label for="vesselName">3LC_VesselName: <span class="required-label">*</span></label>
 <input type="text" id="vesselName" placeholder="e.g., NCL_RoyalClipper">
