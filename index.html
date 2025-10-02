@@ -377,6 +377,43 @@ const statusMessage = document.getElementById('statusMessage');
 document.getElementById("dateField").value = new Date().toISOString().split("T")[0];
 
 // === Helpers ===
+
+
+
+// Convert a File or Image source into a downscaled JPEG dataURL
+async function fileToJpegDataURL(file, maxDim = 2000, quality = 0.7) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = new Image();
+      img.onload = () => {
+        // scale factor
+        const scale = Math.min(maxDim / img.width, maxDim / img.height, 1);
+        const canvas = document.createElement("canvas");
+        canvas.width = img.width * scale;
+        canvas.height = img.height * scale;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        // safer for iOS: use toBlob instead of toDataURL
+        canvas.toBlob(blob => {
+          if (!blob) return reject("Canvas conversion failed");
+          const fr = new FileReader();
+          fr.onload = () => resolve(fr.result); // returns base64 string
+          fr.readAsDataURL(blob);
+        }, "image/jpeg", quality);
+      };
+      img.onerror = () => reject("Image load failed");
+      img.src = e.target.result;
+    };
+    reader.onerror = () => reject("FileReader failed");
+    reader.readAsDataURL(file);
+  });
+}
+
+
+
+
 function formatVesselName(raw) {
   if (!raw) return "";
   let clean = raw.replace(/_/g, " ").replace(/\s+/g, " ").trim();
@@ -649,25 +686,21 @@ function loadImage(src){
     img.onerror=()=>res(null);
   });
 }
+
+
 async function addImageToPDF(pdf, file, x, y, width, height) {
-  let src = file instanceof File ? await fileToDataURL(file) : file;
-  const img = await loadImage(src);
-  if (!img) return;
+  // Get a downscaled dataURL (this avoids iOS freezes on huge images)
+  const dataUrl = await fileToJpegDataURL(file, 2000, 0.7);
+  if (!dataUrl) return;
 
-  const maxDim = 1800;
-  let scale = Math.min(maxDim / img.width, maxDim / img.height, 1);
+  const img = new Image();
+  img.src = dataUrl;
+  await new Promise(res => { img.onload = res; });
 
-  const canvas = document.createElement('canvas');
-  canvas.width = img.width * scale;
-  canvas.height = img.height * scale;
-
-  const ctx = canvas.getContext('2d');
-  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-  const compressed = canvas.toDataURL('image/jpeg', 0.4);
-
+  // aspect ratios
   const cellAspect = width / height;
   const imgAspect = img.width / img.height;
+
   let finalW, finalH;
   if (imgAspect > cellAspect) {
     finalW = width * 0.95;
@@ -678,14 +711,17 @@ async function addImageToPDF(pdf, file, x, y, width, height) {
   }
 
   pdf.addImage(
-    compressed,
-    'JPEG',
+    dataUrl,
+    "JPEG",
     x + (width - finalW) / 2,
     y + (height - finalH) / 2,
     finalW,
     finalH
   );
 }
+
+
+
 </script>
 
 </body>
