@@ -514,18 +514,27 @@ dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.style.
 dropZone.addEventListener('dragleave', e => { e.preventDefault(); dropZone.style.backgroundColor = "#e6f0ff"; });
 dropZone.addEventListener('drop', e => { e.preventDefault(); dropZone.style.backgroundColor = "#e6f0ff"; addImages(e.dataTransfer.files); });
 
-function addImages(fileList){
-  if(fileList.length > 0) imageListContainer.style.display = 'flex';
-  Array.from(fileList).forEach(file => {
-    if(file.type.startsWith('image/')){
+
+async function addImages(fileList) {
+  if (fileList.length > 0) imageListContainer.style.display = 'flex';
+
+  for (const file of fileList) {
+    if (file.type.startsWith('image/')) {
+      // Create a small thumbnail for preview (fast + memory safe)
+      const thumbDataUrl = await fileToJpegDataURL(file, 400, 0.6);
+
+      const previewImg = document.createElement('img');
+      previewImg.src = thumbDataUrl;
+      previewImg.classList.add('image-item');
+      imageListContainer.appendChild(previewImg);
+
+      // Keep the ORIGINAL file for PDF (will be downscaled later)
       images.push(file);
-      const img = document.createElement('img');
-      img.src = URL.createObjectURL(file);
-      img.classList.add('image-item');
-      imageListContainer.appendChild(img);
     }
-  });
+  }
 }
+
+
 document.getElementById('removeAllBtn').addEventListener('click', () => {
   images = [];
   imageListContainer.innerHTML = '';
