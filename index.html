@@ -192,6 +192,45 @@
     background: #fff;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
   }
+  
+  .image-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.image-item {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  border: 1px solid var(--medium-gray);
+  border-radius: 6px;
+  padding: 5px;
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  cursor: grab;
+}
+
+.image-item.dragging {
+  opacity: 0.5;
+}
+
+.remove-image-btn {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+  cursor: pointer;
+}
+  
+  
   .attachment-section {
     margin-top: 30px;
   }
@@ -520,18 +559,82 @@ async function addImages(fileList) {
 
   for (const file of fileList) {
     if (file.type.startsWith('image/')) {
-      // Create a small thumbnail for preview (fast + memory safe)
       const thumbDataUrl = await fileToJpegDataURL(file, 400, 0.6);
+
+      // wrapper for drag + remove
+      const wrapper = document.createElement('div');
+      wrapper.classList.add('image-wrapper');
+      wrapper.draggable = true;
 
       const previewImg = document.createElement('img');
       previewImg.src = thumbDataUrl;
       previewImg.classList.add('image-item');
-      imageListContainer.appendChild(previewImg);
 
-      // Keep the ORIGINAL file for PDF (will be downscaled later)
+      // remove button
+      const removeBtn = document.createElement('button');
+      removeBtn.innerHTML = "×";
+      removeBtn.classList.add('remove-image-btn');
+      removeBtn.onclick = () => {
+        const index = Array.from(imageListContainer.children).indexOf(wrapper);
+        if (index > -1) images.splice(index, 1); // remove from array
+        wrapper.remove();
+        if (images.length === 0) imageListContainer.style.display = 'none';
+      };
+
+      wrapper.appendChild(previewImg);
+      wrapper.appendChild(removeBtn);
+      imageListContainer.appendChild(wrapper);
+
+      // push to array
       images.push(file);
+
+      // drag events
+      wrapper.addEventListener('dragstart', e => {
+        wrapper.classList.add('dragging');
+        e.dataTransfer.effectAllowed = "move";
+      });
+      wrapper.addEventListener('dragend', () => {
+        wrapper.classList.remove('dragging');
+        updateImagesOrder();
+      });
     }
   }
+}
+
+// reordering logic
+imageListContainer.addEventListener('dragover', e => {
+  e.preventDefault();
+  const dragging = document.querySelector('.dragging');
+  const afterElement = getDragAfterElement(imageListContainer, e.clientX, e.clientY);
+  if (afterElement == null) {
+    imageListContainer.appendChild(dragging);
+  } else {
+    imageListContainer.insertBefore(dragging, afterElement);
+  }
+});
+
+// helper to get closest element after cursor
+function getDragAfterElement(container, x, y) {
+  const draggableElements = [...container.querySelectorAll('.image-wrapper:not(.dragging)')];
+  return draggableElements.reduce((closest, child) => {
+    const box = child.getBoundingClientRect();
+    const offset = y - box.top - box.height / 2;
+    if (offset < 0 && offset > closest.offset) {
+      return { offset: offset, element: child };
+    } else {
+      return closest;
+    }
+  }, { offset: Number.NEGATIVE_INFINITY }).element;
+}
+
+// update images[] array order after drag
+function updateImagesOrder() {
+  const newOrder = [];
+  [...imageListContainer.children].forEach(wrapper => {
+    const index = Array.from(imageListContainer.children).indexOf(wrapper);
+    if (images[index]) newOrder.push(images[index]);
+  });
+  images = newOrder;
 }
 
 
