@@ -10,190 +10,159 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 <style>
-  /* Keep all your original styles intact */
-  :root {
-    --primary-blue: #0069d9;
-    --dark-blue: #004c99;
-    --light-gray: #f8f9fa;
-    --medium-gray: #e9ecef;
-    --dark-text: #343a40;
-    --red-error: #dc3545;
-  }
-  body {
-    font-family: 'Poppins', sans-serif;
-    background-color: var(--light-gray);
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-  }
-  .container {
-    max-width: 700px;
-    width: 95%;
-    margin: 10px;
-    padding: 15px;
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  }
-  .header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    border-bottom: 3px solid var(--medium-gray);
-    padding-bottom: 20px;
-  }
-  .header-title {
-    display: flex;
-    align-items: center;
-  }
-  .header-title img {
-    height: 80px;
-    vertical-align: middle;
-    margin-right: 20px;
-  }
-  .header-title span {
-    color: var(--dark-text);
-    font-size: 24px;
-    font-weight: 600;
-  }
-  .remove-btn {
-    background-color: #ff6666;
-  }
-  .remove-btn:hover {
-    background-color: #e65c5c;
-  }
-  .remove-btn:disabled {
-    background-color: #ced4da;
-  }
-  .contact-btn {
-    padding: 8px 12px;
-    background-color: var(--primary-blue);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: background-color 0.3s;
-  }
-  .contact-btn:hover {
-    background-color: var(--dark-blue);
-  }
-  label {
-    display: block;
-    margin-top: 10px;
-    font-weight: 600;
-    color: var(--dark-text);
-    font-size: 13px;
-    cursor: pointer;
-  }
-  input, select, textarea {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    border-radius: 6px;
-    border: 1px solid var(--medium-gray);
-    font-size: 13px;
-    box-sizing: border-box;
-    transition: border-color 0.3s, box-shadow 0.3s;
-  }
-  input:focus, select:focus, textarea:focus {
-    outline: none;
-    border-color: var(--primary-blue);
-    box-shadow: 0 0 0 2px rgba(0, 105, 217, 0.25);
-  }
-  input[type="file"] {
-    padding: 8px;
-  }
-  .drop-zone {
-    border: 3px dashed var(--primary-blue);
-    background: #e6f0ff;
-    padding: 20px;
-    text-align: center;
-    cursor: pointer;
-    margin-bottom: 15px;
-    border-radius: 8px;
-    transition: background 0.3s, border-color 0.3s;
-  }
-  .drop-zone-section {
-	display: flex;
-	align-items: center;
-	gap: 15px;
-	margin-bottom: 15px;
+:root {
+  --primary-blue: #0069d9;
+  --dark-blue: #004c99;
+  --light-gray: #f8f9fa;
+  --medium-gray: #e9ecef;
+  --dark-text: #343a40;
+  --red-error: #dc3545;
 }
 
-.drop-zone-section .drop-zone {
-  flex: 1;
-}
-.job-info-container {
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--light-gray);
+  margin: 0;
+  padding: 0;
   display: flex;
-  justify-content: flex-start; /* align to left */
-  margin-bottom: 25px; /* spacing between button and drop zone */
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
-.job-info-btn {
-  background-color: #28a745; /* Green */
+.container {
+  max-width: 700px;
+  width: 95%;
+  margin: 10px;
+  padding: 15px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 3px solid var(--medium-gray);
+  padding-bottom: 20px;
+}
+
+.header-title {
+  display: flex;
+  align-items: center;
+}
+
+.header-title img {
+  height: 80px;
+  margin-right: 20px;
+}
+
+.header-title span {
+  color: var(--dark-text);
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.contact-btn {
+  padding: 8px 12px;
+  background-color: var(--primary-blue);
   color: white;
   border: none;
-  padding: 6px 14px;
   border-radius: 6px;
+  cursor: pointer;
   font-size: 13px;
   font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.contact-btn:hover {
+  background-color: var(--dark-blue);
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+  font-weight: 600;
+  color: var(--dark-text);
+  font-size: 13px;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.1s;
 }
 
-.job-info-btn:hover {
-  background-color: #218838; /* Darker green */
-  transform: translateY(-1px); /* subtle hover lift */
+input, select, textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border-radius: 6px;
+  border: 1px solid var(--medium-gray);
+  font-size: 13px;
+  box-sizing: border-box;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-
-.drop-zone-section .remove-btn {
-  height: 100%;
-  width: 12px;
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 2px rgba(0, 105, 217, 0.25);
 }
 
-  .drop-zone:hover {
-    background: #cce0ff;
-    border-color: var(--dark-blue);
-  }
-  .drop-zone p {
-    font-size: 14px;
-    color: var(--dark-blue);
-    margin: 0;
-  }
-  .image-list-container {
-    border: 1px solid var(--medium-gray);
-    min-height: 100px;
-    max-height: 150px;
-    overflow-y: auto;
-    padding: 10px;
-    margin-bottom: 15px;
-    border-radius: 6px;
-    background: #fafafa;
-    display: none;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: flex-start;
-  }
-  .image-item {
-    width: 50px;
-    height: 50px;
-    object-fit: contain;
-    border: 1px solid var(--medium-gray);
-    border-radius: 6px;
-    padding: 5px;
-    background: #fff;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-  }
-  
-  .image-wrapper {
+input[type="file"] {
+  padding: 8px;
+}
+
+/* Consistent drop zone layout for pictures and attachments */
+.drop-zone-section {
+  display: flex;
+  align-items: stretch;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.drop-zone {
+  flex: 1;
+  width: 200px;        /* Fixed width, same as remove button */
+  height: 100px;       /* Same height as remove button */
+  border: 3px dashed var(--primary-blue);
+  background: #e6f0ff;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background 0.3s, border-color 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.drop-zone:hover {
+  background: #cce0ff;
+  border-color: var(--dark-blue);
+}
+
+.drop-zone p {
+  font-size: 14px;
+  color: var(--dark-blue);
+  margin: 0;
+}
+
+.image-list-container {
+  border: 1px solid var(--medium-gray);
+  min-height: 100px;
+  max-height: 150px;
+  overflow-y: auto;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  background: #fafafa;
+  display: none;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-start;
+}
+
+.image-wrapper {
   position: relative;
   display: inline-block;
 }
@@ -218,117 +187,175 @@
   position: absolute;
   top: -6px;
   right: -6px;
-  background: #ff4444;
+  background: rgba(0, 0, 0, 0.6);
   color: white;
   border: none;
   border-radius: 50%;
-  width: 18px;
-  height: 18px;
-  font-size: 12px;
-  line-height: 16px;
-  text-align: center;
+  width: 20px;
+  height: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.3s, background-color 0.3s;
 }
-  
-  
-  .attachment-section {
-    margin-top: 30px;
-  }
-  .attachment-list-container {
-    border: 1px solid var(--medium-gray);
-    min-height: 50px;
-    max-height: 100px;
-    overflow-y: auto;
-    padding: 10px;
-    margin-bottom: 15px;
-    border-radius: 6px;
-    background: #fafafa;
-    display: none;
-  }
-  .attachment-item {
-    font-size: 12px;
-    color: var(--dark-text);
-    padding: 5px 0;
-    border-bottom: 1px solid var(--medium-gray);
-  }
-  .attachment-item:last-child {
-    border-bottom: none;
-  }
-  .button-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 15px;
-  }
-  button {
-    flex: 1;
-    padding: 10px 15px;
-    background-color: var(--primary-blue);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 600;
-    transition: background-color 0.3s, transform 0.1s;
-  }
-  button:hover {
-    background-color: var(--dark-blue);
-  }
-  button:disabled {
-    background-color: #ced4da;
-    cursor: not-allowed;
-  }
-  .job-info-btn {
-  background-color: #28a745; /* Green */
+
+.remove-image-btn:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.85);
+}
+
+.attachment-section {
+  margin-top: 30px;
+}
+
+.attachment-list-container {
+  border: 1px solid var(--medium-gray);
+  min-height: 50px;
+  max-height: 100px;
+  overflow-y: auto;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  background: #fafafa;
+  display: none;
+}
+
+.attachment-item {
+  font-size: 12px;
+  color: var(--dark-text);
+  padding: 5px 0;
+  border-bottom: 1px solid var(--medium-gray);
+}
+
+.attachment-item:last-child {
+  border-bottom: none;
+}
+
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+button {
+  flex: 1;
+  padding: 10px 15px;
+  background-color: var(--primary-blue);
   color: white;
   border: none;
-  padding: 6px 12px;
   border-radius: 6px;
+  cursor: pointer;
   font-size: 13px;
   font-weight: 600;
-  cursor: pointer;
-  margin-bottom: 20px; /* Space below the button */
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.1s;
+}
+
+button:hover {
+  background-color: var(--dark-blue);
+  transform: translateY(-1px);
+}
+
+button:disabled {
+  background-color: #ced4da;
+  cursor: not-allowed;
+}
+
+/* Green Job Info Button */
+.job-info-btn {
+  background-color: #28a745;
+  margin-bottom: 20px;
 }
 
 .job-info-btn:hover {
-  background-color: #218838; /* Darker green on hover */
+  background-color: #218838;
 }
 
-  .required-label {
-    color: var(--red-error);
+.required-label {
+  color: var(--red-error);
+}
+
+.invalid {
+  border: 2px solid var(--red-error) !important;
+}
+
+.status-message {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--dark-text);
+}
+
+/* Red "Remove All" buttons */
+button.remove-btn {
+  background-color: #ff4d4d;
+  color: white;
+  flex: none;
+  width: 200px; /* ✅ fixed width to match attachments button */
+  height: 100px; /* ✅ fixed height */
+  align-self: stretch;
+  padding: 0 10px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+    display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+button.remove-btn:hover {
+  background-color: #cc0000;
+}
+
+button.remove-btn:disabled {
+  background-color: #e0e0e0;
+  color: #888;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .container {
+    padding: 15px;
+    margin: 10px;
   }
-  .invalid {
-    border: 2px solid var(--red-error) !important;
+
+  .header-container {
+    flex-direction: column;
+    align-items: center;
   }
-  .status-message {
+
+  .header-title {
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
+
+  .contact-btn {
+    width: 100%;
     text-align: center;
-    margin-top: 10px;
-    font-size: 12px;
-    color: var(--dark-text);
   }
-  @media (max-width: 600px) {
-    .container {
-      padding: 15px;
-      margin: 10px;
-    }
-    .header-container {
-      flex-direction: column;
-      align-items: center;
-    }
-    .header-title {
-      flex-direction: column;
-      margin-bottom: 10px;
-    }
-    .contact-btn {
-      width: 100%;
-      text-align: center;
-    }
-    .button-group button {
-      flex: 1 1 100%;
-    }
+
+  .button-group button {
+    flex: 1 1 100%;
   }
+
+  .drop-zone-section {
+    flex-direction: column;
+  }
+
+  button.remove-btn {
+    width: 100%;
+    height: auto;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -564,7 +591,7 @@ async function addImages(fileList) {
       // wrapper for drag + remove
       const wrapper = document.createElement('div');
       wrapper.classList.add('image-wrapper');
-      wrapper.draggable = true;
+      
 
       const previewImg = document.createElement('img');
       previewImg.src = thumbDataUrl;
@@ -588,54 +615,11 @@ async function addImages(fileList) {
       // push to array
       images.push(file);
 
-      // drag events
-      wrapper.addEventListener('dragstart', e => {
-        wrapper.classList.add('dragging');
-        e.dataTransfer.effectAllowed = "move";
-      });
-      wrapper.addEventListener('dragend', () => {
-        wrapper.classList.remove('dragging');
-        updateImagesOrder();
-      });
     }
   }
 }
 
-// reordering logic
-imageListContainer.addEventListener('dragover', e => {
-  e.preventDefault();
-  const dragging = document.querySelector('.dragging');
-  const afterElement = getDragAfterElement(imageListContainer, e.clientX, e.clientY);
-  if (afterElement == null) {
-    imageListContainer.appendChild(dragging);
-  } else {
-    imageListContainer.insertBefore(dragging, afterElement);
-  }
-});
 
-// helper to get closest element after cursor
-function getDragAfterElement(container, x, y) {
-  const draggableElements = [...container.querySelectorAll('.image-wrapper:not(.dragging)')];
-  return draggableElements.reduce((closest, child) => {
-    const box = child.getBoundingClientRect();
-    const offset = y - box.top - box.height / 2;
-    if (offset < 0 && offset > closest.offset) {
-      return { offset: offset, element: child };
-    } else {
-      return closest;
-    }
-  }, { offset: Number.NEGATIVE_INFINITY }).element;
-}
-
-// update images[] array order after drag
-function updateImagesOrder() {
-  const newOrder = [];
-  [...imageListContainer.children].forEach(wrapper => {
-    const index = Array.from(imageListContainer.children).indexOf(wrapper);
-    if (images[index]) newOrder.push(images[index]);
-  });
-  images = newOrder;
-}
 
 
 document.getElementById('removeAllBtn').addEventListener('click', () => {
@@ -782,13 +766,6 @@ pdf.text(`Date: ${dateStr}`, pageWidth / 2, 385, { align: 'center' });
 
 
 // === Helpers for PDF ===
-function fileToDataURL(file){
-  return new Promise(res=>{
-    const reader=new FileReader();
-    reader.onload=()=>res(reader.result);
-    reader.readAsDataURL(file);
-  });
-}
 function loadImage(src){
   return new Promise(res=>{
     const img=new Image();
