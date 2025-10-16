@@ -370,12 +370,10 @@ button.remove-btn:disabled {
   <a href="contact.html" class="contact-btn">Contact</a>
 </div>
 
-<!-- Job Info Loader Button -->
 <div class="job-info-container">
   <button id="jobInfoLabel" class="job-info-btn">Load/Update Current Job Info (.txt)</button>
 </div>
 
-<!-- Pictures section -->
 <div class="drop-zone-section">
   <div class="drop-zone" id="dropZone">
     <p>📁 Pictures here</p>
@@ -385,7 +383,6 @@ button.remove-btn:disabled {
 <div class="image-list-container" id="imageListContainer"></div>
 
 
-<!-- Attachments section -->
 <div class="attachment-section">
   <div class="drop-zone-section">
     <div class="drop-zone" id="attachmentsDropZone">
@@ -443,29 +440,22 @@ const statusMessage = document.getElementById('statusMessage');
 document.getElementById("dateField").value = new Date().toISOString().split("T")[0];
 
 // === Helpers ===
-
-
-
-// Convert a File or Image source into a downscaled JPEG dataURL
-async function fileToJpegDataURL(file, maxDim = 1200, quality = 0.7) {
+async function fileToJpegDataURL(file, maxDim = 2000, quality = 0.7) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = e => {
       const img = new Image();
       img.onload = () => {
-        // scale factor
         const scale = Math.min(maxDim / img.width, maxDim / img.height, 1);
         const canvas = document.createElement("canvas");
         canvas.width = img.width * scale;
         canvas.height = img.height * scale;
         const ctx = canvas.getContext("2d");
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-        // safer for iOS: use toBlob instead of toDataURL
         canvas.toBlob(blob => {
           if (!blob) return reject("Canvas conversion failed");
           const fr = new FileReader();
-          fr.onload = () => resolve(fr.result); // returns base64 string
+          fr.onload = () => resolve(fr.result);
           fr.readAsDataURL(blob);
         }, "image/jpeg", quality);
       };
@@ -476,9 +466,6 @@ async function fileToJpegDataURL(file, maxDim = 1200, quality = 0.7) {
     reader.readAsDataURL(file);
   });
 }
-
-
-
 
 function formatVesselName(raw) {
   if (!raw) return "";
@@ -511,12 +498,10 @@ function formatSubmittedby(name) {
     .join(" ");
 }
 
-// === Load Current Job Ino using File System Access API ===
-let jobFileHandle = null; // store file handle between loads
+let jobFileHandle = null;
 
 document.getElementById("jobInfoLabel").addEventListener("click", async () => {
   try {
-    // If File System Access API is supported (Chrome/Edge desktop)
     if (window.showOpenFilePicker) {
       if (!jobFileHandle) {
         [jobFileHandle] = await window.showOpenFilePicker({
@@ -527,14 +512,11 @@ document.getElementById("jobInfoLabel").addEventListener("click", async () => {
           multiple: false
         });
       }
-
       const file = await jobFileHandle.getFile();
       const text = await file.text();
       const data = JSON.parse(text);
       populateJobInfo(data);
-
     } else {
-      // Fallback: create a hidden file input for manual selection
       const fileInput = document.createElement('input');
       fileInput.type = 'file';
       fileInput.accept = '.txt';
@@ -553,7 +535,6 @@ document.getElementById("jobInfoLabel").addEventListener("click", async () => {
   }
 });
 
-// === Helper function to populate form fields ===
 function populateJobInfo(data) {
   if (data.VESSEL) document.getElementById("vesselName").value = formatVesselName(data.VESSEL);
   if (data.INCIDENT) document.getElementById("caseNumber").value = data.INCIDENT;
@@ -562,12 +543,9 @@ function populateJobInfo(data) {
   }
   if (data["LOCATION"]) document.getElementById("antennaLocation").value = formatAntennaLocation(data["LOCATION"]);
   if (data["TECH"]) document.getElementById("submittedBy").value = formatSubmittedby(data["TECH"]);
-
   statusMessage.textContent = "Current Job Info loaded successfully!";
 }
 
-
-// === Drag-drop for images ===
 dropZone.addEventListener('click', () => {
   const fileInput = document.createElement('input');
   fileInput.type = 'file';
@@ -580,47 +558,32 @@ dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.style.
 dropZone.addEventListener('dragleave', e => { e.preventDefault(); dropZone.style.backgroundColor = "#e6f0ff"; });
 dropZone.addEventListener('drop', e => { e.preventDefault(); dropZone.style.backgroundColor = "#e6f0ff"; addImages(e.dataTransfer.files); });
 
-
 async function addImages(fileList) {
   if (fileList.length > 0) imageListContainer.style.display = 'flex';
-
   for (const file of fileList) {
     if (file.type.startsWith('image/')) {
       const thumbDataUrl = await fileToJpegDataURL(file, 400, 0.6);
-
-      // wrapper for drag + remove
       const wrapper = document.createElement('div');
       wrapper.classList.add('image-wrapper');
-      
-
       const previewImg = document.createElement('img');
       previewImg.src = thumbDataUrl;
       previewImg.classList.add('image-item');
-
-      // remove button
       const removeBtn = document.createElement('button');
       removeBtn.innerHTML = "×";
       removeBtn.classList.add('remove-image-btn');
       removeBtn.onclick = () => {
         const index = Array.from(imageListContainer.children).indexOf(wrapper);
-        if (index > -1) images.splice(index, 1); // remove from array
+        if (index > -1) images.splice(index, 1);
         wrapper.remove();
         if (images.length === 0) imageListContainer.style.display = 'none';
       };
-
       wrapper.appendChild(previewImg);
       wrapper.appendChild(removeBtn);
       imageListContainer.appendChild(wrapper);
-
-      // push to array
       images.push(file);
-
     }
   }
 }
-
-
-
 
 document.getElementById('removeAllBtn').addEventListener('click', () => {
   images = [];
@@ -629,7 +592,6 @@ document.getElementById('removeAllBtn').addEventListener('click', () => {
   statusMessage.textContent = 'All images removed.';
 });
 
-// === Drag-drop for attachments ===
 attachmentsDropZone.addEventListener('click', () => {
   const fileInput = document.createElement('input');
   fileInput.type = 'file';
@@ -658,13 +620,11 @@ document.getElementById('removeAllAttachmentsBtn').addEventListener('click', () 
   statusMessage.textContent = 'All attachments removed.';
 });
 
-// === PDF generation ===
 generateBtn.addEventListener('click', async () => {
   statusMessage.textContent = '';
   generateBtn.disabled = true;
 
   try {
-    // --- Validate required fields ---
     const requiredIds = ["vesselName", "antennaModel", "antennaLocation", "caseNumber", "submittedBy", "dateField"];
     let valid = true;
     requiredIds.forEach(id => {
@@ -680,9 +640,8 @@ generateBtn.addEventListener('click', async () => {
 
     if (images.length === 0 && attachments.length === 0) throw new Error("Add at least one image or attachment.");
 
-    statusMessage.textContent = "Generating PDF...";
+    statusMessage.textContent = "Generating PDF and ZIP...";
 
-    // --- Capture latest field values ---
     const vessel = formatVesselName(document.getElementById('vesselName').value.trim());
     const antenna = document.getElementById('antennaModel').value.trim();
     const location = document.getElementById('antennaLocation').value.trim().toUpperCase();
@@ -691,50 +650,44 @@ generateBtn.addEventListener('click', async () => {
     const dateStr = document.getElementById('dateField').value;
     const perPage = parseInt(document.getElementById('imagesPerPage').value);
 
-    // --- Create PDF ---
     const pdf = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'a4' });
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
 
-// --- Cover page logo ---
-const logoUrl = 'https://raw.githubusercontent.com/pgarciafer/pics2PDF/main/logo.png';
-const logo = await loadImage(logoUrl);
-if (logo) {
-  const logoWidth = 350;
-  const logoHeight = (logo.height * logoWidth) / logo.width;
-  pdf.addImage(logo, 'PNG', (pageWidth - logoWidth) / 2, 50, logoWidth, logoHeight);
-}
-
-// --- Cover page text ---
-pdf.setFontSize(26).setFont('helvetica', 'bold');
-pdf.text(vessel, pageWidth / 2, 250, { align: 'center' });
-pdf.setFontSize(18);
-pdf.text(`${antenna} (${location})`, pageWidth / 2, 290, { align: 'center' });
-pdf.setFontSize(14);
-pdf.text(`Case Number: ${caseNum}`, pageWidth / 2, 330, { align: 'center' });
-pdf.text(`Submitted By: ${submitted}`, pageWidth / 2, 360, { align: 'center' });
-pdf.text(`Date: ${dateStr}`, pageWidth / 2, 385, { align: 'center' });
-
-
-    // --- Add images ---
-    if (images.length > 0) pdf.addPage();
-    let pageNum = 2;
-    for (let i = 0; i < images.length; i += perPage) {
-      const chunk = images.slice(i, i + perPage);
-      let spacingX = 10, spacingY = 10;
-      let cellWidth = (pageWidth - (perPage + 1) * spacingX) / perPage;
-      let cellHeight = pageHeight - 2 * spacingY;
-
-      for (let idx = 0; idx < chunk.length; idx++) {
-        await addImageToPDF(pdf, chunk[idx], spacingX + idx * (cellWidth + spacingX), spacingY, cellWidth, cellHeight);
-      }
-
-      pdf.setFontSize(12).text(`Page ${pageNum}`, pageWidth / 2, pageHeight - 10, { align: 'center' });
-      if (i + perPage < images.length) pdf.addPage();
-      pageNum++;
+    const logoUrl = 'https://raw.githubusercontent.com/pgarciafer/pics2PDF/main/logo.png';
+    const logo = await loadImage(logoUrl);
+    if (logo) {
+      const logoWidth = 350;
+      const logoHeight = (logo.height * logoWidth) / logo.width;
+      pdf.addImage(logo, 'PNG', (pageWidth - logoWidth) / 2, 50, logoWidth, logoHeight);
     }
 
-    // --- Attachments listing ---
+    pdf.setFontSize(26).setFont('helvetica', 'bold');
+    pdf.text(vessel, pageWidth / 2, 250, { align: 'center' });
+    pdf.setFontSize(18);
+    pdf.text(`${antenna} (${location})`, pageWidth / 2, 290, { align: 'center' });
+    pdf.setFontSize(14);
+    pdf.text(`Case Number: ${caseNum}`, pageWidth / 2, 330, { align: 'center' });
+    pdf.text(`Submitted By: ${submitted}`, pageWidth / 2, 360, { align: 'center' });
+    pdf.text(`Date: ${dateStr}`, pageWidth / 2, 385, { align: 'center' });
+
+    if (images.length > 0) {
+      pdf.addPage();
+      let pageNum = 2;
+      for (let i = 0; i < images.length; i += perPage) {
+        const chunk = images.slice(i, i + perPage);
+        let spacingX = 10, spacingY = 10;
+        let cellWidth = (pageWidth - (perPage + 1) * spacingX) / perPage;
+        let cellHeight = pageHeight - 2 * spacingY;
+        for (let idx = 0; idx < chunk.length; idx++) {
+          await addImageToPDF(pdf, chunk[idx], spacingX + idx * (cellWidth + spacingX), spacingY, cellWidth, cellHeight);
+        }
+        pdf.setFontSize(12).text(`Page ${pageNum}`, pageWidth / 2, pageHeight - 10, { align: 'center' });
+        if (i + perPage < images.length) pdf.addPage();
+        pageNum++;
+      }
+    }
+
     if (attachments.length > 0) {
       pdf.addPage();
       pdf.setFontSize(16).setFont('helvetica', 'bold');
@@ -751,21 +704,32 @@ pdf.text(`Date: ${dateStr}`, pageWidth / 2, 385, { align: 'center' });
       }
     }
 
-    // --- Save PDF ---
+    const zip = new JSZip();
+    const pdfBlob = new Blob([pdf.output('blob')], { type: 'application/pdf' });
     const pdfFilename = `${vessel}_PicArray_${antenna}_${location.replace(/ /g, '')}_Case${caseNum}_${dateStr.replace(/-/g,'')}.pdf`;
-    pdf.save(pdfFilename);
-    statusMessage.textContent = 'PDF generated successfully!';
+    zip.file(pdfFilename, pdfBlob);
+
+    if (attachments.length > 0) {
+      const attachmentsFolder = zip.folder("attachments");
+      for (const att of attachments) {
+        attachmentsFolder.file(att.name, att);
+      }
+    }
+
+    const zipFilename = pdfFilename.replace('.pdf', '.zip');
+    zip.generateAsync({ type: "blob" }).then(content => {
+      saveAs(content, zipFilename);
+      statusMessage.textContent = 'PDF and ZIP generated successfully!';
+    });
 
   } catch (err) {
-    statusMessage.textContent = err.message || "Error generating PDF.";
+    statusMessage.textContent = err.message || "Error generating PDF/ZIP.";
     console.error(err);
   } finally {
     generateBtn.disabled = false;
   }
 });
 
-
-// === Helpers for PDF ===
 function loadImage(src){
   return new Promise(res=>{
     const img=new Image();
@@ -776,20 +740,14 @@ function loadImage(src){
   });
 }
 
-
 async function addImageToPDF(pdf, file, x, y, width, height) {
-  // Get a downscaled dataURL (this avoids iOS freezes on huge images)
   const dataUrl = await fileToJpegDataURL(file, 2000, 0.7);
   if (!dataUrl) return;
-
   const img = new Image();
   img.src = dataUrl;
   await new Promise(res => { img.onload = res; });
-
-  // aspect ratios
   const cellAspect = width / height;
   const imgAspect = img.width / img.height;
-
   let finalW, finalH;
   if (imgAspect > cellAspect) {
     finalW = width * 0.95;
@@ -798,7 +756,6 @@ async function addImageToPDF(pdf, file, x, y, width, height) {
     finalH = height * 0.95;
     finalW = finalH * imgAspect;
   }
-
   pdf.addImage(
     dataUrl,
     "JPEG",
@@ -808,10 +765,6 @@ async function addImageToPDF(pdf, file, x, y, width, height) {
     finalH
   );
 }
-
-
-
 </script>
-
 </body>
 </html>
