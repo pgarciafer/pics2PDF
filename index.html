@@ -620,6 +620,7 @@ document.getElementById('removeAllAttachmentsBtn').addEventListener('click', () 
   statusMessage.textContent = 'All attachments removed.';
 });
 
+
 generateBtn.addEventListener('click', async () => {
   statusMessage.textContent = '';
   generateBtn.disabled = true;
@@ -640,9 +641,10 @@ generateBtn.addEventListener('click', async () => {
 
     if (images.length === 0 && attachments.length === 0) throw new Error("Add at least one image or attachment.");
 
-    statusMessage.textContent = "Generating PDF and ZIP...";
+    statusMessage.textContent = "Generating PDF and output files...";
 
-    const vessel = formatVesselName(document.getElementById('vesselName').value.trim());
+    // Use raw vessel name as requested
+    const vessel = document.getElementById('vesselName').value.trim();
     const antenna = document.getElementById('antennaModel').value.trim();
     const location = document.getElementById('antennaLocation').value.trim().toUpperCase();
     const caseNum = document.getElementById('caseNumber').value.trim();
@@ -704,23 +706,32 @@ generateBtn.addEventListener('click', async () => {
       }
     }
 
-    const zip = new JSZip();
-    const pdfBlob = new Blob([pdf.output('blob')], { type: 'application/pdf' });
     const pdfFilename = `${vessel}_PicArray_${antenna}_${location.replace(/ /g, '')}_Case${caseNum}_${dateStr.replace(/-/g,'')}.pdf`;
-    zip.file(pdfFilename, pdfBlob);
-
+    
+    // --- START MODIFIED LOGIC ---
     if (attachments.length > 0) {
+      // Generate ZIP if there are attachments
+      const zip = new JSZip();
+      const pdfBlob = new Blob([pdf.output('blob')], { type: 'application/pdf' });
+      zip.file(pdfFilename, pdfBlob);
+
       const attachmentsFolder = zip.folder("attachments");
       for (const att of attachments) {
         attachmentsFolder.file(att.name, att);
       }
-    }
 
-    const zipFilename = pdfFilename.replace('.pdf', '.zip');
-    zip.generateAsync({ type: "blob" }).then(content => {
-      saveAs(content, zipFilename);
-      statusMessage.textContent = 'PDF and ZIP generated successfully!';
-    });
+      const zipFilename = pdfFilename.replace('.pdf', '.zip');
+      zip.generateAsync({ type: "blob" }).then(content => {
+        saveAs(content, zipFilename);
+        statusMessage.textContent = 'PDF and ZIP generated successfully!';
+      });
+    } else {
+      // Just save the PDF if there are no attachments
+      const pdfBlob = pdf.output('blob');
+      saveAs(pdfBlob, pdfFilename);
+      statusMessage.textContent = 'PDF generated successfully!';
+    }
+    // --- END MODIFIED LOGIC ---
 
   } catch (err) {
     statusMessage.textContent = err.message || "Error generating PDF/ZIP.";
@@ -729,6 +740,7 @@ generateBtn.addEventListener('click', async () => {
     generateBtn.disabled = false;
   }
 });
+
 
 function loadImage(src){
   return new Promise(res=>{
