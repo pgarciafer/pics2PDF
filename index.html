@@ -8,267 +8,292 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --primary-blue: #0069d9;
-  --dark-blue: #004c99;
-  --light-gray: #f8f9fa;
-  --medium-gray: #e9ecef;
-  --dark-text: #343a40;
-  --red-error: #dc3545;
+  --primary-color: #007BFF;
+  --primary-hover: #0056b3;
+  --success-color: #28a745;
+  --error-color: #dc3545;
+  --bg-color: #f8f9fa;
+  --container-bg: #ffffff;
+  --text-primary: #212529;
+  --text-secondary: #6c757d;
+  --border-color: #dee2e6;
+  --border-focus: #80bdff;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
 body {
   font-family: 'Poppins', sans-serif;
-  background-color: var(--light-gray);
+  background-color: var(--bg-color);
   margin: 0;
-  padding: 0;
+  padding: 24px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   min-height: 100vh;
+  color: var(--text-primary);
 }
 
 .container {
-  max-width: 700px;
-  width: 95%;
-  margin: 10px;
-  padding: 15px;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  width: 100%;
+  padding: 32px;
+  background: var(--container-bg);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px var(--shadow-color);
+  transition: all 0.3s ease;
 }
 
 .header-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  border-bottom: 3px solid var(--medium-gray);
-  padding-bottom: 20px;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .header-title {
   display: flex;
   align-items: center;
+  gap: 16px;
 }
 
 .header-title img {
-  height: 80px;
-  margin-right: 20px;
+  height: 60px;
 }
 
 .header-title span {
-  color: var(--dark-text);
   font-size: 24px;
   font-weight: 600;
+  color: var(--text-primary);
 }
 
 .contact-btn {
-  padding: 8px 12px;
-  background-color: var(--primary-blue);
-  color: white;
-  border: none;
-  border-radius: 6px;
+  padding: 10px 18px;
+  background-color: transparent;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 500;
   text-decoration: none;
-  transition: background-color 0.3s;
+  transition: all 0.3s;
 }
 
 .contact-btn:hover {
-  background-color: var(--dark-blue);
+  background-color: var(--primary-color);
+  color: white;
 }
 
 label {
   display: block;
-  margin-top: 10px;
-  font-weight: 600;
-  color: var(--dark-text);
-  font-size: 13px;
-  cursor: pointer;
+  margin-top: 16px;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  font-size: 14px;
 }
 
-input, select, textarea {
+input, select {
   width: 100%;
-  padding: 8px;
-  margin-top: 5px;
-  border-radius: 6px;
-  border: 1px solid var(--medium-gray);
-  font-size: 13px;
-  box-sizing: border-box;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  font-size: 14px;
   transition: border-color 0.3s, box-shadow 0.3s;
+  background-color: #fff;
 }
 
-input:focus, select:focus, textarea:focus {
+input:focus, select:focus {
   outline: none;
-  border-color: var(--primary-blue);
-  box-shadow: 0 0 0 2px rgba(0, 105, 217, 0.25);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
 }
 
-input[type="file"] {
-  padding: 8px;
-}
-
-/* Consistent drop zone layout for pictures and attachments */
 .drop-zone-section {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
   align-items: stretch;
-  gap: 15px;
-  margin-bottom: 15px;
+  margin-bottom: 16px;
 }
 
 .drop-zone {
-  flex: 1;
-  width: 200px;        /* Fixed width, same as remove button */
-  height: 100px;       /* Same height as remove button */
-  border: 3px dashed var(--primary-blue);
-  background: #e6f0ff;
+  border: 2px dashed var(--border-color);
+  background: #fafcff;
   padding: 20px;
   text-align: center;
   cursor: pointer;
-  border-radius: 8px;
-  transition: background 0.3s, border-color 0.3s;
+  border-radius: 12px;
+  transition: all 0.3s;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  min-height: 120px;
 }
 
-.drop-zone:hover {
-  background: #cce0ff;
-  border-color: var(--dark-blue);
+.drop-zone:hover, .drop-zone.dragover {
+  border-color: var(--primary-color);
+  background: #f0f6ff;
 }
 
 .drop-zone p {
-  font-size: 14px;
-  color: var(--dark-blue);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-secondary);
   margin: 0;
 }
 
-.image-list-container {
-  border: 1px solid var(--medium-gray);
+.image-list-container, .attachment-list-container {
+  border: 1px solid var(--border-color);
   min-height: 100px;
-  max-height: 150px;
+  max-height: 200px;
   overflow-y: auto;
-  padding: 10px;
-  margin-bottom: 15px;
-  border-radius: 6px;
-  background: #fafafa;
+  padding: 16px;
+  border-radius: 12px;
+  background: #f8f9fa;
+  display: none;
+  gap: 12px;
+}
+
+.image-list-container {
   display: none;
   flex-wrap: wrap;
-  gap: 10px;
-  justify-content: flex-start;
 }
 
 .image-wrapper {
   position: relative;
-  display: inline-block;
 }
 
 .image-item {
-  width: 50px;
-  height: 50px;
-  object-fit: contain;
-  border: 1px solid var(--medium-gray);
-  border-radius: 6px;
-  padding: 5px;
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  padding: 4px;
   background: #fff;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
   cursor: grab;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
-
+.image-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
 .image-item.dragging {
   opacity: 0.5;
 }
 
 .remove-image-btn {
   position: absolute;
-  top: -6px;
-  right: -6px;
-  background: rgba(0, 0, 0, 0.6);
+  top: -8px;
+  right: -8px;
+  background: var(--error-color);
   color: white;
-  border: none;
+  border: 2px solid white;
   border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  font-size: 14px;
-  font-weight: bold;
+  width: 24px;
+  height: 24px;
+  font-size: 16px;
+  line-height: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  opacity: 0.8;
-  transition: opacity 0.3s, background-color 0.3s;
+  opacity: 0.9;
+  transition: all 0.3s;
 }
 
 .remove-image-btn:hover {
   opacity: 1;
-  background: rgba(0, 0, 0, 0.85);
-}
-
-.attachment-section {
-  margin-top: 30px;
+  transform: scale(1.1);
 }
 
 .attachment-list-container {
-  border: 1px solid var(--medium-gray);
-  min-height: 50px;
-  max-height: 100px;
-  overflow-y: auto;
-  padding: 10px;
-  margin-bottom: 15px;
-  border-radius: 6px;
-  background: #fafafa;
   display: none;
 }
-
 .attachment-item {
-  font-size: 12px;
-  color: var(--dark-text);
-  padding: 5px 0;
-  border-bottom: 1px solid var(--medium-gray);
+  font-size: 14px;
+  color: var(--text-primary);
+  padding: 8px 4px;
+  border-bottom: 1px solid var(--border-color);
 }
-
 .attachment-item:last-child {
   border-bottom: none;
 }
 
 .button-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 15px;
+  margin-top: 32px;
 }
 
 button {
-  flex: 1;
-  padding: 10px 15px;
-  background-color: var(--primary-blue);
-  color: white;
+  padding: 12px 20px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 600;
-  transition: background-color 0.3s, transform 0.1s;
-}
-
-button:hover {
-  background-color: var(--dark-blue);
-  transform: translateY(-1px);
+  transition: all 0.3s;
+  position: relative;
 }
 
 button:disabled {
   background-color: #ced4da;
   cursor: not-allowed;
+  transform: none;
 }
 
-/* Green Job Info Button */
+#generatePDF {
+  width: 100%;
+  background-color: var(--primary-color);
+  color: white;
+  letter-spacing: 0.5px;
+}
+
+#generatePDF:hover:not(:disabled) {
+  background-color: var(--primary-hover);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+#generatePDF.loading span {
+  visibility: hidden;
+}
+#generatePDF.loading::after {
+  content: '';
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  border: 4px solid transparent;
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: button-loading-spinner 1s ease infinite;
+}
+@keyframes button-loading-spinner {
+  from { transform: rotate(0turn); }
+  to { transform: rotate(1turn); }
+}
+
+
 .job-info-btn {
-  background-color: #28a745;
-  margin-bottom: 20px;
+  width: 100%;
+  background-color: var(--success-color);
+  color: white;
+  margin-bottom: 24px;
 }
 
 .job-info-btn:hover {
@@ -276,86 +301,76 @@ button:disabled {
 }
 
 .required-label {
-  color: var(--red-error);
+  color: var(--error-color);
+  font-weight: 600;
 }
 
 .invalid {
-  border: 2px solid var(--red-error) !important;
+  border-color: var(--error-color) !important;
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.25) !important;
 }
 
 .status-message {
   text-align: center;
-  margin-top: 10px;
-  font-size: 12px;
-  color: var(--dark-text);
+  margin-top: 20px;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  display: none;
+}
+.status-message.visible {
+    display: block;
+}
+.status-message.success {
+  background-color: #e9f7ef;
+  color: #155724;
+}
+.status-message.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+.status-message.info {
+  background-color: #e7f3fe;
+  color: #0c5460;
 }
 
-/* Red "Remove All" buttons */
 button.remove-btn {
-  background-color: #ff4d4d;
+  background-color: transparent;
+  color: var(--error-color);
+  border: 1px solid var(--error-color);
+  height: 100%;
+}
+button.remove-btn:hover:not(:disabled) {
+  background-color: var(--error-color);
   color: white;
-  flex: none;
-  width: 200px; /* ✅ fixed width to match attachments button */
-  height: 100px; /* ✅ fixed height */
-  align-self: stretch;
-  padding: 0 10px;
-  font-weight: bold;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-    display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
 }
 
-button.remove-btn:hover {
-  background-color: #cc0000;
-}
-
-button.remove-btn:disabled {
-  background-color: #e0e0e0;
-  color: #888;
-  cursor: not-allowed;
+.attachment-section {
+  margin-top: 32px;
 }
 
 /* Responsive */
-@media (max-width: 600px) {
-  .container {
-    padding: 15px;
-    margin: 10px;
+@media (max-width: 768px) {
+  body {
+    padding: 16px;
   }
-
+  .container {
+    padding: 24px;
+  }
   .header-container {
     flex-direction: column;
-    align-items: center;
-  }
-
-  .header-title {
-    flex-direction: column;
-    margin-bottom: 10px;
-  }
-
-  .contact-btn {
-    width: 100%;
-    text-align: center;
-  }
-
-  .button-group button {
-    flex: 1 1 100%;
-  }
-
-  .drop-zone-section {
-    flex-direction: column;
-  }
-
-  button.remove-btn {
-    width: 100%;
-    height: auto;
+    gap: 16px;
   }
 }
-
+@media (max-width: 600px) {
+  .drop-zone-section {
+    grid-template-columns: 1fr;
+  }
+  button.remove-btn {
+    min-height: 60px;
+  }
+}
 </style>
 </head>
 <body>
@@ -376,7 +391,7 @@ button.remove-btn:disabled {
 
 <div class="drop-zone-section">
   <div class="drop-zone" id="dropZone">
-    <p>📁 Pictures here</p>
+    <p>📁 Drag & Drop Pictures Here or Click</p>
   </div>
   <button id="removeAllBtn" class="remove-btn">Remove All Images</button>
 </div>
@@ -386,7 +401,7 @@ button.remove-btn:disabled {
 <div class="attachment-section">
   <div class="drop-zone-section">
     <div class="drop-zone" id="attachmentsDropZone">
-      <p>📎 Attachments Here</p>
+      <p>📎 Drag & Drop Attachments Here or Click</p>
     </div>
     <button id="removeAllAttachmentsBtn" class="remove-btn">Remove All Attachments</button>
   </div>
@@ -420,7 +435,7 @@ button.remove-btn:disabled {
 </select>
 
 <div class="button-group">
-  <button id="generatePDF">Generate PDF & ZIP</button>
+  <button id="generatePDF"><span>Generate PDF & ZIP</span></button>
 </div>
 
 <div class="status-message" id="statusMessage"></div>
@@ -438,6 +453,11 @@ const statusMessage = document.getElementById('statusMessage');
 
 // Default date
 document.getElementById("dateField").value = new Date().toISOString().split("T")[0];
+
+function showStatus(message, type = 'info') {
+    statusMessage.textContent = message;
+    statusMessage.className = `status-message ${type} visible`;
+}
 
 // === Helpers ===
 async function fileToJpegDataURL(file, maxDim = 2000, quality = 0.7) {
@@ -501,37 +521,51 @@ function formatSubmittedby(name) {
 let jobFileHandle = null;
 
 document.getElementById("jobInfoLabel").addEventListener("click", async () => {
-  try {
-    if (window.showOpenFilePicker) {
-      if (!jobFileHandle) {
-        [jobFileHandle] = await window.showOpenFilePicker({
-          types: [{
-            description: 'Job Info File',
-            accept: { 'text/plain': ['.txt'] },
-          }],
-          multiple: false
-        });
+  const openWithInput = () => {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = '.txt';
+    fileInput.onchange = async () => {
+      if (!fileInput.files || fileInput.files.length === 0) return;
+      const file = fileInput.files[0];
+      try {
+          const text = await file.text();
+          const data = JSON.parse(text);
+          populateJobInfo(data);
+      } catch (err) {
+          console.error(err);
+          showStatus("Failed to process job info file.", "error");
       }
-      const file = await jobFileHandle.getFile();
-      const text = await file.text();
-      const data = JSON.parse(text);
-      populateJobInfo(data);
-    } else {
-      const fileInput = document.createElement('input');
-      fileInput.type = 'file';
-      fileInput.accept = '.txt';
-      fileInput.onchange = async () => {
-        if (!fileInput.files || fileInput.files.length === 0) return;
-        const file = fileInput.files[0];
-        const text = await file.text();
-        const data = JSON.parse(text);
-        populateJobInfo(data);
-      };
-      fileInput.click();
+    };
+    fileInput.click();
+  };
+
+  try {
+    if (!window.showOpenFilePicker) {
+        throw new Error("showOpenFilePicker not supported");
     }
+
+    if (!jobFileHandle) {
+      [jobFileHandle] = await window.showOpenFilePicker({
+        types: [{
+          description: 'Job Info File',
+          accept: { 'text/plain': ['.txt'] },
+        }],
+        multiple: false
+      });
+    }
+    const file = await jobFileHandle.getFile();
+    const text = await file.text();
+    const data = JSON.parse(text);
+    populateJobInfo(data);
+
   } catch (err) {
-    console.error(err);
-    statusMessage.textContent = "Failed to load job info or permission denied.";
+    if (err.name === 'AbortError') {
+      console.log('File picker was cancelled by the user.');
+      return;
+    }
+    console.warn("showOpenFilePicker failed, falling back to input.", err);
+    openWithInput();
   }
 });
 
@@ -543,7 +577,7 @@ function populateJobInfo(data) {
   }
   if (data["LOCATION"]) document.getElementById("antennaLocation").value = formatAntennaLocation(data["LOCATION"]);
   if (data["TECH"]) document.getElementById("submittedBy").value = formatSubmittedby(data["TECH"]);
-  statusMessage.textContent = "Current Job Info loaded successfully!";
+  showStatus("Current Job Info loaded successfully!", "success");
 }
 
 dropZone.addEventListener('click', () => {
@@ -554,9 +588,9 @@ dropZone.addEventListener('click', () => {
   fileInput.onchange = () => addImages(fileInput.files);
   fileInput.click();
 });
-dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.style.backgroundColor = "#cce0ff"; });
-dropZone.addEventListener('dragleave', e => { e.preventDefault(); dropZone.style.backgroundColor = "#e6f0ff"; });
-dropZone.addEventListener('drop', e => { e.preventDefault(); dropZone.style.backgroundColor = "#e6f0ff"; addImages(e.dataTransfer.files); });
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add("dragover"); });
+dropZone.addEventListener('dragleave', e => { e.preventDefault(); dropZone.classList.remove("dragover"); });
+dropZone.addEventListener('drop', e => { e.preventDefault(); dropZone.classList.remove("dragover"); addImages(e.dataTransfer.files); });
 
 async function addImages(fileList) {
   if (fileList.length > 0) imageListContainer.style.display = 'flex';
@@ -589,7 +623,7 @@ document.getElementById('removeAllBtn').addEventListener('click', () => {
   images = [];
   imageListContainer.innerHTML = '';
   imageListContainer.style.display = 'none';
-  statusMessage.textContent = 'All images removed.';
+  showStatus('All images removed.', 'info');
 });
 
 attachmentsDropZone.addEventListener('click', () => {
@@ -599,9 +633,9 @@ attachmentsDropZone.addEventListener('click', () => {
   fileInput.onchange = () => addAttachments(fileInput.files);
   fileInput.click();
 });
-attachmentsDropZone.addEventListener('dragover', e => { e.preventDefault(); attachmentsDropZone.style.backgroundColor = "#cce0ff"; });
-attachmentsDropZone.addEventListener('dragleave', e => { e.preventDefault(); attachmentsDropZone.style.backgroundColor = "#e6f0ff"; });
-attachmentsDropZone.addEventListener('drop', e => { e.preventDefault(); attachmentsDropZone.style.backgroundColor = "#e6f0ff"; addAttachments(e.dataTransfer.files); });
+attachmentsDropZone.addEventListener('dragover', e => { e.preventDefault(); attachmentsDropZone.classList.add("dragover"); });
+attachmentsDropZone.addEventListener('dragleave', e => { e.preventDefault(); attachmentsDropZone.classList.remove("dragover"); });
+attachmentsDropZone.addEventListener('drop', e => { e.preventDefault(); attachmentsDropZone.classList.remove("dragover"); addAttachments(e.dataTransfer.files); });
 
 function addAttachments(fileList){
   if(fileList.length > 0) attachmentListContainer.style.display = 'block';
@@ -617,13 +651,14 @@ document.getElementById('removeAllAttachmentsBtn').addEventListener('click', () 
   attachments = [];
   attachmentListContainer.innerHTML = '';
   attachmentListContainer.style.display = 'none';
-  statusMessage.textContent = 'All attachments removed.';
+  showStatus('All attachments removed.', 'info');
 });
 
 
 generateBtn.addEventListener('click', async () => {
-  statusMessage.textContent = '';
+  statusMessage.className = 'status-message';
   generateBtn.disabled = true;
+  generateBtn.classList.add('loading');
 
   try {
     const requiredIds = ["vesselName", "antennaModel", "antennaLocation", "caseNumber", "submittedBy", "dateField"];
@@ -641,9 +676,8 @@ generateBtn.addEventListener('click', async () => {
 
     if (images.length === 0 && attachments.length === 0) throw new Error("Add at least one image or attachment.");
 
-    statusMessage.textContent = "Generating PDF and output files...";
+    showStatus("Generating PDF and output files...", "info");
 
-    // Use raw vessel name as requested
     const vessel = document.getElementById('vesselName').value.trim();
     const antenna = document.getElementById('antennaModel').value.trim();
     const location = document.getElementById('antennaLocation').value.trim().toUpperCase();
@@ -708,9 +742,7 @@ generateBtn.addEventListener('click', async () => {
 
     const pdfFilename = `${vessel}_PicArray_${antenna}_${location.replace(/ /g, '')}_Case${caseNum}_${dateStr.replace(/-/g,'')}.pdf`;
     
-    // --- START MODIFIED LOGIC ---
     if (attachments.length > 0) {
-      // Generate ZIP if there are attachments
       const zip = new JSZip();
       const pdfBlob = new Blob([pdf.output('blob')], { type: 'application/pdf' });
       zip.file(pdfFilename, pdfBlob);
@@ -723,21 +755,20 @@ generateBtn.addEventListener('click', async () => {
       const zipFilename = pdfFilename.replace('.pdf', '.zip');
       zip.generateAsync({ type: "blob" }).then(content => {
         saveAs(content, zipFilename);
-        statusMessage.textContent = 'PDF and ZIP generated successfully!';
+        showStatus('PDF and ZIP generated successfully!', 'success');
       });
     } else {
-      // Just save the PDF if there are no attachments
       const pdfBlob = pdf.output('blob');
       saveAs(pdfBlob, pdfFilename);
-      statusMessage.textContent = 'PDF generated successfully!';
+      showStatus('PDF generated successfully!', 'success');
     }
-    // --- END MODIFIED LOGIC ---
 
   } catch (err) {
-    statusMessage.textContent = err.message || "Error generating PDF/ZIP.";
+    showStatus(err.message || "Error generating PDF/ZIP.", "error");
     console.error(err);
   } finally {
     generateBtn.disabled = false;
+    generateBtn.classList.remove('loading');
   }
 });
 
