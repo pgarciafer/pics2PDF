@@ -462,6 +462,31 @@ button.remove-btn:hover:not(:disabled) {
   display: block;
 }
 
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  margin-top: 24px;
+  margin-bottom: -16px; /* Pull the button group up */
+  padding: 12px;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+}
+.checkbox-container input[type="checkbox"] {
+  width: auto;
+  margin-right: 12px;
+  transform: scale(1.2);
+  cursor: pointer;
+}
+.checkbox-container label {
+  margin: 0;
+  font-weight: 500;
+  color: var(--text-color);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+
 /* Responsive */
 @media (max-width: 768px) {
   body {
@@ -571,11 +596,15 @@ button.remove-btn:hover:not(:disabled) {
 
 <label for="compressionLevel">Image Quality:</label>
 <select id="compressionLevel">
-  <option value="0.9">Best (Larger File)</option>
+  <option value="0.9">Best (Larger File Size)</option>
   <option value="0.7" selected>Good (Recommended)</option>
-  <option value="0.5">Standard (Smaller File)</option>
-  <option value="0.3">Low (Smallest File)</option>
+  <option value="0.5">Standard (Smallest File Size)</option>
 </select>
+
+<div class="checkbox-container">
+  <input type="checkbox" id="compressPdf" checked>
+  <label for="compressPdf">Compress PDF with iLovePDF (Online)</label>
+</div>
 
 <div class="button-group">
   <button id="generatePDF"><span>Generate PDF & ZIP</span></button>
@@ -599,6 +628,12 @@ button.remove-btn:hover:not(:disabled) {
 
 <script>
 const { jsPDF } = window.jspdf;
+
+// --- IMPORTANT ---
+// PASTE YOUR ILOVEPDF PUBLIC KEY HERE
+// You can get a free key from: https://developer.ilovepdf.com/
+const ILOVEPDF_PUBLIC_KEY = 'project_public_45717f2112c002ca935583d7bb839134_IKjet4326dd7221e73fb14f7a5f97819300d2';
+
 let images = [];
 let attachments = [];
 let dragSrcEl = null; // for desktop drag and drop reordering
@@ -622,6 +657,7 @@ const modalSaveBtn = document.getElementById('modalSaveBtn');
 const modalDeleteBtn = document.getElementById('modalDeleteBtn');
 const modalCancelBtn = document.getElementById('modalCancelBtn');
 let activeImageIndex = -1;
+
 
 // Default date
 document.getElementById("dateField").value = new Date().toISOString().split("T")[0];
@@ -697,7 +733,7 @@ async function convertImageToJpgDataUrl(file, maxPreviewDim = 300, quality = 0.8
 
 // Helpers
 // New, more memory-efficient image processing function for PDF generation
-async function processImageForPdf(file, maxDim = 1600, quality = 0.7) {
+async function processImageForPdf(file, maxDim = 2000, quality = 0.7) {
   return new Promise((resolve, reject) => {
     // createImageBitmap is more memory-efficient than loading into an Image element via dataURL
     createImageBitmap(file)
@@ -755,10 +791,6 @@ function formatSubmittedby(name) {
     .split(/\s+/)
     .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join(" ");
-}
-
-function isMobile() {
-    return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
 
 let jobFileHandle = null;
@@ -1068,6 +1100,68 @@ document.getElementById('removeAllAttachmentsBtn').addEventListener('click', () 
   showStatus('All attachments removed.', 'info');
 });
 
+async function compressPdfWithILovePdf(pdfBlob, publicKey) {
+    const authUrl = 'https://api.ilovepdf.com/v1/auth';
+    const startUrl = 'https://api.ilovepdf.com/v1/start/compress';
+
+    // 1. Authenticate
+    showStatus('Authenticating with compression service...', 'info');
+    const authResponse = await fetch(authUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ public_key: publicKey })
+    });
+    if (!authResponse.ok) throw new Error(`iLovePDF authentication failed (${authResponse.status})`);
+    const { token } = await authResponse.json();
+    const authHeader = { 'Authorization': `Bearer ${token}` };
+
+    // 2. Start Task
+    showStatus('Starting compression task...', 'info');
+    const startResponse = await fetch(startUrl, { headers: authHeader });
+    if (!startResponse.ok) throw new Error('Failed to start iLovePDF task.');
+    const { server, task } = await startResponse.json();
+
+    // Use the dynamic server for all subsequent calls for this task
+    const uploadUrl = `https://${server}/v1/upload`;
+    const processUrl = `https://${server}/v1/process`;
+    const downloadUrl = `https://${server}/v1/download`;
+
+    // 3. Upload File
+    showStatus('Uploading PDF for compression...', 'info');
+    const formData = new FormData();
+    formData.append('task', task);
+    formData.append('file', pdfBlob, 'document.pdf');
+    const uploadResponse = await fetch(uploadUrl, {
+        method: 'POST',
+        headers: authHeader,
+        body: formData
+    });
+    if (!uploadResponse.ok) throw new Error('Failed to upload file to iLovePDF.');
+    const { server_filename } = await uploadResponse.json();
+
+    // 4. Process File
+    showStatus('Compressing PDF...', 'info');
+    const processBody = {
+        task: task,
+        tool: 'compress',
+        files: [{ server_filename: server_filename, filename: 'document.pdf' }],
+        compression_level: 'recommended',
+    };
+    const processResponse = await fetch(processUrl, {
+        method: 'POST',
+        headers: { ...authHeader, 'Content-Type': 'application/json' },
+        body: JSON.stringify(processBody)
+    });
+    if (!processResponse.ok) throw new Error('Failed to process file with iLovePDF.');
+    
+    // 5. Download File
+    showStatus('Downloading compressed PDF...', 'info');
+    const downloadResponse = await fetch(`${downloadUrl}/${task}`, { headers: authHeader });
+    if (!downloadResponse.ok) throw new Error('Failed to download compressed file from iLovePDF.');
+    
+    return downloadResponse.blob();
+}
+
 generateBtn.addEventListener('click', async () => {
   statusMessage.className = 'status-message';
   generateBtn.disabled = true;
@@ -1126,10 +1220,12 @@ generateBtn.addEventListener('click', async () => {
       let pageNum = 2;
       for (let i = 0; i < images.length; i += perPage) {
         
+        // Asynchronous PDF page generation
         const pageCount = Math.ceil(images.length / perPage);
         const currentPage = (i / perPage) + 1;
         showStatus(`Processing PDF page ${currentPage} of ${pageCount}...`, 'info');
         
+        // Pause for UI update
         await new Promise(res => setTimeout(res, 0)); 
 
         const chunk = images.slice(i, i + perPage);
@@ -1146,7 +1242,8 @@ generateBtn.addEventListener('click', async () => {
 
         for (let idx = 0; idx < chunk.length; idx++) {
             const imgData = chunk[idx];
-            const dataUrl = await processImageForPdf(imgData.file, 1600, compressionQuality);
+            // processImageForPdf handles the original file (HEIC or JPG)
+            const dataUrl = await processImageForPdf(imgData.file, 2000, compressionQuality);
             if (!dataUrl) continue;
 
             const img = new Image();
@@ -1157,13 +1254,11 @@ generateBtn.addEventListener('click', async () => {
             const imgAspect = img.width / img.height;
             let finalW, finalH;
 
-            const imageScaleFactor = 0.80; // Reduced from 0.95 to make images ~15% smaller
-
             if (imgAspect > cellAspect) {
-                finalW = cellWidth * imageScaleFactor;
+                finalW = cellWidth * 0.95;
                 finalH = finalW / imgAspect;
             } else {
-                finalH = imgContainerHeight * imageScaleFactor;
+                finalH = imgContainerHeight * 0.95;
                 finalW = finalH * imgAspect;
             }
 
@@ -1222,48 +1317,80 @@ generateBtn.addEventListener('click', async () => {
       }
     }
 
+    let pdfBlob = pdf.output('blob');
+
+    const compressPdfCheckbox = document.getElementById('compressPdf');
+    if (compressPdfCheckbox.checked) {
+        if (ILOVEPDF_PUBLIC_KEY === 'YOUR_PUBLIC_KEY_HERE' || !ILOVEPDF_PUBLIC_KEY) {
+            throw new Error('Please enter your iLovePDF public key in the script to enable compression.');
+        }
+        try {
+            const originalSize = (pdfBlob.size / 1024 / 1024).toFixed(2);
+            showStatus(`PDF generated (${originalSize} MB). Now compressing...`, 'info');
+            pdfBlob = await compressPdfWithILovePdf(pdfBlob, ILOVEPDF_PUBLIC_KEY);
+            const compressedSize = (pdfBlob.size / 1024 / 1024).toFixed(2);
+            showStatus(`Compression complete! Size reduced from ${originalSize} MB to ${compressedSize} MB.`, 'success');
+            await new Promise(res => setTimeout(res, 2000));
+        } catch (compressionError) {
+            console.error("PDF compression failed:", compressionError);
+            showStatus(`PDF compression failed: ${compressionError.message}. Using uncompressed PDF.`, 'error');
+            await new Promise(res => setTimeout(res, 3000));
+        }
+    }
+
     const pdfFilename = `${vessel}_PicArray_${antenna}_${location.replace(/ /g, '')}_Case${caseNum}_${dateStr.replace(/-/g,'')}.pdf`;
     
     if (attachments.length > 0) {
-        showStatus('Compressing files into ZIP...', 'info');
-        await new Promise(res => setTimeout(res, 0));
-        const zip = new JSZip();
-        const pdfBlob = pdf.output('blob');
-        zip.file(pdfFilename, pdfBlob);
+      showStatus('Compressing files into ZIP...', 'info');
+      await new Promise(res => setTimeout(res, 0));
+      const zip = new JSZip();
+      zip.file(pdfFilename, pdfBlob);
 
-        const attachmentsFolder = zip.folder("attachments");
-        for (const att of attachments) {
-            attachmentsFolder.file(att.name, att);
-        }
+      const attachmentsFolder = zip.folder("attachments");
+      for (const att of attachments) {
+        attachmentsFolder.file(att.name, att);
+      }
 
-        const zipFilename = pdfFilename.replace('.pdf', '.zip');
-        const content = await zip.generateAsync({ type: "blob" });
+      const zipFilename = pdfFilename.replace('.pdf', '.zip');
+      zip.generateAsync({ type: "blob" }).then(content => {
         saveAs(content, zipFilename);
         showStatus('PDF and ZIP generated successfully!', 'success');
-        
+      });
     } else {
-        const pdfBlob = pdf.output('blob');
-        const pdfFile = new File([pdfBlob], pdfFilename, { type: 'application/pdf' });
+      function isMobile() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      }
+
+      if (isMobile() && images.length > 0) {
+        showStatus('Generating PDF for preview...', 'info');
+        await new Promise(res => setTimeout(res, 0));
         
-        if (isMobile() && navigator.share && navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
-            try {
-                await navigator.share({ files: [pdfFile] });
-                showStatus('PDF shared successfully!', 'success');
-            } catch (error) {
-                if (error.name === 'AbortError') {
-                    showStatus('Sharing cancelled.', 'info');
-                } else {
-                    console.error('Web Share API error:', error);
-                    showStatus('Could not share file. Downloading instead.', 'error');
-                    saveAs(pdfBlob, pdfFilename); // Fallback to download
-                }
-            }
+        const blobUrl = URL.createObjectURL(pdfBlob);
+        const previewWindow = window.open('', '_blank');
+
+        if (previewWindow) {
+          previewWindow.document.title = pdfFilename;
+          previewWindow.document.body.style.margin = '0';
+          previewWindow.document.body.style.overflow = 'hidden';
+          const iframe = previewWindow.document.createElement('iframe');
+          iframe.src = blobUrl;
+          iframe.style.width = '100vw';
+          iframe.style.height = '100vh';
+          iframe.style.border = 'none';
+          previewWindow.document.body.appendChild(iframe);
+          showStatus('PDF generated! Check the new tab to view or share.', 'success');
         } else {
-            // Desktop or unsupported mobile browser: direct download
-            saveAs(pdfBlob, pdfFilename);
-            showStatus('PDF generated successfully!', 'success');
+          showStatus('Popup blocked. Downloading PDF directly.', 'error');
+          saveAs(pdfBlob, pdfFilename);
         }
+      } else {
+        showStatus('Saving PDF...', 'info');
+        await new Promise(res => setTimeout(res, 0));
+        saveAs(pdfBlob, pdfFilename);
+        showStatus('PDF generated successfully!', 'success');
+      }
     }
+
   } catch (err) {
     showStatus(err.message || "Error generating PDF/ZIP.", "error");
     console.error(err);
