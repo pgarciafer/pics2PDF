@@ -11,561 +11,561 @@
 <style>
 /* ... (All CSS styles remain exactly the same as before) ... */
 :root {
-  --primary-color: #005A9C;
-  --primary-hover: #004a80;
-  --secondary-color: #6c757d;
-  --secondary-hover: #5a6268;
-  --danger-color: #dc3545;
-  --danger-hover: #c82333;
-  --success-color: #28a745;
-  --bg-color: #f8f9fa;
-  --container-bg: #ffffff;
-  --text-color: #212529;
-  --text-muted: #6c757d;
-  --border-color: #dee2e6;
-  --card-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  --input-focus-shadow: 0 0 0 0.25rem rgba(0, 90, 156, 0.25);
-  --input-invalid-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+  --primary-color: #005A9C;
+  --primary-hover: #004a80;
+  --secondary-color: #6c757d;
+  --secondary-hover: #5a6268;
+  --danger-color: #dc3545;
+  --danger-hover: #c82333;
+  --success-color: #28a745;
+  --bg-color: #f8f9fa;
+  --container-bg: #ffffff;
+  --text-color: #212529;
+  --text-muted: #6c757d;
+  --border-color: #dee2e6;
+  --card-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  --input-focus-shadow: 0 0 0 0.25rem rgba(0, 90, 156, 0.25);
+  --input-invalid-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
 }
 
 *, *::before, *::after {
-  box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
-  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  background-color: var(--bg-color);
-  margin: 0;
-  padding: 24px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  min-height: 100vh;
-  color: var(--text-color);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--bg-color);
+  margin: 0;
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  color: var(--text-color);
 }
 
 .container {
-  max-width: 800px;
-  width: 100%;
-  padding: 24px;
-  background: var(--container-bg);
-  border-radius: 8px;
-  box-shadow: var(--card-shadow);
-  border: 1px solid var(--border-color);
-  transition: all 0.3s ease;
+  max-width: 800px;
+  width: 100%;
+  padding: 24px;
+  background: var(--container-bg);
+  border-radius: 8px;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
 }
 
 .header-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 32px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 32px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .header-title {
-  display: flex;
-  align-items: center;
-  gap: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 .header-title img {
-  height: 60px;
+  height: 60px;
 }
 
 .header-title span {
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--primary-color);
-  letter-spacing: -0.5px;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--primary-color);
+  letter-spacing: -0.5px;
 }
 
 label {
-  display: block;
-  margin-top: 16px;
-  margin-bottom: 8px;
-  font-weight: 500;
-  color: var(--text-muted);
-  font-size: 14px;
+  display: block;
+  margin-top: 16px;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: var(--text-muted);
+  font-size: 14px;
 }
 
 input, select {
-  width: 100%;
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid var(--border-color);
-  font-size: 15px;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  background-color: #fff;
-  color: var(--text-color);
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  font-size: 15px;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  background-color: #fff;
+  color: var(--text-color);
 }
 
 input:focus, select:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: var(--input-focus-shadow);
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: var(--input-focus-shadow);
 }
 
 .drop-zone-section {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 16px;
-  align-items: stretch;
-  margin-bottom: 16px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: stretch;
+  margin-bottom: 16px;
 }
 
 .drop-zone {
-  border: 2px dashed var(--border-color);
-  background: #fafcff;
-  padding: 20px;
-  text-align: center;
-  cursor: pointer;
-  border-radius: 12px;
-  transition: all 0.3s;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 120px;
+  border: 2px dashed var(--border-color);
+  background: #fafcff;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: all 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
 }
 
 .drop-zone:hover, .drop-zone.dragover {
-  border-color: var(--primary-color);
-  background: #f0f6ff;
+  border-color: var(--primary-color);
+  background: #f0f6ff;
 }
 
 /* Style for keyboard focus */
 .drop-zone:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: var(--input-focus-shadow);
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: var(--input-focus-shadow);
 }
 
 .drop-zone p {
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--text-muted);
-  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin: 0;
 }
 
 .image-list-container, .attachment-list-container {
-  border: 1px solid var(--border-color);
-  min-height: 100px;
-  max-height: 200px;
-  overflow-y: auto;
-  padding: 16px;
-  border-radius: 12px;
-  background: #f8f9fa;
-  display: none;
-  gap: 12px;
+  border: 1px solid var(--border-color);
+  min-height: 100px;
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 16px;
+  border-radius: 12px;
+  background: #f8f9fa;
+  display: none;
+  gap: 12px;
 }
 
 .image-list-container {
-  display: none;
-  flex-wrap: wrap;
+  display: none;
+  flex-wrap: wrap;
 }
 
 .image-wrapper {
-  position: relative;
-  -webkit-user-select: none; /* Safari */
-  -ms-user-select: none; /* IE 10+ */
-  user-select: none;
+  position: relative;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10+ */
+  user-select: none;
 }
 
 .image-item {
-  width: 70px;
-  height: 70px;
-  object-fit: cover;
-  border: 2px solid var(--border-color);
-  border-radius: 8px;
-  padding: 4px;
-  background: #fff;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  padding: 4px;
+  background: #fff;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 .image-item:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 .image-wrapper.dragging {
-  opacity: 0.5;
+  opacity: 0.5;
 }
 .image-wrapper.over {
-  outline: 2px dashed var(--primary-color);
-  outline-offset: 2px;
+  outline: 2px dashed var(--primary-color);
+  outline-offset: 2px;
 }
 
 .remove-image-btn {
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  background: var(--danger-color);
-  color: white;
-  border: 2px solid white;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  font-size: 16px;
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  opacity: 0.9;
-  transition: all 0.3s;
-  z-index: 10;
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: var(--danger-color);
+  color: white;
+  border: 2px solid white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  font-size: 16px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0.9;
+  transition: all 0.3s;
+  z-index: 10;
 }
 
 .remove-image-btn:hover {
-  opacity: 1;
-  transform: scale(1.1);
-  background-color: var(--danger-hover);
+  opacity: 1;
+  transform: scale(1.1);
+  background-color: var(--danger-hover);
 }
 
 .attachment-list-container {
-  display: none;
+  display: none;
 }
 .attachment-item {
-  font-size: 14px;
-  color: var(--text-color);
-  padding: 8px 4px;
-  border-bottom: 1px solid var(--border-color);
+  font-size: 14px;
+  color: var(--text-color);
+  padding: 8px 4px;
+  border-bottom: 1px solid var(--border-color);
 }
 .attachment-item:last-child {
-  border-bottom: none;
+  border-bottom: none;
 }
 
 .button-group {
-  margin-top: 32px;
+  margin-top: 32px;
 }
 
 button {
-  padding: 10px 16px;
-  border: 1px solid transparent;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 15px;
-  font-weight: 500;
-  transition: background-color 0.15s ease-in-out, transform 0.1s ease;
-  position: relative;
-  -webkit-appearance: none;
+  padding: 10px 16px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  transition: background-color 0.15s ease-in-out, transform 0.1s ease;
+  position: relative;
+  -webkit-appearance: none;
 }
 
 button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-  transform: none;
-  opacity: 0.7;
+  background-color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+  opacity: 0.7;
 }
 
 button:active:not(:disabled) {
-  transform: scale(0.98);
+  transform: scale(0.98);
 }
 
 
 #generatePDF {
-  width: 100%;
-  background-color: var(--primary-color);
-  color: white;
-  font-size: 16px;
-  font-weight: 600;
+  width: 100%;
+  background-color: var(--primary-color);
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 #generatePDF:hover:not(:disabled) {
-  background-color: var(--primary-hover);
+  background-color: var(--primary-hover);
 }
 
 #generatePDF.loading span {
-  visibility: hidden;
+  visibility: hidden;
 }
 #generatePDF.loading::after {
-  content: '';
-  position: absolute;
-  width: 24px;
-  height: 24px;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
-  border: 4px solid transparent;
-  border-top-color: #ffffff;
-  border-radius: 50%;
-  animation: button-loading-spinner 1s ease infinite;
+  content: '';
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  border: 4px solid transparent;
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: button-loading-spinner 1s ease infinite;
 }
 @keyframes button-loading-spinner {
-  from { transform: rotate(0turn); }
-  to { transform: rotate(1turn); }
+  from { transform: rotate(0turn); }
+  to { transform: rotate(1turn); }
 }
 
 /* === NEW CSS FOR BUTTONS === */
 .job-info-buttons {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 24px;
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
 }
 
 .job-info-btn {
-  width: 100%;
-  background-color: var(--primary-color);
-  color: white;
+  width: 100%;
+  background-color: var(--primary-color);
+  color: white;
 }
 .job-info-btn:hover:not(:disabled) {
-  background-color: var(--primary-hover);
+  background-color: var(--primary-hover);
 }
 
 /* Style for the new save button */
 .job-info-btn.save {
-  background-color: var(--secondary-color);
+  background-color: var(--secondary-color);
 }
 .job-info-btn.save:hover:not(:disabled) {
-  background-color: var(--secondary-hover);
+  background-color: var(--secondary-hover);
 }
 /* === END NEW CSS === */
 
 
 .required-label {
-  color: var(--danger-color);
-  font-weight: 600;
+  color: var(--danger-color);
+  font-weight: 600;
 }
 
 .invalid {
-  border-color: var(--danger-color) !important;
-  box-shadow: var(--input-invalid-shadow) !important;
+  border-color: var(--danger-color) !important;
+  box-shadow: var(--input-invalid-shadow) !important;
 }
 
 .status-message {
-  text-align: center;
-  margin-top: 20px;
-  padding: 12px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
-  display: none;
+  text-align: center;
+  margin-top: 20px;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  display: none;
 }
 .status-message.visible {
-    display: block;
+    display: block;
 }
 .status-message.success {
-  background-color: #e9f7ef;
-  color: #155724;
+  background-color: #e9f7ef;
+  color: #155724;
 }
 .status-message.error {
-  background-color: #f8d7da;
-  color: #721c24;
+  background-color: #f8d7da;
+  color: #721c24;
 }
 .status-message.info {
-  background-color: rgba(0, 90, 156, 0.1);
-  color: var(--primary-color);
+  background-color: rgba(0, 90, 156, 0.1);
+  color: var(--primary-color);
 }
 
 button.remove-btn {
-  background-color: white;
-  color: var(--danger-color);
-  height: 100%;
-  border: 1px solid var(--danger-color);
-  width: 210px;
+  background-color: white;
+  color: var(--danger-color);
+  height: 100%;
+  border: 1px solid var(--danger-color);
+  width: 210px;
 }
 button.remove-btn:hover:not(:disabled) {
-  background-color: var(--danger-color);
-  color: white;
+  background-color: var(--danger-color);
+  color: white;
 }
 
 .attachment-section {
-  margin-top: 32px;
+  margin-top: 32px;
 }
 
 #dateField {
-  width: 75%;
+  width: 75%;
 }
 
 .modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 .modal-content {
-  background: white;
-  padding: 24px;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 500px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  background: white;
+  padding: 24px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 .modal-content h2 {
-  margin-top: 0;
-  color: var(--primary-color);
+  margin-top: 0;
+  color: var(--primary-color);
 }
 .modal-content textarea {
-  width: 100%;
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid var(--border-color);
-  font-size: 15px;
-  resize: vertical;
-  margin-bottom: 16px;
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  font-size: 15px;
+  resize: vertical;
+  margin-bottom: 16px;
 }
 .modal-content textarea:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: var(--input-focus-shadow);
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: var(--input-focus-shadow);
 }
 .modal-buttons {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
 }
 .modal-buttons button {
-  padding: 10px 16px;
+  padding: 10px 16px;
 }
 #modalSaveBtn {
-  background-color: var(--primary-color);
-  color: white;
+  background-color: var(--primary-color);
+  color: white;
 }
 #modalSaveBtn:hover {
-  background-color: var(--primary-hover);
+  background-color: var(--primary-hover);
 }
 #modalDeleteBtn {
-  background-color: var(--danger-color);
-  color: white;
-  border: none;
+  background-color: var(--danger-color);
+  color: white;
+  border: none;
 }
 #modalDeleteBtn:hover {
-  background-color: var(--danger-hover);
+  background-color: var(--danger-hover);
 }
 #modalCancelBtn {
-  background-color: var(--secondary-color);
-  color: white;
+  background-color: var(--secondary-color);
+  color: white;
 }
 #modalCancelBtn:hover {
-  background-color: var(--secondary-hover);
+  background-color: var(--secondary-hover);
 }
 
 .comment-icon {
-  position: absolute;
-  bottom: 2px;
-  left: 2px;
-  font-size: 18px;
-  display: none; /* Hidden by default */
-  pointer-events: none; /* So it doesn't interfere with clicks on the image */
-  text-shadow: 0 0 3px white, 0 0 3px white;
+  position: absolute;
+  bottom: 2px;
+  left: 2px;
+  font-size: 18px;
+  display: none; /* Hidden by default */
+  pointer-events: none; /* So it doesn't interfere with clicks on the image */
+  text-shadow: 0 0 3px white, 0 0 3px white;
 }
 .comment-icon.visible {
-  display: block;
+  display: block;
 }
 
 .checkbox-container {
-  display: flex;
-  align-items: center;
-  margin-top: 24px;
-  margin-bottom: -16px; /* Pull the button group up */
-  padding: 12px;
-  background-color: #f8f9fa;
-  border-radius: 6px;
-  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  margin-top: 24px;
+  margin-bottom: -16px; /* Pull the button group up */
+  padding: 12px;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
 }
 .checkbox-container input[type="checkbox"] {
-  width: auto;
-  margin-right: 12px;
-  transform: scale(1.2);
-  cursor: pointer;
+  width: auto;
+  margin-right: 12px;
+  transform: scale(1.2);
+  cursor: pointer;
 }
 .checkbox-container label {
-  margin: 0;
-  font-weight: 500;
-  color: var(--text-color);
-  font-size: 14px;
-  cursor: pointer;
+  margin: 0;
+  font-weight: 500;
+  color: var(--text-color);
+  font-size: 14px;
+  cursor: pointer;
 }
 
 
 /* Responsive */
 @media (max-width: 768px) {
-  body {
-    padding: 16px;
-  }
-  .container {
-    padding: 24px;
-  }
-  .header-container {
-    flex-direction: column;
-    gap: 16px;
-  }
-  .header-title {
-    flex-direction: column;
-  }
+  body {
+    padding: 16px;
+  }
+  .container {
+    padding: 24px;
+  }
+  .header-container {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .header-title {
+    flex-direction: column;
+  }
 }
 @media (max-width: 600px) {
-  .drop-zone-section {
-    grid-template-columns: 1fr;
-  }
-  button.remove-btn {
-    min-height: 60px;
-    width: 100%;
-  }
-  /* === NEW: Stack buttons on mobile === */
-  .job-info-buttons {
-    flex-direction: column;
-  }
+  .drop-zone-section {
+    grid-template-columns: 1fr;
+  }
+  button.remove-btn {
+    min-height: 60px;
+    width: 100%;
+  }
+  /* === NEW: Stack buttons on mobile === */
+  .job-info-buttons {
+    flex-direction: column;
+  }
 }
 
 /* Styles for touch-based drag and drop */
 .image-wrapper.touch-dragging {
-  opacity: 0.8;
-  transform-origin: center center;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-  z-index: 1000;
-  transition: none; /* Disable transitions while dragging */
+  opacity: 0.8;
+  transform-origin: center center;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  z-index: 1000;
+  transition: none; /* Disable transitions while dragging */
 }
 .placeholder {
-  background-color: #e9ecef;
-  border: 2px dashed var(--primary-color);
-  border-radius: 8px;
-  flex-shrink: 0;
-  /* width and height set by JS */
+  background-color: #e9ecef;
+  border: 2px dashed var(--primary-color);
+  border-radius: 8px;
+  flex-shrink: 0;
+  /* width and height set by JS */
 }
 </style>
 </head>
 <body>
 <div class="container">
 <div class="header-container">
-  <div class="header-title">
-    <a href="https://www.mtnsat.com" target="_blank">
-      <img src="https://raw.githubusercontent.com/pgarciafer/pics2PDF/main/logo.png" alt="Logo">
-    </a>
-    <span>Pictures Array to PDF</span>
-  </div>
+  <div class="header-title">
+    <a href="https://www.mtnsat.com" target="_blank">
+      <img src="https://raw.githubusercontent.com/pgarciafer/pics2PDF/main/logo.png" alt="Logo">
+    </a>
+    <span>Pictures Array to PDF</span>
+  </div>
 </div>
 
 <div class="job-info-buttons">
-  <button id="loadJobInfoBtn" class="job-info-btn">Load Job Info (.txt)</button>
-  <button id="saveJobInfoBtn" class="job-info-btn save">Save Job Info (.txt)</button>
+  <button id="loadJobInfoBtn" class="job-info-btn">Load Job Info (.txt)</button>
+  <button id="saveJobInfoBtn" class="job-info-btn save">Save Job Info (.txt)</button>
 </div>
 <div class="drop-zone-section">
-  <div class="drop-zone" id="dropZone" tabindex="0">
-    <p>📁 Drag & Drop Pictures Here or Click</p>
-  </div>
-  <button id="removeAllBtn" class="remove-btn">Remove All Images</button>
+  <div class="drop-zone" id="dropZone" tabindex="0">
+    <p>📁 Drag & Drop Pictures Here or Click</p>
+  </div>
+  <button id="removeAllBtn" class="remove-btn">Remove All Images</button>
 </div>
 <div class="image-list-container" id="imageListContainer"></div>
 
 
 <div class="attachment-section">
-  <div class="drop-zone-section">
-    <div class="drop-zone" id="attachmentsDropZone" tabindex="0">
-      <p>📎 Drag & Drop Attachments Here or Click</p>
-    </div>
-    <button id="removeAllAttachmentsBtn" class="remove-btn">Remove All Attachments</button>
-  </div>
-  <div class="attachment-list-container" id="attachmentListContainer"></div>
+  <div class="drop-zone-section">
+    <div class="drop-zone" id="attachmentsDropZone" tabindex="0">
+      <p>📎 Drag & Drop Attachments Here or Click</p>
+    </div>
+    <button id="removeAllAttachmentsBtn" class="remove-btn">Remove All Attachments</button>
+  </div>
+  <div class="attachment-list-container" id="attachmentListContainer"></div>
 </div>
 
 <label for="vesselName">3LC_VesselName: <span class="required-label">*</span></label>
@@ -588,42 +588,42 @@ button.remove-btn:hover:not(:disabled) {
 
 <label for="imagesPerPage">Images per page (1-4):</label>
 <select id="imagesPerPage">
-  <option value="1">1</option>
-  <option value="2" selected>2</option>
-  <option value="3">3</option>
-  <option value="4">4</option>
+  <option value="1">1</option>
+  <option value="2" selected>2</option>
+  <option value="3">3</option>
+  <option value="4">4</option>
 </select>
 
 <label for="compressionLevel">Image Quality:</label>
 <select id="compressionLevel">
-  <option value="0.9">Best (Larger File Size)</option>
-  <option value="0.7" selected>Good (Recommended)</option>
-  <option value="0.5">Standard (Smallest File Size)</option>
+  <option value="0.9">Best (Larger File Size)</option>
+  <option value="0.7" selected>Good (Recommended)</option>
+  <option value="0.5">Standard (Smallest File Size)</option>
 </select>
 
 <div class="checkbox-container">
-  <input type="checkbox" id="compressPdf">
-  <label for="compressPdf">Compress PDF with iLovePDF (Online)</label>
+  <input type="checkbox" id="compressPdf">
+  <label for="compressPdf">Compress PDF with iLovePDF (Online)</label>
 </div>
 
 <div class="button-group">
-  <button id="generatePDF"><span>Generate PDF & ZIP</span></button>
+  <button id="generatePDF"><span>Generate PDF & ZIP</span></button>
 </div>
 
 <div class="status-message" id="statusMessage"></div>
 </div>
 
 <div id="imageModal" class="modal-overlay" style="display: none;">
-  <div class="modal-content">
-    <h2>Edit Image</h2>
-    <label for="imageComment">Comment:</label>
-    <textarea id="imageComment" rows="4" placeholder="Add a comment to display under the image in the PDF..."></textarea>
-    <div class="modal-buttons">
-      <button id="modalSaveBtn">Save Comment</button>
-      <button id="modalDeleteBtn" class="remove-btn" style="border: 1px solid transparent; color: white;">Delete Image</button>
-      <button id="modalCancelBtn">Cancel</button>
-    </div>
-  </div>
+  <div class="modal-content">
+    <h2>Edit Image</h2>
+    <label for="imageComment">Comment:</label>
+    <textarea id="imageComment" rows="4" placeholder="Add a comment to display under the image in the PDF..."></textarea>
+    <div class="modal-buttons">
+      <button id="modalSaveBtn">Save Comment</button>
+      <button id="modalDeleteBtn" class="remove-btn" style="border: 1px solid transparent; color: white;">Delete Image</button>
+      <button id="modalCancelBtn">Cancel</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -664,266 +664,266 @@ document.getElementById("dateField").value = new Date().toISOString().split("T")
 
 // Add listeners for keyboard interaction
 function setupDropZoneAccessibility(zoneId) {
-  const zone = document.getElementById(zoneId);
-  zone.addEventListener('keydown', (e) => {
-    // 32 = Space, 13 = Enter
-    if (e.keyCode === 32 || e.keyCode === 13) {
-      e.preventDefault(); // Stop space from scrolling the page
-      zone.click(); // Trigger the existing click listener
-    }
-  });
+  const zone = document.getElementById(zoneId);
+  zone.addEventListener('keydown', (e) => {
+    // 32 = Space, 13 = Enter
+    if (e.keyCode === 32 || e.keyCode === 13) {
+      e.preventDefault(); // Stop space from scrolling the page
+      zone.click(); // Trigger the existing click listener
+    }
+  });
 }
 setupDropZoneAccessibility('dropZone');
 setupDropZoneAccessibility('attachmentsDropZone');
 
 
 function showStatus(message, type = 'info') {
-    statusMessage.textContent = message;
-    statusMessage.className = `status-message ${type} visible`;
+    statusMessage.textContent = message;
+    statusMessage.className = `status-message ${type} visible`;
 }
 
 // Helper function to convert any image file (including HEIC) to a JPG data URL
 async function convertImageToJpgDataUrl(file, maxPreviewDim = 300, quality = 0.8) {
-  return new Promise((resolve, reject) => {
-    // createImageBitmap is the most memory-efficient way to load an image
-    createImageBitmap(file)
-      .then(imageBitmap => {
-        // Calculate dimensions for a small preview
-        const scale = Math.min(maxPreviewDim / imageBitmap.width, maxPreviewDim / imageBitmap.height, 1);
-        const canvas = document.createElement("canvas");
-        canvas.width = imageBitmap.width * scale;
-        canvas.height = imageBitmap.height * scale;
-        
-        const ctx = canvas.getContext("2d");
-        // Draw the image to the canvas
-        ctx.drawImage(imageBitmap, 0, 0, canvas.width, canvas.height);
-        
-        // Good practice to release memory
-        imageBitmap.close(); 
-        
-        // Get the preview as a JPG data URL
-        const dataUrl = canvas.toDataURL("image/jpeg", quality);
-        resolve(dataUrl);
-      })
-      .catch(err => {
-        // Fallback for older browsers or formats createImageBitmap fails on
-        // This is less memory efficient but more compatible.
-        console.warn("createImageBitmap failed, falling back to FileReader:", err);
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const img = new Image();
-          img.onload = () => {
-            const scale = Math.min(maxPreviewDim / img.width, maxPreviewDim / img.height, 1);
-            const canvas = document.createElement('canvas');
-            canvas.width = img.width * scale;
-            canvas.height = img.height * scale;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            resolve(canvas.toDataURL('image/jpeg', quality));
-          };
-          img.onerror = reject;
-          img.src = e.target.result;
-        };
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-  });
+  return new Promise((resolve, reject) => {
+    // createImageBitmap is the most memory-efficient way to load an image
+    createImageBitmap(file)
+      .then(imageBitmap => {
+        // Calculate dimensions for a small preview
+        const scale = Math.min(maxPreviewDim / imageBitmap.width, maxPreviewDim / imageBitmap.height, 1);
+        const canvas = document.createElement("canvas");
+        canvas.width = imageBitmap.width * scale;
+        canvas.height = imageBitmap.height * scale;
+        
+        const ctx = canvas.getContext("2d");
+        // Draw the image to the canvas
+        ctx.drawImage(imageBitmap, 0, 0, canvas.width, canvas.height);
+        
+        // Good practice to release memory
+        imageBitmap.close(); 
+        
+        // Get the preview as a JPG data URL
+        const dataUrl = canvas.toDataURL("image/jpeg", quality);
+        resolve(dataUrl);
+      })
+      .catch(err => {
+        // Fallback for older browsers or formats createImageBitmap fails on
+        // This is less memory efficient but more compatible.
+        console.warn("createImageBitmap failed, falling back to FileReader:", err);
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            const scale = Math.min(maxPreviewDim / img.width, maxPreviewDim / img.height, 1);
+            const canvas = document.createElement('canvas');
+            canvas.width = img.width * scale;
+            canvas.height = img.height * scale;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            resolve(canvas.toDataURL('image/jpeg', quality));
+          };
+          img.onerror = reject;
+          img.src = e.target.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+  });
 }
 
 
 // Helpers
 // New, more memory-efficient image processing function for PDF generation
 async function processImageForPdf(file, maxDim = 2000, quality = 0.7) {
-  return new Promise((resolve, reject) => {
-    // createImageBitmap is more memory-efficient than loading into an Image element via dataURL
-    createImageBitmap(file)
-      .then(imageBitmap => {
-        const scale = Math.min(maxDim / imageBitmap.width, maxDim / imageBitmap.height, 1);
-        const canvas = document.createElement("canvas");
-        canvas.width = imageBitmap.width * scale;
-        canvas.height = imageBitmap.height * scale;
-        const ctx = canvas.getContext("2d");
-        ctx.drawImage(imageBitmap, 0, 0, canvas.width, canvas.height);
-        
-        // Close the bitmap to release its memory
-        imageBitmap.close();
+  return new Promise((resolve, reject) => {
+    // createImageBitmap is more memory-efficient than loading into an Image element via dataURL
+    createImageBitmap(file)
+      .then(imageBitmap => {
+        const scale = Math.min(maxDim / imageBitmap.width, maxDim / imageBitmap.height, 1);
+        const canvas = document.createElement("canvas");
+        canvas.width = imageBitmap.width * scale;
+        canvas.height = imageBitmap.height * scale;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(imageBitmap, 0, 0, canvas.width, canvas.height);
+        
+        // Close the bitmap to release its memory
+        imageBitmap.close();
 
-        canvas.toBlob(blob => {
-          if (!blob) {
-            return reject(new Error("Canvas to Blob conversion failed."));
-          }
-          const reader = new FileReader();
-          reader.onload = () => resolve(reader.result);
-          reader.onerror = () => reject(new Error("Failed to read blob as Data URL."));
-          reader.readAsDataURL(blob);
-        }, "image/jpeg", quality);
-      })
-      .catch(err => reject(err));
-  });
+        canvas.toBlob(blob => {
+          if (!blob) {
+            return reject(new Error("Canvas to Blob conversion failed."));
+          }
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = () => reject(new Error("Failed to read blob as Data URL."));
+          reader.readAsDataURL(blob);
+        }, "image/jpeg", quality);
+      })
+      .catch(err => reject(err));
+  });
 }
 
 function formatVesselName(raw) {
-  if (!raw) return "";
-  let clean = raw.replace(/_/g, " ").replace(/\s+/g, " ").trim();
-  let firstThree = clean.slice(0,3).toUpperCase();
-  let rest = clean.slice(3).trim();
-  if (!rest) return firstThree;
-  let words = rest.split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
-  let formattedRest = words.join("");
-  return firstThree + "_" + formattedRest;
+  if (!raw) return "";
+  let clean = raw.replace(/_/g, " ").replace(/\s+/g, " ").trim();
+  let firstThree = clean.slice(0,3).toUpperCase();
+  let rest = clean.slice(3).trim();
+  if (!rest) return firstThree;
+  let words = rest.split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
+  let formattedRest = words.join("");
+  return firstThree + "_" + formattedRest;
 }
 
 function formatAntennaModel(model, sn) {
-  if (!model || !sn) return "";
-  let m = model.trim().replace(/\s+/g, "-");
-  return (m.charAt(0).toUpperCase() + m.slice(1)) + "_SN" + sn.trim().toUpperCase();
+  if (!model || !sn) return "";
+  let m = model.trim().replace(/\s+/g, "-");
+  return (m.charAt(0).toUpperCase() + m.slice(1)) + "_SN" + sn.trim().toUpperCase();
 }
 
 function formatAntennaLocation(loc) {
-  if (!loc) return "";
-  return loc.trim().toUpperCase();
+  if (!loc) return "";
+  return loc.trim().toUpperCase();
 }
 
 function formatSubmittedby(name) {
-  if (!name) return "";
-  return name
-    .trim()
-    .split(/\s+/)
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(" ");
+  if (!name) return "";
+  return name
+    .trim()
+    .split(/\s+/)
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
 }
 
 let jobFileHandle = null;
 
 // === RENAMED: from "jobInfoLabel" to "loadJobInfoBtn" ===
 loadJobInfoBtn.addEventListener("click", async () => {
-  const openWithInput = () => {
-    const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.accept = '.txt';
-    fileInput.onchange = async () => {
-      if (!fileInput.files || fileInput.files.length === 0) return;
-      const file = fileInput.files[0];
-      try {
-          const text = await file.text();
-          const data = JSON.parse(text);
-          populateJobInfo(data);
-          // === NEW: Save loaded data to local storage ===
-          saveFormToLocalStorage();
-      } catch (err) {
-          console.error(err);
-          showStatus("Failed to process job info file.", "error");
-      }
-    };
-    fileInput.click();
-  };
+  const openWithInput = () => {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = '.txt';
+    fileInput.onchange = async () => {
+      if (!fileInput.files || fileInput.files.length === 0) return;
+      const file = fileInput.files[0];
+      try {
+          const text = await file.text();
+          const data = JSON.parse(text);
+          populateJobInfo(data);
+          // === NEW: Save loaded data to local storage ===
+          saveFormToLocalStorage();
+      } catch (err) {
+          console.error(err);
+          showStatus("Failed to process job info file.", "error");
+      }
+    };
+    fileInput.click();
+  };
 
-  try {
-    if (!window.showOpenFilePicker) {
-        throw new Error("showOpenFilePicker not supported");
-    }
+  try {
+    if (!window.showOpenFilePicker) {
+        throw new Error("showOpenFilePicker not supported");
+    }
 
-    if (!jobFileHandle) {
-      [jobFileHandle] = await window.showOpenFilePicker({
-        types: [{
-          description: 'Job Info File',
-          accept: { 'text/plain': ['.txt'] },
-        }],
-        multiple: false
-      });
-    }
-    const file = await jobFileHandle.getFile();
-    const text = await file.text();
-    const data = JSON.parse(text);
-    populateJobInfo(data);
-    // === NEW: Save loaded data to local storage ===
-    saveFormToLocalStorage();
+    if (!jobFileHandle) {
+      [jobFileHandle] = await window.showOpenFilePicker({
+        types: [{
+          description: 'Job Info File',
+          accept: { 'text/plain': ['.txt'] },
+        }],
+        multiple: false
+      });
+    }
+    const file = await jobFileHandle.getFile();
+    const text = await file.text();
+    const data = JSON.parse(text);
+    populateJobInfo(data);
+    // === NEW: Save loaded data to local storage ===
+    saveFormToLocalStorage();
 
-  } catch (err) {
-    if (err.name === 'AbortError') {
-      console.log('File picker was cancelled by the user.');
-      return;
-    }
-    console.warn("showOpenFilePicker failed, falling back to input.", err);
-    openWithInput();
-  }
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      console.log('File picker was cancelled by the user.');
+      return;
+    }
+    console.warn("showOpenFilePicker failed, falling back to input.", err);
+    openWithInput();
+  }
 });
 
 function populateJobInfo(data) {
-  if (data.VESSEL) document.getElementById("vesselName").value = formatVesselName(data.VESSEL);
-  if (data.INCIDENT) document.getElementById("caseNumber").value = data.INCIDENT;
-  if (data["ANTENNA"] && data["ANTENNA SN"]) {
-    document.getElementById("antennaModel").value = formatAntennaModel(data["ANTENNA"], data["ANTENNA SN"]);
-  }
-  if (data["LOCATION"]) document.getElementById("antennaLocation").value = formatAntennaLocation(data["LOCATION"]);
-  if (data["TECH"]) document.getElementById("submittedBy").value = formatSubmittedby(data["TECH"]);
-  showStatus("Current Job Info loaded successfully!", "success");
+  if (data.VESSEL) document.getElementById("vesselName").value = formatVesselName(data.VESSEL);
+  if (data.INCIDENT) document.getElementById("caseNumber").value = data.INCIDENT;
+  if (data["ANTENNA"] && data["ANTENNA SN"]) {
+    document.getElementById("antennaModel").value = formatAntennaModel(data["ANTENNA"], data["ANTENNA SN"]);
+  }
+  if (data["LOCATION"]) document.getElementById("antennaLocation").value = formatAntennaLocation(data["LOCATION"]);
+  if (data["TECH"]) document.getElementById("submittedBy").value = formatSubmittedby(data["TECH"]);
+  showStatus("Current Job Info loaded successfully!", "success");
 }
 
 // === NEW: "Save Job Info" Button functionality ===
 saveJobInfoBtn.addEventListener('click', () => {
-  const data = {};
-  jobInfoInputIds.forEach(id => {
-    data[id] = document.getElementById(id).value;
-  });
+  const data = {};
+  jobInfoInputIds.forEach(id => {
+    data[id] = document.getElementById(id).value;
+  });
 
-  // Create a JSON object in the same format that "Load" expects
-  const cleanData = {
-    "VESSEL": data.vesselName,
-    // Try to split model and SN, fallback to empty string
-    "ANTENNA": (data.antennaModel.split('_SN')[0] || data.antennaModel).split('_')[0],
-    "ANTENNA SN": data.antennaModel.split('_SN')[1] || '',
-    "LOCATION": data.antennaLocation,
-    "INCIDENT": data.caseNumber,
-    "TECH": data.submittedBy
-  };
+  // Create a JSON object in the same format that "Load" expects
+  const cleanData = {
+    "VESSEL": data.vesselName,
+    // Try to split model and SN, fallback to empty string
+    "ANTENNA": (data.antennaModel.split('_SN')[0] || data.antennaModel).split('_')[0],
+    "ANTENNA SN": data.antennaModel.split('_SN')[1] || '',
+    "LOCATION": data.antennaLocation,
+    "INCIDENT": data.caseNumber,
+    "TECH": data.submittedBy
+  };
 
-  const jsonString = JSON.stringify(cleanData, null, 2); // Pretty-print JSON
-  const blob = new Blob([jsonString], { type: 'text/plain;charset=utf-8' });
-  
-  // === THIS IS THE REQUESTED CHANGE ===
-  const filename = 'currentrip.txt';
+  const jsonString = JSON.stringify(cleanData, null, 2); // Pretty-print JSON
+  const blob = new Blob([jsonString], { type: 'text/plain;charset=utf-8' });
+  
+  // === THIS IS THE REQUESTED CHANGE ===
+  const filename = 'currentrip.txt';
 
-  saveAs(blob, filename); // From FileSaver.js
-  showStatus('Job info saved as currentrip.txt!', 'success');
-  // === END OF CHANGE ===
+  saveAs(blob, filename); // From FileSaver.js
+  showStatus('Job info saved as currentrip.txt!', 'success');
+  // === END OF CHANGE ===
 });
 
 // === NEW: LocalStorage Functions ===
 function saveFormToLocalStorage() {
-  const data = {};
-  jobInfoInputIds.forEach(id => {
-    data[id] = document.getElementById(id).value;
-  });
-  localStorage.setItem('jobInfoForm', JSON.stringify(data));
+  const data = {};
+  jobInfoInputIds.forEach(id => {
+    data[id] = document.getElementById(id).value;
+  });
+  localStorage.setItem('jobInfoForm', JSON.stringify(data));
 }
 
 function loadFormFromLocalStorage() {
-  const savedData = localStorage.getItem('jobInfoForm');
-  if (savedData) {
-    try {
-      const data = JSON.parse(savedData);
-      jobInfoInputIds.forEach(id => {
-        if (data[id]) {
-          document.getElementById(id).value = data[id];
-        }
-      });
-    } catch (e) {
-      console.error("Failed to parse saved job info:", e);
-      localStorage.removeItem('jobInfoForm'); // Clear corrupted data
-    }
-  }
+  const savedData = localStorage.getItem('jobInfoForm');
+  if (savedData) {
+    try {
+      const data = JSON.parse(savedData);
+      jobInfoInputIds.forEach(id => {
+        if (data[id]) {
+          document.getElementById(id).value = data[id];
+        }
+      });
+    } catch (e) {
+      console.error("Failed to parse saved job info:", e);
+      localStorage.removeItem('jobInfoForm'); // Clear corrupted data
+    }
+  }
 }
 // === END NEW ===
 
 
 dropZone.addEventListener('click', () => {
-  const fileInput = document.createElement('input');
-  fileInput.type = 'file';
-  fileInput.multiple = true;
-  fileInput.accept = 'image/jpeg,image/png,image/heif,image/heic';
-  fileInput.onchange = () => addImages(fileInput.files);
-  fileInput.click();
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file';
+  fileInput.multiple = true;
+  fileInput.accept = 'image/jpeg,image/png,image/heif,image/heic';
+  fileInput.onchange = () => addImages(fileInput.files);
+  fileInput.click();
 });
 dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add("dragover"); });
 dropZone.addEventListener('dragleave', e => { e.preventDefault(); dropZone.classList.remove("dragover"); });
@@ -931,546 +931,546 @@ dropZone.addEventListener('drop', e => { e.preventDefault(); dropZone.classList.
 
 // Asynchronous image loading
 async function addImages(fileList) {
-  if (fileList.length > 0) imageListContainer.style.display = 'flex';
-  
-  const filesToProcess = Array.from(fileList).filter(file => file.type.startsWith('image/'));
-  
-  // Show a status update and disable button
-  showStatus(`Processing ${filesToProcess.length} images...`, 'info');
-  generateBtn.disabled = true;
+  if (fileList.length > 0) imageListContainer.style.display = 'flex';
+  
+  const filesToProcess = Array.from(fileList).filter(file => file.type.startsWith('image/'));
+  
+  // Show a status update and disable button
+  showStatus(`Processing ${filesToProcess.length} images...`, 'info');
+  generateBtn.disabled = true;
 
-  for (let i = 0; i < filesToProcess.length; i++) {
-    const file = filesToProcess[i];
-    // Update status for every image
-    statusMessage.textContent = `Processing image ${i + 1} of ${filesToProcess.length}...`;
+  for (let i = 0; i < filesToProcess.length; i++) {
+    const file = filesToProcess[i];
+    // Update status for every image
+    statusMessage.textContent = `Processing image ${i + 1} of ${filesToProcess.length}...`;
 
-    try {
-      const previewDataUrl = await convertImageToJpgDataUrl(file);
+    try {
+      const previewDataUrl = await convertImageToJpgDataUrl(file);
 
-      const wrapper = document.createElement('div');
-      wrapper.classList.add('image-wrapper');
-      wrapper.draggable = true;
-      
-      const previewImg = document.createElement('img');
-      previewImg.src = previewDataUrl; 
-      previewImg.classList.add('image-item');
+      const wrapper = document.createElement('div');
+      wrapper.classList.add('image-wrapper');
+      wrapper.draggable = true;
+      
+      const previewImg = document.createElement('img');
+      previewImg.src = previewDataUrl; 
+      previewImg.classList.add('image-item');
 
-      previewImg.onclick = () => {
-        const index = Array.from(imageListContainer.children).indexOf(wrapper);
-        openImageModal(index);
-      };
-      
-      const removeBtn = document.createElement('button');
-      removeBtn.innerHTML = "×";
-      removeBtn.classList.add('remove-image-btn');
-      removeBtn.ariaLabel = "Remove image"; 
-      
-      removeBtn.onclick = () => {
-        const index = Array.from(imageListContainer.children).indexOf(wrapper);
-        if (index > -1) {
-            images.splice(index, 1);
-            wrapper.remove();
-            if (images.length === 0) imageListContainer.style.display = 'none';
-        }
-      };
+      previewImg.onclick = () => {
+        const index = Array.from(imageListContainer.children).indexOf(wrapper);
+        openImageModal(index);
+      };
+      
+      const removeBtn = document.createElement('button');
+      removeBtn.innerHTML = "×";
+      removeBtn.classList.add('remove-image-btn');
+      removeBtn.ariaLabel = "Remove image"; 
+      
+      removeBtn.onclick = () => {
+        const index = Array.from(imageListContainer.children).indexOf(wrapper);
+        if (index > -1) {
+            images.splice(index, 1);
+            wrapper.remove();
+            if (images.length === 0) imageListContainer.style.display = 'none';
+        }
+      };
 
-      const commentIcon = document.createElement('span');
-      commentIcon.classList.add('comment-icon');
-      commentIcon.textContent = '💬';
-      
-      wrapper.appendChild(previewImg);
-      wrapper.appendChild(removeBtn);
-      wrapper.appendChild(commentIcon);
-      imageListContainer.appendChild(wrapper);
+      const commentIcon = document.createElement('span');
+      commentIcon.classList.add('comment-icon');
+      commentIcon.textContent = '💬';
+      
+      wrapper.appendChild(previewImg);
+      wrapper.appendChild(removeBtn);
+      wrapper.appendChild(commentIcon);
+      imageListContainer.appendChild(wrapper);
 
-      const newImageData = {
-          file: file, // Store the ORIGINAL file (HEIC or JPG)
-          comment: '',
-          id: 'img-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9)
-      };
-      images.push(newImageData);
-      wrapper.dataset.id = newImageData.id;
+      const newImageData = {
+          file: file, // Store the ORIGINAL file (HEIC or JPG)
+          comment: '',
+          id: 'img-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9)
+      };
+      images.push(newImageData);
+      wrapper.dataset.id = newImageData.id;
 
-      wrapper.addEventListener('dragstart', handleDragStart, false);
-      wrapper.addEventListener('dragenter', handleDragEnter, false);
-      wrapper.addEventListener('dragover', handleDragOver, false);
-      wrapper.addEventListener('dragleave', handleDragLeave, false);
-      wrapper.addEventListener('drop', handleDrop, false);
-      wrapper.addEventListener('dragend', handleDragEnd, false);
-      wrapper.addEventListener('touchstart', handleTouchStart, { passive: true });
+      wrapper.addEventListener('dragstart', handleDragStart, false);
+      wrapper.addEventListener('dragenter', handleDragEnter, false);
+      wrapper.addEventListener('dragover', handleDragOver, false);
+      wrapper.addEventListener('dragleave', handleDragLeave, false);
+      wrapper.addEventListener('drop', handleDrop, false);
+      wrapper.addEventListener('dragend', handleDragEnd, false);
+      wrapper.addEventListener('touchstart', handleTouchStart, { passive: true });
 
-      // After each image, pause briefly to let the UI update
-      await new Promise(res => setTimeout(res, 0)); 
+      // After each image, pause briefly to let the UI update
+      await new Promise(res => setTimeout(res, 0)); 
 
-    } catch (err) {
-        console.error("Failed to process image:", file.name, err);
-        showStatus(`Failed to load image: ${file.name}.`, "error");
-    }
-  }
+    } catch (err) {
+        console.error("Failed to process image:", file.name, err);
+        showStatus(`Failed to load image: ${file.name}.`, "error");
+    }
+  }
 
-  // Done! Re-enable button
-  showStatus(`Added ${filesToProcess.length} images. Hint: Long-press to re-order.`, 'success');
-  generateBtn.disabled = false;
+  // Done! Re-enable button
+  showStatus(`Added ${filesToProcess.length} images. Hint: Long-press to re-order.`, 'success');
+  generateBtn.disabled = false;
 }
 
 document.getElementById('removeAllBtn').addEventListener('click', () => {
-  images = [];
-  imageListContainer.innerHTML = '';
-  imageListContainer.style.display = 'none';
-  showStatus('All images removed.', 'info');
+  images = [];
+  imageListContainer.innerHTML = '';
+  imageListContainer.style.display = 'none';
+  showStatus('All images removed.', 'info');
 });
 
 // Modal Functions
 function openImageModal(index) {
-  if (index < 0 || index >= images.length) return;
-  activeImageIndex = index;
-  imageCommentTextarea.value = images[index].comment;
-  imageModal.style.display = 'flex';
-  imageCommentTextarea.focus();
+  if (index < 0 || index >= images.length) return;
+  activeImageIndex = index;
+  imageCommentTextarea.value = images[index].comment;
+  imageModal.style.display = 'flex';
+  imageCommentTextarea.focus();
 }
 
 function closeImageModal() {
-  imageModal.style.display = 'none';
-  activeImageIndex = -1;
-  imageCommentTextarea.value = '';
+  imageModal.style.display = 'none';
+  activeImageIndex = -1;
+  imageCommentTextarea.value = '';
 }
 
 modalSaveBtn.addEventListener('click', () => {
-  if (activeImageIndex > -1) {
-    const imageData = images[activeImageIndex];
-    imageData.comment = imageCommentTextarea.value.trim();
-    
-    const wrapper = imageListContainer.children[activeImageIndex];
-    if (wrapper) {
-        const commentIcon = wrapper.querySelector('.comment-icon');
-        if (imageData.comment) {
-          commentIcon.classList.add('visible');
-        } else {
-          commentIcon.classList.remove('visible');
-        }
-    }
-  }
-  closeImageModal();
+  if (activeImageIndex > -1) {
+    const imageData = images[activeImageIndex];
+    imageData.comment = imageCommentTextarea.value.trim();
+    
+    const wrapper = imageListContainer.children[activeImageIndex];
+    if (wrapper) {
+        const commentIcon = wrapper.querySelector('.comment-icon');
+        if (imageData.comment) {
+          commentIcon.classList.add('visible');
+        } else {
+          commentIcon.classList.remove('visible');
+        }
+    }
+  }
+  closeImageModal();
 });
 
 modalDeleteBtn.addEventListener('click', () => {
-    if (activeImageIndex > -1) {
-        const wrapper = imageListContainer.children[activeImageIndex];
-        if (wrapper) {
-            images.splice(activeImageIndex, 1);
-            wrapper.remove();
-            if (images.length === 0) imageListContainer.style.display = 'none';
-        }
-    }
-    closeImageModal();
+    if (activeImageIndex > -1) {
+        const wrapper = imageListContainer.children[activeImageIndex];
+        if (wrapper) {
+            images.splice(activeImageIndex, 1);
+            wrapper.remove();
+            if (images.length === 0) imageListContainer.style.display = 'none';
+        }
+    }
+    closeImageModal();
 });
 
 modalCancelBtn.addEventListener('click', closeImageModal);
 imageModal.addEventListener('click', (e) => {
-    if (e.target === imageModal) closeImageModal();
+    if (e.target === imageModal) closeImageModal();
 });
 
 
 attachmentsDropZone.addEventListener('click', () => {
-  const fileInput = document.createElement('input');
-  fileInput.type = 'file';
-  fileInput.multiple = true;
-  // No 'accept' attribute here, to allow any file type as an attachment
-  fileInput.onchange = () => addAttachments(fileInput.files);
-  fileInput.click();
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file';
+  fileInput.multiple = true;
+  // No 'accept' attribute here, to allow any file type as an attachment
+  fileInput.onchange = () => addAttachments(fileInput.files);
+  fileInput.click();
 });
 attachmentsDropZone.addEventListener('dragover', e => { e.preventDefault(); attachmentsDropZone.classList.add("dragover"); });
 attachmentsDropZone.addEventListener('dragleave', e => { e.preventDefault(); attachmentsDropZone.classList.remove("dragover"); });
 attachmentsDropZone.addEventListener('drop', e => { e.preventDefault(); attachmentsDropZone.classList.remove("dragover"); addAttachments(e.dataTransfer.files); });
 
 function addAttachments(fileList){
-  if(fileList.length > 0) attachmentListContainer.style.display = 'block';
-  Array.from(fileList).forEach(file => {
-    attachments.push(file);
-    const item = document.createElement('div');
-    item.textContent = file.name;
-    item.classList.add('attachment-item');
-    attachmentListContainer.appendChild(item);
-  });
+  if(fileList.length > 0) attachmentListContainer.style.display = 'block';
+  Array.from(fileList).forEach(file => {
+    attachments.push(file);
+    const item = document.createElement('div');
+    item.textContent = file.name;
+    item.classList.add('attachment-item');
+    attachmentListContainer.appendChild(item);
+  });
 }
 document.getElementById('removeAllAttachmentsBtn').addEventListener('click', () => {
-  attachments = [];
-  attachmentListContainer.innerHTML = '';
-  attachmentListContainer.style.display = 'none';
-  showStatus('All attachments removed.', 'info');
+  attachments = [];
+  attachmentListContainer.innerHTML = '';
+  attachmentListContainer.style.display = 'none';
+  showStatus('All attachments removed.', 'info');
 });
 
 async function compressPdfWithILovePdf(pdfBlob, publicKey) {
-    const authUrl = 'https://api.ilovepdf.com/v1/auth';
-    const startUrl = 'https://api.ilovepdf.com/v1/start/compress';
+    const authUrl = 'https://api.ilovepdf.com/v1/auth';
+    const startUrl = 'https://api.ilovepdf.com/v1/start/compress';
 
-    // 1. Authenticate
-    showStatus('Authenticating with compression service...', 'info');
-    const authResponse = await fetch(authUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ public_key: publicKey })
-    });
-    if (!authResponse.ok) throw new Error(`iLovePDF authentication failed (${authResponse.status})`);
-    const { token } = await authResponse.json();
-    const authHeader = { 'Authorization': `Bearer ${token}` };
+    // 1. Authenticate
+    showStatus('Authenticating with compression service...', 'info');
+    const authResponse = await fetch(authUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ public_key: publicKey })
+    });
+    if (!authResponse.ok) throw new Error(`iLovePDF authentication failed (${authResponse.status})`);
+    const { token } = await authResponse.json();
+    const authHeader = { 'Authorization': `Bearer ${token}` };
 
-    // 2. Start Task
-    showStatus('Starting compression task...', 'info');
-    const startResponse = await fetch(startUrl, { headers: authHeader });
-    if (!startResponse.ok) throw new Error('Failed to start iLovePDF task.');
-    const { server, task } = await startResponse.json();
+    // 2. Start Task
+    showStatus('Starting compression task...', 'info');
+    const startResponse = await fetch(startUrl, { headers: authHeader });
+    if (!startResponse.ok) throw new Error('Failed to start iLovePDF task.');
+    const { server, task } = await startResponse.json();
 
-    // Use the dynamic server for all subsequent calls for this task
-    const uploadUrl = `https://${server}/v1/upload`;
-    const processUrl = `https://${server}/v1/process`;
-    const downloadUrl = `https://${server}/v1/download`;
+    // Use the dynamic server for all subsequent calls for this task
+    const uploadUrl = `https://${server}/v1/upload`;
+    const processUrl = `https://${server}/v1/process`;
+    const downloadUrl = `https://${server}/v1/download`;
 
-    // 3. Upload File
-    showStatus('Uploading PDF for compression...', 'info');
-    const formData = new FormData();
-    formData.append('task', task);
-    formData.append('file', pdfBlob, 'document.pdf');
-    const uploadResponse = await fetch(uploadUrl, {
-        method: 'POST',
-        headers: authHeader,
-        body: formData
-    });
-    if (!uploadResponse.ok) throw new Error('Failed to upload file to iLovePDF.');
-    const { server_filename } = await uploadResponse.json();
+    // 3. Upload File
+    showStatus('Uploading PDF for compression...', 'info');
+    const formData = new FormData();
+    formData.append('task', task);
+    formData.append('file', pdfBlob, 'document.pdf');
+    const uploadResponse = await fetch(uploadUrl, {
+        method: 'POST',
+        headers: authHeader,
+        body: formData
+    });
+    if (!uploadResponse.ok) throw new Error('Failed to upload file to iLovePDF.');
+    const { server_filename } = await uploadResponse.json();
 
-    // 4. Process File
-    showStatus('Compressing PDF...', 'info');
-    const processBody = {
-        task: task,
-        tool: 'compress',
-        files: [{ server_filename: server_filename, filename: 'document.pdf' }],
-        compression_level: 'recommended',
-    };
-    const processResponse = await fetch(processUrl, {
-        method: 'POST',
-        headers: { ...authHeader, 'Content-Type': 'application/json' },
-        body: JSON.stringify(processBody)
-    });
-    if (!processResponse.ok) throw new Error('Failed to process file with iLovePDF.');
-    
-    // 5. Download File
-    showStatus('Downloading compressed PDF...', 'info');
-    const downloadResponse = await fetch(`${downloadUrl}/${task}`, { headers: authHeader });
-s    if (!downloadResponse.ok) throw new Error('Failed to download compressed file from iLovePDF.');
-    
-    return downloadResponse.blob();
+    // 4. Process File
+    showStatus('Compressing PDF...', 'info');
+    const processBody = {
+        task: task,
+        tool: 'compress',
+        files: [{ server_filename: server_filename, filename: 'document.pdf' }],
+        compression_level: 'recommended',
+    };
+    const processResponse = await fetch(processUrl, {
+        method: 'POST',
+        headers: { ...authHeader, 'Content-Type': 'application/json' },
+        body: JSON.stringify(processBody)
+    });
+    if (!processResponse.ok) throw new Error('Failed to process file with iLovePDF.');
+    
+    // 5. Download File
+    showStatus('Downloading compressed PDF...', 'info');
+    const downloadResponse = await fetch(`${downloadUrl}/${task}`, { headers: authHeader });
+    if (!downloadResponse.ok) throw new Error('Failed to download compressed file from iLovePDF.');
+    
+    return downloadResponse.blob();
 }
 
 generateBtn.addEventListener('click', async () => {
-  statusMessage.className = 'status-message';
-  generateBtn.disabled = true;
-  generateBtn.classList.add('loading');
+  statusMessage.className = 'status-message';
+  generateBtn.disabled = true;
+  generateBtn.classList.add('loading');
 
-  try {
-    const requiredIds = ["vesselName", "antennaModel", "antennaLocation", "caseNumber", "submittedBy", "dateField"];
-    let valid = true;
-    requiredIds.forEach(id => {
-      const f = document.getElementById(id);
-      if (!f.value.trim()) {
-        f.classList.add("invalid");
-        valid = false;
-      } else {
-        f.classList.remove("invalid");
-      }
-    });
-    if (!valid) throw new Error("Please fill all required fields!");
+  try {
+    const requiredIds = ["vesselName", "antennaModel", "antennaLocation", "caseNumber", "submittedBy", "dateField"];
+    let valid = true;
+    requiredIds.forEach(id => {
+      const f = document.getElementById(id);
+      if (!f.value.trim()) {
+        f.classList.add("invalid");
+        valid = false;
+      } else {
+        f.classList.remove("invalid");
+      }
+    });
+    if (!valid) throw new Error("Please fill all required fields!");
 
-    if (images.length === 0 && attachments.length === 0) throw new Error("Add at least one image or attachment.");
+    if (images.length === 0 && attachments.length === 0) throw new Error("Add at least one image or attachment.");
 
-    showStatus("Generating PDF and output files...", "info");
+    showStatus("Generating PDF and output files...", "info");
 
-    const vessel = document.getElementById('vesselName').value.trim();
-    const antenna = document.getElementById('antennaModel').value.trim();
-    const location = document.getElementById('antennaLocation').value.trim().toUpperCase();
-    const caseNum = document.getElementById('caseNumber').value.trim();
-    const submitted = formatSubmittedby(document.getElementById('submittedBy').value.trim());
-    const dateStr = document.getElementById('dateField').value;
-    const perPage = parseInt(document.getElementById('imagesPerPage').value);
-    const compressionQuality = parseFloat(document.getElementById('compressionLevel').value);
+    const vessel = document.getElementById('vesselName').value.trim();
+    const antenna = document.getElementById('antennaModel').value.trim();
+    const location = document.getElementById('antennaLocation').value.trim().toUpperCase();
+    const caseNum = document.getElementById('caseNumber').value.trim();
+    const submitted = formatSubmittedby(document.getElementById('submittedBy').value.trim());
+    const dateStr = document.getElementById('dateField').value;
+    const perPage = parseInt(document.getElementById('imagesPerPage').value);
+    const compressionQuality = parseFloat(document.getElementById('compressionLevel').value);
 
-    const pdf = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'a4' });
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
+    const pdf = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'a4' });
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
 
-    const logoUrl = 'https://raw.githubusercontent.com/pgarciafer/pics2PDF/main/logo.png';
-    const logo = await loadImage(logoUrl);
-    if (logo) {
-      const logoWidth = 350;
-      const logoHeight = (logo.height * logoWidth) / logo.width;
-      pdf.addImage(logo, 'PNG', (pageWidth - logoWidth) / 2, 50, logoWidth, logoHeight);
-    }
+    const logoUrl = 'https://raw.githubusercontent.com/pgarciafer/pics2PDF/main/logo.png';
+    const logo = await loadImage(logoUrl);
+    if (logo) {
+      const logoWidth = 350;
+      const logoHeight = (logo.height * logoWidth) / logo.width;
+      pdf.addImage(logo, 'PNG', (pageWidth - logoWidth) / 2, 50, logoWidth, logoHeight);
+    }
 
-    pdf.setFontSize(26).setFont('helvetica', 'bold');
-    pdf.text(vessel, pageWidth / 2, 250, { align: 'center' });
-    pdf.setFontSize(18);
-    pdf.text(`${antenna} (${location})`, pageWidth / 2, 290, { align: 'center' });
-    pdf.setFontSize(14);
-    pdf.text(`Case Number: ${caseNum}`, pageWidth / 2, 330, { align: 'center' });
-    pdf.text(`Submitted By: ${submitted}`, pageWidth / 2, 360, { align: 'center' });
-    pdf.text(`Date: ${dateStr}`, pageWidth / 2, 385, { align: 'center' });
+    pdf.setFontSize(26).setFont('helvetica', 'bold');
+    pdf.text(vessel, pageWidth / 2, 250, { align: 'center' });
+    pdf.setFontSize(18);
+    pdf.text(`${antenna} (${location})`, pageWidth / 2, 290, { align: 'center' });
+    pdf.setFontSize(14);
+    pdf.text(`Case Number: ${caseNum}`, pageWidth / 2, 330, { align: 'center' });
+    pdf.text(`Submitted By: ${submitted}`, pageWidth / 2, 360, { align: 'center' });
+    pdf.text(`Date: ${dateStr}`, pageWidth / 2, 385, { align: 'center' });
 
-    if (images.length > 0) {
-      pdf.addPage();
-      let pageNum = 2;
-      for (let i = 0; i < images.length; i += perPage) {
-        
-        // Asynchronous PDF page generation
-        const pageCount = Math.ceil(images.length / perPage);
-        const currentPage = (i / perPage) + 1;
-        showStatus(`Processing PDF page ${currentPage} of ${pageCount}...`, 'info');
-        
-        // Pause for UI update
-        await new Promise(res => setTimeout(res, 0)); 
+    if (images.length > 0) {
+      pdf.addPage();
+      let pageNum = 2;
+      for (let i = 0; i < images.length; i += perPage) {
+        
+        // Asynchronous PDF page generation
+        const pageCount = Math.ceil(images.length / perPage);
+        const currentPage = (i / perPage) + 1;
+        showStatus(`Processing PDF page ${currentPage} of ${pageCount}...`, 'info');
+        
+        // Pause for UI update
+        await new Promise(res => setTimeout(res, 0)); 
 
-        const chunk = images.slice(i, i + perPage);
-        const spacingX = 10, spacingY = 10;
-        const cellWidth = (pageWidth - (perPage + 1) * spacingX) / perPage;
-        const cellHeight = pageHeight - 2 * spacingY;
+        const chunk = images.slice(i, i + perPage);
+        const spacingX = 10, spacingY = 10;
+        const cellWidth = (pageWidth - (perPage + 1) * spacingX) / perPage;
+        const cellHeight = pageHeight - 2 * spacingY;
 
-        const processedChunk = [];
-        let maxImageBottom = 0;
-        
-        const anyCommentInChunk = chunk.some(d => d.comment && d.comment.trim() !== '');
-        const reservedCommentSpace = anyCommentInChunk ? 50 : 0;
-        const imgContainerHeight = cellHeight - reservedCommentSpace;
+        const processedChunk = [];
+        let maxImageBottom = 0;
+        
+        const anyCommentInChunk = chunk.some(d => d.comment && d.comment.trim() !== '');
+        const reservedCommentSpace = anyCommentInChunk ? 50 : 0;
+        const imgContainerHeight = cellHeight - reservedCommentSpace;
 
-        for (let idx = 0; idx < chunk.length; idx++) {
-            const imgData = chunk[idx];
-            // processImageForPdf handles the original file (HEIC or JPG)
-            const dataUrl = await processImageForPdf(imgData.file, 2000, compressionQuality);
-            if (!dataUrl) continue;
+        for (let idx = 0; idx < chunk.length; idx++) {
+            const imgData = chunk[idx];
+            // processImageForPdf handles the original file (HEIC or JPG)
+            const dataUrl = await processImageForPdf(imgData.file, 2000, compressionQuality);
+            if (!dataUrl) continue;
 
-            const img = new Image();
-            img.src = dataUrl;
-            await new Promise(res => { img.onload = res; });
-            
-            const cellAspect = cellWidth / imgContainerHeight;
-            const imgAspect = img.width / img.height;
-            let finalW, finalH;
+            const img = new Image();
+            img.src = dataUrl;
+            await new Promise(res => { img.onload = res; });
+            
+            const cellAspect = cellWidth / imgContainerHeight;
+            const imgAspect = img.width / img.height;
+            let finalW, finalH;
 
-            if (imgAspect > cellAspect) {
-                finalW = cellWidth * 0.95;
-                finalH = finalW / imgAspect;
-            } else {
-                finalH = imgContainerHeight * 0.95;
-                finalW = finalH * imgAspect;
-            }
+            if (imgAspect > cellAspect) {
+                finalW = cellWidth * 0.95;
+                finalH = finalW / imgAspect;
+            } else {
+                finalH = imgContainerHeight * 0.95;
+                finalW = finalH * imgAspect;
+            }
 
-            const cellX = spacingX + idx * (cellWidth + spacingX);
-            const cellY = spacingY;
+            const cellX = spacingX + idx * (cellWidth + spacingX);
+            const cellY = spacingY;
 
-            const imgX = cellX + (cellWidth - finalW) / 2;
-            const imgY = cellY + (imgContainerHeight - finalH) / 2;
-            
-            const imageBottom = imgY + finalH;
-            if (imageBottom > maxImageBottom) {
-                maxImageBottom = imageBottom;
-            }
+            const imgX = cellX + (cellWidth - finalW) / 2;
+            const imgY = cellY + (imgContainerHeight - finalH) / 2;
+            
+            const imageBottom = imgY + finalH;
+            if (imageBottom > maxImageBottom) {
+                maxImageBottom = imageBottom;
+            }
 
-            processedChunk.push({
-                dataUrl,
-                comment: imgData.comment,
-                imgX, imgY, finalW, finalH,
-                cellX, cellWidth
-            });
-        }
+            processedChunk.push({
+                dataUrl,
+                comment: imgData.comment,
+                imgX, imgY, finalW, finalH,
+                cellX, cellWidth
+            });
+        }
 
-        const textY = maxImageBottom > 0 ? maxImageBottom + 15 : imgContainerHeight + 15;
+        const textY = maxImageBottom > 0 ? maxImageBottom + 15 : imgContainerHeight + 15;
 
-        for (const pImg of processedChunk) {
-            pdf.addImage(pImg.dataUrl, "JPEG", pImg.imgX, pImg.imgY, pImg.finalW, pImg.finalH);
+        for (const pImg of processedChunk) {
+            pdf.addImage(pImg.dataUrl, "JPEG", pImg.imgX, pImg.imgY, pImg.finalW, pImg.finalH);
 
-            if (pImg.comment && pImg.comment.trim() !== '') {
-                pdf.setFontSize(10).setFont('helvetica', 'normal');
-                const textLines = pdf.splitTextToSize(pImg.comment, pImg.cellWidth * 0.9);
-                pdf.text(textLines, pImg.cellX + pImg.cellWidth / 2, textY, { align: 'center' });
-            }
-        }
-        
-        pdf.setFontSize(12).text(`Page ${pageNum}`, pageWidth / 2, pageHeight - 10, { align: 'center' });
-        if (i + perPage < images.length) pdf.addPage();
-        pageNum++;
-      }
-    }
+            if (pImg.comment && pImg.comment.trim() !== '') {
+                pdf.setFontSize(10).setFont('helvetica', 'normal');
+                const textLines = pdf.splitTextToSize(pImg.comment, pImg.cellWidth * 0.9);
+                pdf.text(textLines, pImg.cellX + pImg.cellWidth / 2, textY, { align: 'center' });
+            }
+        }
+        
+        pdf.setFontSize(12).text(`Page ${pageNum}`, pageWidth / 2, pageHeight - 10, { align: 'center' });
+        if (i + perPage < images.length) pdf.addPage();
+        pageNum++;
+      }
+    }
 
-    if (attachments.length > 0) {
-      showStatus('Adding attachments...', 'info');
-      await new Promise(res => setTimeout(res, 0));
-      pdf.addPage();
-      pdf.setFontSize(16).setFont('helvetica', 'bold');
-      pdf.text("Attached Files", pageWidth / 2, 30, { align: 'center' });
-      pdf.setFontSize(12).setFont('helvetica', 'normal');
-      let startY = 60;
-      for (const att of attachments) {
-        pdf.text(`📎 ${att.name}`, 20, startY);
-        startY += 25;
-        if (startY > pageHeight - 40) {
-          pdf.addPage();
-          startY = 40;
-        }
-      }
-    }
+    if (attachments.length > 0) {
+      showStatus('Adding attachments...', 'info');
+      await new Promise(res => setTimeout(res, 0));
+      pdf.addPage();
+      pdf.setFontSize(16).setFont('helvetica', 'bold');
+      pdf.text("Attached Files", pageWidth / 2, 30, { align: 'center' });
+      pdf.setFontSize(12).setFont('helvetica', 'normal');
+      let startY = 60;
+      for (const att of attachments) {
+        pdf.text(`📎 ${att.name}`, 20, startY);
+        startY += 25;
+        if (startY > pageHeight - 40) {
+          pdf.addPage();
+          startY = 40;
+        }
+      }
+    }
 
-    let pdfBlob = pdf.output('blob');
+    let pdfBlob = pdf.output('blob');
 
-    const compressPdfCheckbox = document.getElementById('compressPdf');
-    if (compressPdfCheckbox.checked) {
-        if (ILOVEPDF_PUBLIC_KEY === 'YOUR_PUBLIC_KEY_HERE' || !ILOVEPDF_PUBLIC_KEY) {
-            throw new Error('Please enter your iLovePDF public key in the script to enable compression.');
-        }
-        try {
-            const originalSize = (pdfBlob.size / 1024 / 1024).toFixed(2);
-            showStatus(`PDF generated (${originalSize} MB). Now compressing...`, 'info');
-            pdfBlob = await compressPdfWithILovePdf(pdfBlob, ILOVEPDF_PUBLIC_KEY);
-            const compressedSize = (pdfBlob.size / 1024 / 1024).toFixed(2);
-            showStatus(`Compression complete! Size reduced from ${originalSize} MB to ${compressedSize} MB.`, 'success');
-            await new Promise(res => setTimeout(res, 2000));
-        } catch (compressionError) {
-            console.error("PDF compression failed:", compressionError);
-s            showStatus(`PDF compression failed: ${compressionError.message}. Using uncompressed PDF.`, 'error');
-            await new Promise(res => setTimeout(res, 3000));
-        }
-    }
+    const compressPdfCheckbox = document.getElementById('compressPdf');
+    if (compressPdfCheckbox.checked) {
+        if (ILOVEPDF_PUBLIC_KEY === 'YOUR_PUBLIC_KEY_HERE' || !ILOVEPDF_PUBLIC_KEY) {
+            throw new Error('Please enter your iLovePDF public key in the script to enable compression.');
+        }
+        try {
+            const originalSize = (pdfBlob.size / 1024 / 1024).toFixed(2);
+            showStatus(`PDF generated (${originalSize} MB). Now compressing...`, 'info');
+            pdfBlob = await compressPdfWithILovePdf(pdfBlob, ILOVEPDF_PUBLIC_KEY);
+            const compressedSize = (pdfBlob.size / 1024 / 1024).toFixed(2);
+            showStatus(`Compression complete! Size reduced from ${originalSize} MB to ${compressedSize} MB.`, 'success');
+            await new Promise(res => setTimeout(res, 2000));
+        } catch (compressionError) {
+            console.error("PDF compression failed:", compressionError);
+            showStatus(`PDF compression failed: ${compressionError.message}. Using uncompressed PDF.`, 'error');
+            await new Promise(res => setTimeout(res, 3000));
+        }
+    }
 
-    const pdfFilename = `${vessel}_PicArray_${antenna}_${location.replace(/ /g, '')}_Case${caseNum}_${dateStr.replace(/-/g,'')}.pdf`;
-    
-    if (attachments.length > 0) {
-      showStatus('Compressing files into ZIP...', 'info');
-      await new Promise(res => setTimeout(res, 0));
-      const zip = new JSZip();
-      zip.file(pdfFilename, pdfBlob);
+    const pdfFilename = `${vessel}_PicArray_${antenna}_${location.replace(/ /g, '')}_Case${caseNum}_${dateStr.replace(/-/g,'')}.pdf`;
+    
+    if (attachments.length > 0) {
+      showStatus('Compressing files into ZIP...', 'info');
+      await new Promise(res => setTimeout(res, 0));
+      const zip = new JSZip();
+      zip.file(pdfFilename, pdfBlob);
 
-      const attachmentsFolder = zip.folder("attachments");
-      for (const att of attachments) {
-        attachmentsFolder.file(att.name, att);
-      }
+      const attachmentsFolder = zip.folder("attachments");
+      for (const att of attachments) {
+        attachmentsFolder.file(att.name, att);
+      }
 
-      const zipFilename = pdfFilename.replace('.pdf', '.zip');
-      zip.generateAsync({ type: "blob" }).then(content => {
-        saveAs(content, zipFilename);
-        showStatus('PDF and ZIP generated successfully!', 'success');
-      });
-    } else {
-      function isMobile() {
-        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-      }
+      const zipFilename = pdfFilename.replace('.pdf', '.zip');
+      zip.generateAsync({ type: "blob" }).then(content => {
+        saveAs(content, zipFilename);
+        showStatus('PDF and ZIP generated successfully!', 'success');
+      });
+    } else {
+      function isMobile() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      }
 
-      if (isMobile() && images.length > 0) {
-        showStatus('Generating PDF for preview...', 'info');
-        await new Promise(res => setTimeout(res, 0));
-        
-        const blobUrl = URL.createObjectURL(pdfBlob);
-        const previewWindow = window.open('', '_blank');
+      if (isMobile() && images.length > 0) {
+        showStatus('Generating PDF for preview...', 'info');
+        await new Promise(res => setTimeout(res, 0));
+        
+        const blobUrl = URL.createObjectURL(pdfBlob);
+        const previewWindow = window.open('', '_blank');
 
-        if (previewWindow) {
-          previewWindow.document.title = pdfFilename;
-          previewWindow.document.body.style.margin = '0';
-          previewWindow.document.body.style.overflow = 'hidden';
-          const iframe = previewWindow.document.createElement('iframe');
-          iframe.src = blobUrl;
-  M          iframe.style.width = '100vw';
-          iframe.style.height = '100vh';
-          iframe.style.border = 'none';
-          previewWindow.document.body.appendChild(iframe);
-          showStatus('PDF generated! Check the new tab to view or share.', 'success');
-        } else {
-          showStatus('Popup blocked. Downloading PDF directly.', 'error');
-    s       saveAs(pdfBlob, pdfFilename);
-        }
-      } else {
-        showStatus('Saving PDF...', 'info');
-        await new Promise(res => setTimeout(res, 0));
-        saveAs(pdfBlob, pdfFilename);
-        showStatus('PDF generated successfully!', 'success');
-      }
-    }
+        if (previewWindow) {
+          previewWindow.document.title = pdfFilename;
+          previewWindow.document.body.style.margin = '0';
+          previewWindow.document.body.style.overflow = 'hidden';
+          const iframe = previewWindow.document.createElement('iframe');
+          iframe.src = blobUrl;
+          iframe.style.width = '100vw';
+          iframe.style.height = '100vh';
+          iframe.style.border = 'none';
+          previewWindow.document.body.appendChild(iframe);
+          showStatus('PDF generated! Check the new tab to view or share.', 'success');
+        } else {
+          showStatus('Popup blocked. Downloading PDF directly.', 'error');
+          saveAs(pdfBlob, pdfFilename);
+        }
+      } else {
+        showStatus('Saving PDF...', 'info');
+        await new Promise(res => setTimeout(res, 0));
+        saveAs(pdfBlob, pdfFilename);
+        showStatus('PDF generated successfully!', 'success');
+      }
+    }
 
-  } catch (err) {
-    showStatus(err.message || "Error generating PDF/ZIP.", "error");
-s   console.error(err);
-  } finally {
-    generateBtn.disabled = false;
-    generateBtn.classList.remove('loading');
-  }
+  } catch (err) {
+    showStatus(err.message || "Error generating PDF/ZIP.", "error");
+    console.error(err);
+  } finally {
+    generateBtn.disabled = false;
+    generateBtn.classList.remove('loading');
+  }
 });
 
 
 function loadImage(src){
-  return new Promise(res=>{
-    const img=new Image();
-    img.crossOrigin='Anonymous';
-    img.src=src;
-    img.onload=()=>res(img);
-    img.onerror=()=>res(null);
-  });
+  return new Promise(res=>{
+    const img=new Image();
+    img.crossOrigin='Anonymous';
+    img.src=src;
+    img.onload=()=>res(img);
+    img.onerror=()=>res(null);
+  });
 }
 
 // === Drag and Drop Functions (Desktop) ===
 function handleDragStart(e) {
-s   this.classList.add('dragging');
-  dragSrcEl = this;
-  e.dataTransfer.effectAllowed = 'move';
-  e.dataTransfer.setData('text/plain', this.dataset.id);
+  this.classList.add('dragging');
+  dragSrcEl = this;
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain', this.dataset.id);
 }
 
 function handleDragOver(e) {
-  if (e.preventDefault) {
-    e.preventDefault();
-  }
-  e.dataTransfer.dropEffect = 'move';
-  return false;
+  if (e.preventDefault) {
+    e.preventDefault();
+  }
+  e.dataTransfer.dropEffect = 'move';
+  return false;
 }
 
 function handleDragEnter(e) {
-  if (this !== dragSrcEl) {
-    this.classList.add('over');
-  }
+  if (this !== dragSrcEl) {
+    this.classList.add('over');
+  }
 }
 
 function handleDragLeave(e) {
-  this.classList.remove('over');
+  this.classList.remove('over');
 }
 
 function handleDrop(e) {
-  if (e.stopPropagation) {
-    e.stopPropagation();
-  }
-  
-  if (dragSrcEl !== this) {
-    const allItems = Array.from(imageListContainer.children);
-    const srcIndex = allItems.indexOf(dragSrcEl);
-    const targetIndex = allItems.indexOf(this);
+  if (e.stopPropagation) {
+    e.stopPropagation();
+  }
+  
+  if (dragSrcEl !== this) {
+    const allItems = Array.from(imageListContainer.children);
+    const srcIndex = allItems.indexOf(dragSrcEl);
+    const targetIndex = allItems.indexOf(this);
 
-    if (srcIndex < targetIndex) {
-    s     imageListContainer.insertBefore(dragSrcEl, this.nextSibling);
-    } else {
-        imageListContainer.insertBefore(dragSrcEl, this);
-    }
-  }
-  return false;
+    if (srcIndex < targetIndex) {
+        imageListContainer.insertBefore(dragSrcEl, this.nextSibling);
+    } else {
+        imageListContainer.insertBefore(dragSrcEl, this);
+    }
+  }
+  return false;
 }
 
 function handleDragEnd(e) {
-  const items = document.querySelectorAll('.image-list-container .image-wrapper');
-  items.forEach(function (item) {
-    item.classList.remove('over');
-    item.classList.remove('dragging');
-  });
+  const items = document.querySelectorAll('.image-list-container .image-wrapper');
+  items.forEach(function (item) {
+    item.classList.remove('over');
+    item.classList.remove('dragging');
+  });
 
-  // Re-sync the `images` array with the new DOM order
-  const newDomOrder = [...imageListContainer.children];
-  const newImagesArray = newDomOrder
-    .map(wrapper => images.find(img => img.id === wrapper.dataset.id))
-    .filter(Boolean); // Filter out any undefined if something went wrong
-  images = newImagesArray;
-  
-  dragSrcEl = null;
+  // Re-sync the `images` array with the new DOM order
+  const newDomOrder = [...imageListContainer.children];
+  const newImagesArray = newDomOrder
+    .map(wrapper => images.find(img => img.id === wrapper.dataset.id))
+    .filter(Boolean); // Filter out any undefined if something went wrong
+  images = newImagesArray;
+  
+  dragSrcEl = null;
 }
 
 // === Touch Drag and Drop Functions (Mobile) ===
@@ -1479,123 +1479,123 @@ let initialTouchX = 0, initialTouchY = 0, startRect = null;
 const LONG_PRESS_DURATION = 300; // ms
 
 function handleTouchStart(e) {
-  if (e.target.classList.contains('remove-image-btn')) return;
+  if (e.target.classList.contains('remove-image-btn')) return;
 
-  touchDragEl = this;
-  const touch = e.touches[0];
-  const startX = touch.clientX;
-s   const startY = touch.clientY;
+  touchDragEl = this;
+  const touch = e.touches[0];
+  const startX = touch.clientX;
+  const startY = touch.clientY;
 
-  const cancelDrag = () => {
-    clearTimeout(longPressTimer);
-    document.removeEventListener('touchmove', onMove);
-    document.removeEventListener('touchend', cancelDrag);
-    document.removeEventListener('touchcancel', cancelDrag);
-  };
+  const cancelDrag = () => {
+    clearTimeout(longPressTimer);
+    document.removeEventListener('touchmove', onMove);
+    document.removeEventListener('touchend', cancelDrag);
+    document.removeEventListener('touchcancel', cancelDrag);
+  };
 
-  const onMove = (moveEvent) => {
-    const moveTouch = moveEvent.touches[0];
-    // If finger moves more than 10px, it's a scroll, not a long press.
-    if (Math.abs(moveTouch.clientX - startX) > 10 || Math.abs(moveTouch.clientY - startY) > 10) {
-      cancelDrag();
-    }
-  };
-  
-  document.addEventListener('touchmove', onMove);
-  document.addEventListener('touchend', cancelDrag);
-  document.addEventListener('touchcancel', cancelDrag);
+  const onMove = (moveEvent) => {
+    const moveTouch = moveEvent.touches[0];
+    // If finger moves more than 10px, it's a scroll, not a long press.
+    if (Math.abs(moveTouch.clientX - startX) > 10 || Math.abs(moveTouch.clientY - startY) > 10) {
+      cancelDrag();
+    }
+  };
+  
+  document.addEventListener('touchmove', onMove);
+  document.addEventListener('touchend', cancelDrag);
+  document.addEventListener('touchcancel', cancelDrag);
 
-  longPressTimer = setTimeout(() => {
-    cancelDrag(); // We are starting the drag, so these listeners are no longer needed.
+  longPressTimer = setTimeout(() => {
+    cancelDrag(); // We are starting the drag, so these listeners are no longer needed.
 
-    isDraggingTouch = true;
-s     startRect = touchDragEl.getBoundingClientRect();
-    initialTouchX = touch.clientX;
-    initialTouchY = touch.clientY;
-    
-    placeholder = document.createElement('div');
-    placeholder.classList.add('placeholder');
-    placeholder.style.width = `${startRect.width}px`;
-    placeholder.style.height = `${startRect.height}px`;
-    touchDragEl.parentNode.insertBefore(placeholder, touchDragEl);
+    isDraggingTouch = true;
+    startRect = touchDragEl.getBoundingClientRect();
+    initialTouchX = touch.clientX;
+    initialTouchY = touch.clientY;
+    
+    placeholder = document.createElement('div');
+    placeholder.classList.add('placeholder');
+    placeholder.style.width = `${startRect.width}px`;
+    placeholder.style.height = `${startRect.height}px`;
+    touchDragEl.parentNode.insertBefore(placeholder, touchDragEl);
 
-    Object.assign(touchDragEl.style, {
-        position: 'fixed',
-        zIndex: '1000',
-        width: `${startRect.width}px`,
-  A       height: `${startRect.height}px`,
-        left: `${startRect.left}px`,
-        top: `${startRect.top}px`,
-        margin: '0'
-    });
-    touchDragEl.classList.add('touch-dragging');
+    Object.assign(touchDragEl.style, {
+        position: 'fixed',
+        zIndex: '1000',
+        width: `${startRect.width}px`,
+        height: `${startRect.height}px`,
+        left: `${startRect.left}px`,
+        top: `${startRect.top}px`,
+        margin: '0'
+    });
+    touchDragEl.classList.add('touch-dragging');
 
-    document.addEventListener('touchmove', handleTouchMove, { passive: false });
-    document.addEventListener('touchend', handleTouchEnd);
-    document.addEventListener('touchcancel', handleTouchEnd);
-  }, LONG_PRESS_DURATION);
+    document.addEventListener('touchmove', handleTouchMove, { passive: false });
+    document.addEventListener('touchend', handleTouchEnd);
+    document.addEventListener('touchcancel', handleTouchEnd);
+  }, LONG_PRESS_DURATION);
 }
 
 function handleTouchMove(e) {
-  if (!isDraggingTouch) return;
-  e.preventDefault();
+  if (!isDraggingTouch) return;
+  e.preventDefault();
 
-  const touch = e.touches[0];
-  const dx = touch.clientX - initialTouchX;
-  const dy = touch.clientY - initialTouchY;
+  const touch = e.touches[0];
+  const dx = touch.clientX - initialTouchX;
+  const dy = touch.clientY - initialTouchY;
 
-  touchDragEl.style.transform = `translate(${dx}px, ${dy}px)`;
+  touchDragEl.style.transform = `translate(${dx}px, ${dy}px)`;
 
-  touchDragEl.style.visibility = 'hidden';
-  const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
-  touchDragEl.style.visibility = 'visible';
+  touchDragEl.style.visibility = 'hidden';
+  const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+  touchDragEl.style.visibility = 'visible';
 
-  if (!elementBelow) return;
+  if (!elementBelow) return;
 
-  const dropTarget = elementBelow.closest('.image-wrapper');
-  if (dropTarget && dropTarget !== touchDragEl && dropTarget !== placeholder) {
-      const dropTargetRect = dropTarget.getBoundingClientRect();
-      const isAfter = (touch.clientX > dropTargetRect.left + dropTargetRect.width / 2);
+  const dropTarget = elementBelow.closest('.image-wrapper');
+  if (dropTarget && dropTarget !== touchDragEl && dropTarget !== placeholder) {
+      const dropTargetRect = dropTarget.getBoundingClientRect();
+      const isAfter = (touch.clientX > dropTargetRect.left + dropTargetRect.width / 2);
 
-      if (isAfter) {
-          dropTarget.parentNode.insertBefore(placeholder, dropTarget.nextSibling);
-      } else {
-          dropTarget.parentNode.insertBefore(placeholder, dropTarget);
-      }
-  }
+      if (isAfter) {
+          dropTarget.parentNode.insertBefore(placeholder, dropTarget.nextSibling);
+      } else {
+          dropTarget.parentNode.insertBefore(placeholder, dropTarget);
+      }
+  }
 }
 
 function handleTouchEnd(e) {
-  if (!isDraggingTouch) return;
+  if (!isDraggingTouch) return;
 
-  document.removeEventListener('touchmove', handleTouchMove);
-D  document.removeEventListener('touchend', handleTouchEnd);
-  document.removeEventListener('touchcancel', handleTouchEnd);
+  document.removeEventListener('touchmove', handleTouchMove);
+  document.removeEventListener('touchend', handleTouchEnd);
+  document.removeEventListener('touchcancel', handleTouchEnd);
 
-  if (touchDragEl && placeholder) {
-    placeholder.parentNode.insertBefore(touchDragEl, placeholder);
-    placeholder.remove();
-    
-    touchDragEl.classList.remove('touch-dragging');
-    touchDragEl.style.cssText = ''; // Resets all inline styles
-  }
-  
-  // Re-sync the `images` array with the new DOM order
-  const newDomOrder = [...imageListContainer.children];
-  const newImagesArray = newDomOrder
-    .map(wrapper => images.find(img => img.id === wrapper.dataset.id))
-    .filter(Boolean); // Filter out any undefined if something went wrong
-  images = newImagesArray;
-  
-  isDraggingTouch = false;
-  touchDragEl = null;
-  placeholder = null;
-  startRect = null;
+  if (touchDragEl && placeholder) {
+    placeholder.parentNode.insertBefore(touchDragEl, placeholder);
+    placeholder.remove();
+    
+    touchDragEl.classList.remove('touch-dragging');
+    touchDragEl.style.cssText = ''; // Resets all inline styles
+  }
+  
+  // Re-sync the `images` array with the new DOM order
+  const newDomOrder = [...imageListContainer.children];
+  const newImagesArray = newDomOrder
+    .map(wrapper => images.find(img => img.id === wrapper.dataset.id))
+    .filter(Boolean); // Filter out any undefined if something went wrong
+  images = newImagesArray;
+  
+  isDraggingTouch = false;
+  touchDragEl = null;
+  placeholder = null;
+  startRect = null;
 }
 
 // === NEW: Add listeners for auto-saving form data ===
 jobInfoInputIds.forEach(id => {
-s   document.getElementById(id).addEventListener('input', saveFormToLocalStorage);
+  document.getElementById(id).addEventListener('input', saveFormToLocalStorage);
 });
 
 // === NEW: Load saved form data on page load ===
