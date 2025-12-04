@@ -4,35 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pictures to PDF Generator</title>
-<link rel="icon" href="https://raw.githubusercontent.com/pgarciafer/pics2PDF/main/logo1.png" type="image/png">
+
+<link rel="icon" href="https://pgarciafer.github.io/shared-design-system/icons/Favicon-MTN.png" type="image/png">
+
+<link rel="stylesheet" href="https://pgarciafer.github.io/shared-design-system/css/style.css">
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 <style>
-/* ... (All CSS styles remain exactly the same as before) ... */
-:root {
-  --primary-color: #005A9C;
-  --primary-hover: #004a80;
-  --secondary-color: #6c757d;
-  --secondary-hover: #5a6268;
-  --danger-color: #dc3545;
-  --danger-hover: #c82333;
-  --success-color: #28a745;
-  --bg-color: #f8f9fa;
-  --container-bg: #ffffff;
-  --text-color: #212529;
-  --text-muted: #6c757d;
-  --border-color: #dee2e6;
-  --card-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  --input-focus-shadow: 0 0 0 0.25rem rgba(0, 90, 156, 0.25);
-  --input-invalid-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
-}
+/* NOTE: :root variables (colors) are now loaded from style.css.
+   We keep app-specific layout styles here.
+*/
 
 *, *::before, *::after {
   box-sizing: border-box;
 }
 
 body {
+  /* Using variables from style.css */
   font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   background-color: var(--bg-color);
   margin: 0;
@@ -55,38 +45,49 @@ body {
   transition: all 0.3s ease;
 }
 
-.header-container {
+/* --- SHARED HEADER STYLES (MATCHING BLOCK.HTML) --- */
+.shared-header {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  align-items: center;
+  text-align: center;
   margin-bottom: 32px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.header-title {
-  display: flex;
-  align-items: center;
+  padding-bottom: 16px;
+  border-bottom: 4px solid var(--mtn-gold); /* The Signature Gold Line */
   gap: 16px;
 }
 
-.header-title img {
-  height: 60px;
+@media (min-width: 600px) {
+  .shared-header {
+    flex-direction: row;
+    text-align: left;
+    justify-content: center;
+    gap: 20px;
+  }
 }
 
-.header-title span {
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--primary-color);
+.shared-header img {
+  height: 50px;
+  width: auto;
+  mix-blend-mode: multiply;
+}
+
+.shared-header h1 {
+  margin: 0;
+  color: var(--mtn-blue);
+  font-size: 28px;
+  font-weight: 700;
   letter-spacing: -0.5px;
 }
 
+/* --- FORM STYLES --- */
 label {
   display: block;
   margin-top: 16px;
   margin-bottom: 8px;
-  font-weight: 500;
-  color: var(--text-muted);
+  font-weight: 600; /* Made slightly bolder to match new design */
+  color: var(--mtn-blue); /* Updated to use MTN blue */
   font-size: 14px;
 }
 
@@ -116,7 +117,7 @@ input:focus, select:focus {
 }
 
 .drop-zone {
-  border: 2px dashed var(--border-color);
+  border: 2px dashed var(--mtn-sky); /* Updated color */
   background: #fafcff;
   padding: 20px;
   text-align: center;
@@ -168,8 +169,8 @@ input:focus, select:focus {
 
 .image-wrapper {
   position: relative;
-  -webkit-user-select: none; /* Safari */
-  -ms-user-select: none; /* IE 10+ */
+  -webkit-user-select: none;
+  -ms-user-select: none;
   user-select: none;
 }
 
@@ -246,7 +247,7 @@ button {
   border-radius: 6px;
   cursor: pointer;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 600; /* Bolder text for buttons */
   transition: background-color 0.15s ease-in-out, transform 0.1s ease;
   position: relative;
   -webkit-appearance: none;
@@ -299,7 +300,7 @@ button:active:not(:disabled) {
   to { transform: rotate(1turn); }
 }
 
-/* === NEW CSS FOR BUTTONS === */
+/* === BUTTONS === */
 .job-info-buttons {
   display: flex;
   gap: 16px;
@@ -315,15 +316,12 @@ button:active:not(:disabled) {
   background-color: var(--primary-hover);
 }
 
-/* Style for the new save button */
 .job-info-btn.save {
   background-color: var(--secondary-color);
 }
 .job-info-btn.save:hover:not(:disabled) {
   background-color: var(--secondary-hover);
 }
-/* === END NEW CSS === */
-
 
 .required-label {
   color: var(--danger-color);
@@ -356,7 +354,7 @@ button:active:not(:disabled) {
   color: #721c24;
 }
 .status-message.info {
-  background-color: rgba(0, 90, 156, 0.1);
+  background-color: rgba(27, 80, 135, 0.1); /* Adjusted to match MTN blue opacity */
   color: var(--primary-color);
 }
 
@@ -454,8 +452,8 @@ button.remove-btn:hover:not(:disabled) {
   bottom: 2px;
   left: 2px;
   font-size: 18px;
-  display: none; /* Hidden by default */
-  pointer-events: none; /* So it doesn't interfere with clicks on the image */
+  display: none;
+  pointer-events: none;
   text-shadow: 0 0 3px white, 0 0 3px white;
 }
 .comment-icon.visible {
@@ -466,7 +464,7 @@ button.remove-btn:hover:not(:disabled) {
   display: flex;
   align-items: center;
   margin-top: 24px;
-  margin-bottom: -16px; /* Pull the button group up */
+  margin-bottom: -16px;
   padding: 12px;
   background-color: #f8f9fa;
   border-radius: 6px;
@@ -495,13 +493,6 @@ button.remove-btn:hover:not(:disabled) {
   .container {
     padding: 24px;
   }
-  .header-container {
-    flex-direction: column;
-    gap: 16px;
-  }
-  .header-title {
-    flex-direction: column;
-  }
 }
 @media (max-width: 600px) {
   .drop-zone-section {
@@ -511,7 +502,6 @@ button.remove-btn:hover:not(:disabled) {
     min-height: 60px;
     width: 100%;
   }
-  /* === NEW: Stack buttons on mobile === */
   .job-info-buttons {
     flex-direction: column;
   }
@@ -523,27 +513,24 @@ button.remove-btn:hover:not(:disabled) {
   transform-origin: center center;
   box-shadow: 0 8px 20px rgba(0,0,0,0.2);
   z-index: 1000;
-  transition: none; /* Disable transitions while dragging */
+  transition: none;
 }
 .placeholder {
   background-color: #e9ecef;
   border: 2px dashed var(--primary-color);
   border-radius: 8px;
   flex-shrink: 0;
-  /* width and height set by JS */
 }
 </style>
 </head>
 <body>
 <div class="container">
-<div class="header-container">
-  <div class="header-title">
-    <a href="https://www.mtnsat.com" target="_blank">
-      <img src="https://raw.githubusercontent.com/pgarciafer/pics2PDF/main/logo.png" alt="Logo">
-    </a>
-    <span>Pictures Array to PDF</span>
-  </div>
-</div>
+<header class="shared-header">
+  <a href="https://www.mtnsat.com" target="_blank">
+    <img src="https://pgarciafer.github.io/shared-design-system/icons/logo.png" alt="Logo">
+  </a>
+  <h1>Pictures Array to PDF</h1>
+</header>
 
 <div class="job-info-buttons">
   <button id="loadJobInfoBtn" class="job-info-btn">Load Job Info (.txt)</button>
@@ -551,7 +538,7 @@ button.remove-btn:hover:not(:disabled) {
 </div>
 <div class="drop-zone-section">
   <div class="drop-zone" id="dropZone" tabindex="0">
-    <p>📁 Drag & Drop Pictures Here or Click</p>
+    <p>刀 Drag & Drop Pictures Here or Click</p>
   </div>
   <button id="removeAllBtn" class="remove-btn">Remove All Images</button>
 </div>
@@ -561,7 +548,7 @@ button.remove-btn:hover:not(:disabled) {
 <div class="attachment-section">
   <div class="drop-zone-section">
     <div class="drop-zone" id="attachmentsDropZone" tabindex="0">
-      <p>📎 Drag & Drop Attachments Here or Click</p>
+      <p>梼 Drag & Drop Attachments Here or Click</p>
     </div>
     <button id="removeAllAttachmentsBtn" class="remove-btn">Remove All Attachments</button>
   </div>
@@ -629,9 +616,7 @@ button.remove-btn:hover:not(:disabled) {
 <script>
 const { jsPDF } = window.jspdf;
 
-// --- IMPORTANT ---
-// PASTE YOUR ILOVEPDF PUBLIC KEY HERE
-// You can get a free key from: https://developer.ilovepdf.com/
+// I LOVE PDF KEY 
 const ILOVEPDF_PUBLIC_KEY = 'project_public_45717f2112c002ca935583d7bb839134_IKjet4326dd7221e73fb14f7a5f97819300d2';
 
 let images = [];
@@ -961,7 +946,7 @@ async function addImages(fileList) {
       };
       
       const removeBtn = document.createElement('button');
-      removeBtn.innerHTML = "×";
+      removeBtn.innerHTML = "ﾃ;
       removeBtn.classList.add('remove-image-btn');
       removeBtn.ariaLabel = "Remove image"; 
       
@@ -976,7 +961,7 @@ async function addImages(fileList) {
 
       const commentIcon = document.createElement('span');
       commentIcon.classList.add('comment-icon');
-      commentIcon.textContent = '💬';
+      commentIcon.textContent = '町';
       
       wrapper.appendChild(previewImg);
       wrapper.appendChild(removeBtn);
@@ -1198,7 +1183,8 @@ generateBtn.addEventListener('click', async () => {
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
 
-    const logoUrl = 'https://raw.githubusercontent.com/pgarciafer/pics2PDF/main/logo.png';
+    // 4. UPDATE JS TO USE CENTRAL LOGO IN GENERATED PDF
+    const logoUrl = 'https://pgarciafer.github.io/shared-design-system/icons/logo.png';
     const logo = await loadImage(logoUrl);
     if (logo) {
       const logoWidth = 350;
@@ -1308,7 +1294,7 @@ generateBtn.addEventListener('click', async () => {
       pdf.setFontSize(12).setFont('helvetica', 'normal');
       let startY = 60;
       for (const att of attachments) {
-        pdf.text(`📎 ${att.name}`, 20, startY);
+        pdf.text(`梼 ${att.name}`, 20, startY);
         startY += 25;
         if (startY > pageHeight - 40) {
           pdf.addPage();
@@ -1483,123 +1469,3 @@ function handleTouchStart(e) {
 
   touchDragEl = this;
   const touch = e.touches[0];
-  const startX = touch.clientX;
-  const startY = touch.clientY;
-
-  const cancelDrag = () => {
-    clearTimeout(longPressTimer);
-    document.removeEventListener('touchmove', onMove);
-    document.removeEventListener('touchend', cancelDrag);
-    document.removeEventListener('touchcancel', cancelDrag);
-  };
-
-  const onMove = (moveEvent) => {
-    const moveTouch = moveEvent.touches[0];
-    // If finger moves more than 10px, it's a scroll, not a long press.
-    if (Math.abs(moveTouch.clientX - startX) > 10 || Math.abs(moveTouch.clientY - startY) > 10) {
-      cancelDrag();
-    }
-  };
-  
-  document.addEventListener('touchmove', onMove);
-  document.addEventListener('touchend', cancelDrag);
-  document.addEventListener('touchcancel', cancelDrag);
-
-  longPressTimer = setTimeout(() => {
-    cancelDrag(); // We are starting the drag, so these listeners are no longer needed.
-
-    isDraggingTouch = true;
-    startRect = touchDragEl.getBoundingClientRect();
-    initialTouchX = touch.clientX;
-    initialTouchY = touch.clientY;
-    
-    placeholder = document.createElement('div');
-    placeholder.classList.add('placeholder');
-    placeholder.style.width = `${startRect.width}px`;
-    placeholder.style.height = `${startRect.height}px`;
-    touchDragEl.parentNode.insertBefore(placeholder, touchDragEl);
-
-    Object.assign(touchDragEl.style, {
-        position: 'fixed',
-        zIndex: '1000',
-        width: `${startRect.width}px`,
-        height: `${startRect.height}px`,
-        left: `${startRect.left}px`,
-        top: `${startRect.top}px`,
-        margin: '0'
-    });
-    touchDragEl.classList.add('touch-dragging');
-
-    document.addEventListener('touchmove', handleTouchMove, { passive: false });
-    document.addEventListener('touchend', handleTouchEnd);
-    document.addEventListener('touchcancel', handleTouchEnd);
-  }, LONG_PRESS_DURATION);
-}
-
-function handleTouchMove(e) {
-  if (!isDraggingTouch) return;
-  e.preventDefault();
-
-  const touch = e.touches[0];
-  const dx = touch.clientX - initialTouchX;
-  const dy = touch.clientY - initialTouchY;
-
-  touchDragEl.style.transform = `translate(${dx}px, ${dy}px)`;
-
-  touchDragEl.style.visibility = 'hidden';
-  const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
-  touchDragEl.style.visibility = 'visible';
-
-  if (!elementBelow) return;
-
-  const dropTarget = elementBelow.closest('.image-wrapper');
-  if (dropTarget && dropTarget !== touchDragEl && dropTarget !== placeholder) {
-      const dropTargetRect = dropTarget.getBoundingClientRect();
-      const isAfter = (touch.clientX > dropTargetRect.left + dropTargetRect.width / 2);
-
-      if (isAfter) {
-          dropTarget.parentNode.insertBefore(placeholder, dropTarget.nextSibling);
-      } else {
-          dropTarget.parentNode.insertBefore(placeholder, dropTarget);
-      }
-  }
-}
-
-function handleTouchEnd(e) {
-  if (!isDraggingTouch) return;
-
-  document.removeEventListener('touchmove', handleTouchMove);
-  document.removeEventListener('touchend', handleTouchEnd);
-  document.removeEventListener('touchcancel', handleTouchEnd);
-
-  if (touchDragEl && placeholder) {
-    placeholder.parentNode.insertBefore(touchDragEl, placeholder);
-    placeholder.remove();
-    
-    touchDragEl.classList.remove('touch-dragging');
-    touchDragEl.style.cssText = ''; // Resets all inline styles
-  }
-  
-  // Re-sync the `images` array with the new DOM order
-  const newDomOrder = [...imageListContainer.children];
-  const newImagesArray = newDomOrder
-    .map(wrapper => images.find(img => img.id === wrapper.dataset.id))
-    .filter(Boolean); // Filter out any undefined if something went wrong
-  images = newImagesArray;
-  
-  isDraggingTouch = false;
-  touchDragEl = null;
-  placeholder = null;
-  startRect = null;
-}
-
-// === NEW: Add listeners for auto-saving form data ===
-jobInfoInputIds.forEach(id => {
-  document.getElementById(id).addEventListener('input', saveFormToLocalStorage);
-});
-
-// === NEW: Load saved form data on page load ===
-document.addEventListener('DOMContentLoaded', loadFormFromLocalStorage);
-</script>
-</body>
-</html>
