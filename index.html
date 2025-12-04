@@ -12,31 +12,30 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
 <style>
-/* NOTE: :root variables (colors) are now loaded from style.css.
-   We keep app-specific layout styles here.
-*/
+/* --- APP-SPECIFIC STYLES --- */
 
-*, *::before, *::after {
-  box-sizing: border-box;
-}
-
+/* Force Centering Override */
 body {
-  /* Using variables from style.css */
-  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* Ensure variables from style.css are active */
   background-color: var(--bg-color);
+  color: var(--text-color);
+  
+  /* Flexbox Centering Logic */
   margin: 0;
   padding: 24px;
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  justify-content: center; /* Centers horizontally */
+  align-items: flex-start; /* Aligns to top with padding */
   min-height: 100vh;
-  color: var(--text-color);
+  width: 100%;
 }
 
 .container {
   max-width: 800px;
   width: 100%;
+  margin: 0 auto; /* Extra fallback for centering */
   padding: 24px;
   background: var(--container-bg);
   border-radius: 8px;
@@ -45,49 +44,13 @@ body {
   transition: all 0.3s ease;
 }
 
-/* --- SHARED HEADER STYLES (MATCHING BLOCK.HTML) --- */
-.shared-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  margin-bottom: 32px;
-  padding-bottom: 16px;
-  border-bottom: 4px solid var(--mtn-gold); /* The Signature Gold Line */
-  gap: 16px;
-}
-
-@media (min-width: 600px) {
-  .shared-header {
-    flex-direction: row;
-    text-align: left;
-    justify-content: center;
-    gap: 20px;
-  }
-}
-
-.shared-header img {
-  height: 50px;
-  width: auto;
-  mix-blend-mode: multiply;
-}
-
-.shared-header h1 {
-  margin: 0;
-  color: var(--mtn-blue);
-  font-size: 28px;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-}
-
-/* --- FORM STYLES --- */
+/* Form Elements */
 label {
   display: block;
   margin-top: 16px;
   margin-bottom: 8px;
-  font-weight: 600; /* Made slightly bolder to match new design */
-  color: var(--mtn-blue); /* Updated to use MTN blue */
+  font-weight: 600;
+  color: var(--mtn-blue);
   font-size: 14px;
 }
 
@@ -105,9 +68,10 @@ input, select {
 input:focus, select:focus {
   outline: none;
   border-color: var(--primary-color);
-  box-shadow: var(--input-focus-shadow);
+  box-shadow: 0 0 0 3px rgba(27, 80, 135, 0.2);
 }
 
+/* Drop Zone Styles */
 .drop-zone-section {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -117,7 +81,7 @@ input:focus, select:focus {
 }
 
 .drop-zone {
-  border: 2px dashed var(--mtn-sky); /* Updated color */
+  border: 2px dashed var(--mtn-sky);
   background: #fafcff;
   padding: 20px;
   text-align: center;
@@ -133,14 +97,7 @@ input:focus, select:focus {
 
 .drop-zone:hover, .drop-zone.dragover {
   border-color: var(--primary-color);
-  background: #f0f6ff;
-}
-
-/* Style for keyboard focus */
-.drop-zone:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: var(--input-focus-shadow);
+  background: #e6f0fa;
 }
 
 .drop-zone p {
@@ -148,8 +105,13 @@ input:focus, select:focus {
   font-weight: 500;
   color: var(--text-muted);
   margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
 }
 
+/* Image List Styles */
 .image-list-container, .attachment-list-container {
   border: 1px solid var(--border-color);
   min-height: 100px;
@@ -169,8 +131,6 @@ input:focus, select:focus {
 
 .image-wrapper {
   position: relative;
-  -webkit-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -189,13 +149,8 @@ input:focus, select:focus {
   transform: scale(1.05);
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
-.image-wrapper.dragging {
-  opacity: 0.5;
-}
-.image-wrapper.over {
-  outline: 2px dashed var(--primary-color);
-  outline-offset: 2px;
-}
+.image-wrapper.dragging { opacity: 0.5; }
+.image-wrapper.over { outline: 2px dashed var(--primary-color); outline-offset: 2px; }
 
 .remove-image-btn {
   position: absolute;
@@ -217,29 +172,22 @@ input:focus, select:focus {
   transition: all 0.3s;
   z-index: 10;
 }
-
 .remove-image-btn:hover {
   opacity: 1;
   transform: scale(1.1);
   background-color: var(--danger-hover);
 }
 
-.attachment-list-container {
-  display: none;
-}
 .attachment-item {
   font-size: 14px;
   color: var(--text-color);
   padding: 8px 4px;
   border-bottom: 1px solid var(--border-color);
 }
-.attachment-item:last-child {
-  border-bottom: none;
-}
+.attachment-item:last-child { border-bottom: none; }
 
-.button-group {
-  margin-top: 32px;
-}
+/* Buttons */
+.button-group { margin-top: 32px; }
 
 button {
   padding: 10px 16px;
@@ -247,48 +195,31 @@ button {
   border-radius: 6px;
   cursor: pointer;
   font-size: 15px;
-  font-weight: 600; /* Bolder text for buttons */
+  font-weight: 600;
   transition: background-color 0.15s ease-in-out, transform 0.1s ease;
-  position: relative;
-  -webkit-appearance: none;
 }
 
 button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
-  transform: none;
   opacity: 0.7;
 }
-
-button:active:not(:disabled) {
-  transform: scale(0.98);
-}
-
+button:active:not(:disabled) { transform: scale(0.98); }
 
 #generatePDF {
   width: 100%;
   background-color: var(--primary-color);
   color: white;
-  font-size: 16px;
-  font-weight: 600;
 }
+#generatePDF:hover:not(:disabled) { background-color: var(--primary-hover); }
 
-#generatePDF:hover:not(:disabled) {
-  background-color: var(--primary-hover);
-}
-
-#generatePDF.loading span {
-  visibility: hidden;
-}
+#generatePDF.loading span { visibility: hidden; }
 #generatePDF.loading::after {
   content: '';
   position: absolute;
   width: 24px;
   height: 24px;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: 0; left: 0; right: 0; bottom: 0;
   margin: auto;
   border: 4px solid transparent;
   border-top-color: #ffffff;
@@ -300,37 +231,30 @@ button:active:not(:disabled) {
   to { transform: rotate(1turn); }
 }
 
-/* === BUTTONS === */
 .job-info-buttons {
   display: flex;
   gap: 16px;
   margin-bottom: 24px;
 }
-
 .job-info-btn {
   width: 100%;
   background-color: var(--primary-color);
   color: white;
 }
-.job-info-btn:hover:not(:disabled) {
-  background-color: var(--primary-hover);
-}
+.job-info-btn:hover:not(:disabled) { background-color: var(--primary-hover); }
+.job-info-btn.save { background-color: var(--secondary-color); }
+.job-info-btn.save:hover:not(:disabled) { background-color: var(--secondary-hover); }
 
-.job-info-btn.save {
-  background-color: var(--secondary-color);
-}
-.job-info-btn.save:hover:not(:disabled) {
-  background-color: var(--secondary-hover);
-}
-
-.required-label {
+button.remove-btn {
+  background-color: white;
   color: var(--danger-color);
-  font-weight: 600;
+  height: 100%;
+  border: 1px solid var(--danger-color);
+  min-width: 120px;
 }
-
-.invalid {
-  border-color: var(--danger-color) !important;
-  box-shadow: var(--input-invalid-shadow) !important;
+button.remove-btn:hover:not(:disabled) {
+  background-color: var(--danger-color);
+  color: white;
 }
 
 .status-message {
@@ -342,48 +266,22 @@ button:active:not(:disabled) {
   font-weight: 500;
   display: none;
 }
-.status-message.visible {
-    display: block;
-}
-.status-message.success {
-  background-color: #e9f7ef;
-  color: #155724;
-}
-.status-message.error {
-  background-color: #f8d7da;
-  color: #721c24;
-}
-.status-message.info {
-  background-color: rgba(27, 80, 135, 0.1); /* Adjusted to match MTN blue opacity */
-  color: var(--primary-color);
-}
+.status-message.visible { display: block; }
+.status-message.success { background-color: #e9f7ef; color: #155724; }
+.status-message.error { background-color: #f8d7da; color: #721c24; }
+.status-message.info { background-color: rgba(27, 80, 135, 0.1); color: var(--primary-color); }
 
-button.remove-btn {
-  background-color: white;
-  color: var(--danger-color);
-  height: 100%;
-  border: 1px solid var(--danger-color);
-  width: 210px;
-}
-button.remove-btn:hover:not(:disabled) {
-  background-color: var(--danger-color);
-  color: white;
-}
+.required-label { color: var(--danger-color); font-weight: 600; }
+.invalid { border-color: var(--danger-color) !important; box-shadow: var(--input-invalid-shadow) !important; }
 
-.attachment-section {
-  margin-top: 32px;
-}
+.attachment-section { margin-top: 32px; }
+#dateField { width: 75%; }
 
-#dateField {
-  width: 75%;
-}
-
+/* Modal */
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   background: rgba(0,0,0,0.6);
   display: flex;
   justify-content: center;
@@ -398,10 +296,7 @@ button.remove-btn:hover:not(:disabled) {
   max-width: 500px;
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
-.modal-content h2 {
-  margin-top: 0;
-  color: var(--primary-color);
-}
+.modal-content h2 { margin-top: 0; color: var(--primary-color); }
 .modal-content textarea {
   width: 100%;
   padding: 10px;
@@ -411,41 +306,14 @@ button.remove-btn:hover:not(:disabled) {
   resize: vertical;
   margin-bottom: 16px;
 }
-.modal-content textarea:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: var(--input-focus-shadow);
-}
 .modal-buttons {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
 }
-.modal-buttons button {
-  padding: 10px 16px;
-}
-#modalSaveBtn {
-  background-color: var(--primary-color);
-  color: white;
-}
-#modalSaveBtn:hover {
-  background-color: var(--primary-hover);
-}
-#modalDeleteBtn {
-  background-color: var(--danger-color);
-  color: white;
-  border: none;
-}
-#modalDeleteBtn:hover {
-  background-color: var(--danger-hover);
-}
-#modalCancelBtn {
-  background-color: var(--secondary-color);
-  color: white;
-}
-#modalCancelBtn:hover {
-  background-color: var(--secondary-hover);
-}
+#modalSaveBtn { background-color: var(--primary-color); color: white; }
+#modalDeleteBtn { background-color: var(--danger-color); color: white; border: none; }
+#modalCancelBtn { background-color: var(--secondary-color); color: white; }
 
 .comment-icon {
   position: absolute;
@@ -456,15 +324,13 @@ button.remove-btn:hover:not(:disabled) {
   pointer-events: none;
   text-shadow: 0 0 3px white, 0 0 3px white;
 }
-.comment-icon.visible {
-  display: block;
-}
+.comment-icon.visible { display: block; }
 
 .checkbox-container {
   display: flex;
   align-items: center;
   margin-top: 24px;
-  margin-bottom: -16px;
+  margin-bottom: -16px; /* Pull the button group up */
   padding: 12px;
   background-color: #f8f9fa;
   border-radius: 6px;
@@ -484,30 +350,18 @@ button.remove-btn:hover:not(:disabled) {
   cursor: pointer;
 }
 
-
 /* Responsive */
 @media (max-width: 768px) {
-  body {
-    padding: 16px;
-  }
-  .container {
-    padding: 24px;
-  }
+  body { padding: 16px; }
+  .container { padding: 24px; }
 }
 @media (max-width: 600px) {
-  .drop-zone-section {
-    grid-template-columns: 1fr;
-  }
-  button.remove-btn {
-    min-height: 60px;
-    width: 100%;
-  }
-  .job-info-buttons {
-    flex-direction: column;
-  }
+  .drop-zone-section { grid-template-columns: 1fr; }
+  button.remove-btn { min-height: 60px; width: 100%; }
+  .job-info-buttons { flex-direction: column; }
 }
 
-/* Styles for touch-based drag and drop */
+/* Touch Drag */
 .image-wrapper.touch-dragging {
   opacity: 0.8;
   transform-origin: center center;
@@ -525,32 +379,33 @@ button.remove-btn:hover:not(:disabled) {
 </head>
 <body>
 <div class="container">
-<header class="shared-header">
-  <a href="https://www.mtnsat.com" target="_blank">
-    <img src="https://pgarciafer.github.io/shared-design-system/icons/logo.png" alt="Logo">
-  </a>
-  <h1>Pictures Array to PDF</h1>
-</header>
+  
+  <header class="shared-header">
+    <a href="https://www.mtnsat.com" target="_blank">
+      <img src="https://pgarciafer.github.io/shared-design-system/icons/logo.png" alt="MTN Logo">
+    </a>
+    <h1>Pictures to PDF Generator</h1>
+  </header>
 
 <div class="job-info-buttons">
   <button id="loadJobInfoBtn" class="job-info-btn">Load Job Info (.txt)</button>
   <button id="saveJobInfoBtn" class="job-info-btn save">Save Job Info (.txt)</button>
 </div>
+
 <div class="drop-zone-section">
   <div class="drop-zone" id="dropZone" tabindex="0">
-    <p>刀 Drag & Drop Pictures Here or Click</p>
+    <p>📂 Drag & Drop Pictures Here or Click</p>
   </div>
-  <button id="removeAllBtn" class="remove-btn">Remove All Images</button>
+  <button id="removeAllBtn" class="remove-btn">Remove All</button>
 </div>
 <div class="image-list-container" id="imageListContainer"></div>
-
 
 <div class="attachment-section">
   <div class="drop-zone-section">
     <div class="drop-zone" id="attachmentsDropZone" tabindex="0">
-      <p>梼 Drag & Drop Attachments Here or Click</p>
+      <p>📎 Drag & Drop Attachments Here or Click</p>
     </div>
-    <button id="removeAllAttachmentsBtn" class="remove-btn">Remove All Attachments</button>
+    <button id="removeAllAttachmentsBtn" class="remove-btn">Remove All</button>
   </div>
   <div class="attachment-list-container" id="attachmentListContainer"></div>
 </div>
@@ -615,13 +470,12 @@ button.remove-btn:hover:not(:disabled) {
 
 <script>
 const { jsPDF } = window.jspdf;
-
 // I LOVE PDF KEY 
 const ILOVEPDF_PUBLIC_KEY = 'project_public_45717f2112c002ca935583d7bb839134_IKjet4326dd7221e73fb14f7a5f97819300d2';
 
 let images = [];
 let attachments = [];
-let dragSrcEl = null; // for desktop drag and drop reordering
+let dragSrcEl = null; 
 const dropZone = document.getElementById('dropZone');
 const imageListContainer = document.getElementById('imageListContainer');
 const attachmentsDropZone = document.getElementById('attachmentsDropZone');
@@ -629,13 +483,10 @@ const attachmentListContainer = document.getElementById('attachmentListContainer
 const generateBtn = document.getElementById('generatePDF');
 const statusMessage = document.getElementById('statusMessage');
 
-// === NEW: Button and LocalStorage variables ===
 const loadJobInfoBtn = document.getElementById('loadJobInfoBtn');
 const saveJobInfoBtn = document.getElementById('saveJobInfoBtn');
 const jobInfoInputIds = ["vesselName", "antennaModel", "antennaLocation", "caseNumber", "submittedBy"];
-// === END NEW ===
 
-// Modal elements
 const imageModal = document.getElementById('imageModal');
 const imageCommentTextarea = document.getElementById('imageComment');
 const modalSaveBtn = document.getElementById('modalSaveBtn');
@@ -643,57 +494,40 @@ const modalDeleteBtn = document.getElementById('modalDeleteBtn');
 const modalCancelBtn = document.getElementById('modalCancelBtn');
 let activeImageIndex = -1;
 
-
-// Default date
 document.getElementById("dateField").value = new Date().toISOString().split("T")[0];
 
-// Add listeners for keyboard interaction
 function setupDropZoneAccessibility(zoneId) {
   const zone = document.getElementById(zoneId);
   zone.addEventListener('keydown', (e) => {
-    // 32 = Space, 13 = Enter
     if (e.keyCode === 32 || e.keyCode === 13) {
-      e.preventDefault(); // Stop space from scrolling the page
-      zone.click(); // Trigger the existing click listener
+      e.preventDefault();
+      zone.click();
     }
   });
 }
 setupDropZoneAccessibility('dropZone');
 setupDropZoneAccessibility('attachmentsDropZone');
 
-
 function showStatus(message, type = 'info') {
     statusMessage.textContent = message;
     statusMessage.className = `status-message ${type} visible`;
 }
 
-// Helper function to convert any image file (including HEIC) to a JPG data URL
 async function convertImageToJpgDataUrl(file, maxPreviewDim = 300, quality = 0.8) {
   return new Promise((resolve, reject) => {
-    // createImageBitmap is the most memory-efficient way to load an image
     createImageBitmap(file)
       .then(imageBitmap => {
-        // Calculate dimensions for a small preview
         const scale = Math.min(maxPreviewDim / imageBitmap.width, maxPreviewDim / imageBitmap.height, 1);
         const canvas = document.createElement("canvas");
         canvas.width = imageBitmap.width * scale;
         canvas.height = imageBitmap.height * scale;
-        
         const ctx = canvas.getContext("2d");
-        // Draw the image to the canvas
         ctx.drawImage(imageBitmap, 0, 0, canvas.width, canvas.height);
-        
-        // Good practice to release memory
         imageBitmap.close(); 
-        
-        // Get the preview as a JPG data URL
         const dataUrl = canvas.toDataURL("image/jpeg", quality);
         resolve(dataUrl);
       })
       .catch(err => {
-        // Fallback for older browsers or formats createImageBitmap fails on
-        // This is less memory efficient but more compatible.
-        console.warn("createImageBitmap failed, falling back to FileReader:", err);
         const reader = new FileReader();
         reader.onload = (e) => {
           const img = new Image();
@@ -715,12 +549,8 @@ async function convertImageToJpgDataUrl(file, maxPreviewDim = 300, quality = 0.8
   });
 }
 
-
-// Helpers
-// New, more memory-efficient image processing function for PDF generation
 async function processImageForPdf(file, maxDim = 2000, quality = 0.7) {
   return new Promise((resolve, reject) => {
-    // createImageBitmap is more memory-efficient than loading into an Image element via dataURL
     createImageBitmap(file)
       .then(imageBitmap => {
         const scale = Math.min(maxDim / imageBitmap.width, maxDim / imageBitmap.height, 1);
@@ -729,17 +559,12 @@ async function processImageForPdf(file, maxDim = 2000, quality = 0.7) {
         canvas.height = imageBitmap.height * scale;
         const ctx = canvas.getContext("2d");
         ctx.drawImage(imageBitmap, 0, 0, canvas.width, canvas.height);
-        
-        // Close the bitmap to release its memory
         imageBitmap.close();
-
         canvas.toBlob(blob => {
-          if (!blob) {
-            return reject(new Error("Canvas to Blob conversion failed."));
-          }
+          if (!blob) return reject(new Error("Canvas to Blob failed."));
           const reader = new FileReader();
           reader.onload = () => resolve(reader.result);
-          reader.onerror = () => reject(new Error("Failed to read blob as Data URL."));
+          reader.onerror = () => reject(new Error("Failed to read blob."));
           reader.readAsDataURL(blob);
         }, "image/jpeg", quality);
       })
@@ -771,16 +596,11 @@ function formatAntennaLocation(loc) {
 
 function formatSubmittedby(name) {
   if (!name) return "";
-  return name
-    .trim()
-    .split(/\s+/)
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(" ");
+  return name.trim().split(/\s+/).map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(" ");
 }
 
 let jobFileHandle = null;
 
-// === RENAMED: from "jobInfoLabel" to "loadJobInfoBtn" ===
 loadJobInfoBtn.addEventListener("click", async () => {
   const openWithInput = () => {
     const fileInput = document.createElement('input');
@@ -793,7 +613,6 @@ loadJobInfoBtn.addEventListener("click", async () => {
           const text = await file.text();
           const data = JSON.parse(text);
           populateJobInfo(data);
-          // === NEW: Save loaded data to local storage ===
           saveFormToLocalStorage();
       } catch (err) {
           console.error(err);
@@ -804,16 +623,10 @@ loadJobInfoBtn.addEventListener("click", async () => {
   };
 
   try {
-    if (!window.showOpenFilePicker) {
-        throw new Error("showOpenFilePicker not supported");
-    }
-
+    if (!window.showOpenFilePicker) throw new Error("showOpenFilePicker not supported");
     if (!jobFileHandle) {
       [jobFileHandle] = await window.showOpenFilePicker({
-        types: [{
-          description: 'Job Info File',
-          accept: { 'text/plain': ['.txt'] },
-        }],
+        types: [{ description: 'Job Info File', accept: { 'text/plain': ['.txt'] } }],
         multiple: false
       });
     }
@@ -821,15 +634,8 @@ loadJobInfoBtn.addEventListener("click", async () => {
     const text = await file.text();
     const data = JSON.parse(text);
     populateJobInfo(data);
-    // === NEW: Save loaded data to local storage ===
     saveFormToLocalStorage();
-
   } catch (err) {
-    if (err.name === 'AbortError') {
-      console.log('File picker was cancelled by the user.');
-      return;
-    }
-    console.warn("showOpenFilePicker failed, falling back to input.", err);
     openWithInput();
   }
 });
@@ -842,39 +648,28 @@ function populateJobInfo(data) {
   }
   if (data["LOCATION"]) document.getElementById("antennaLocation").value = formatAntennaLocation(data["LOCATION"]);
   if (data["TECH"]) document.getElementById("submittedBy").value = formatSubmittedby(data["TECH"]);
-  showStatus("Current Job Info loaded successfully!", "success");
+  showStatus("Job Info loaded!", "success");
 }
 
-// === NEW: "Save Job Info" Button functionality ===
 saveJobInfoBtn.addEventListener('click', () => {
   const data = {};
   jobInfoInputIds.forEach(id => {
     data[id] = document.getElementById(id).value;
   });
-
-  // Create a JSON object in the same format that "Load" expects
   const cleanData = {
     "VESSEL": data.vesselName,
-    // Try to split model and SN, fallback to empty string
     "ANTENNA": (data.antennaModel.split('_SN')[0] || data.antennaModel).split('_')[0],
     "ANTENNA SN": data.antennaModel.split('_SN')[1] || '',
     "LOCATION": data.antennaLocation,
     "INCIDENT": data.caseNumber,
     "TECH": data.submittedBy
   };
-
-  const jsonString = JSON.stringify(cleanData, null, 2); // Pretty-print JSON
+  const jsonString = JSON.stringify(cleanData, null, 2);
   const blob = new Blob([jsonString], { type: 'text/plain;charset=utf-8' });
-  
-  // === THIS IS THE REQUESTED CHANGE ===
-  const filename = 'currentrip.txt';
-
-  saveAs(blob, filename); // From FileSaver.js
-  showStatus('Job info saved as currentrip.txt!', 'success');
-  // === END OF CHANGE ===
+  saveAs(blob, 'currentrip.txt');
+  showStatus('Job info saved!', 'success');
 });
 
-// === NEW: LocalStorage Functions ===
 function saveFormToLocalStorage() {
   const data = {};
   jobInfoInputIds.forEach(id => {
@@ -889,18 +684,13 @@ function loadFormFromLocalStorage() {
     try {
       const data = JSON.parse(savedData);
       jobInfoInputIds.forEach(id => {
-        if (data[id]) {
-          document.getElementById(id).value = data[id];
-        }
+        if (data[id]) document.getElementById(id).value = data[id];
       });
     } catch (e) {
-      console.error("Failed to parse saved job info:", e);
-      localStorage.removeItem('jobInfoForm'); // Clear corrupted data
+      localStorage.removeItem('jobInfoForm');
     }
   }
 }
-// === END NEW ===
-
 
 dropZone.addEventListener('click', () => {
   const fileInput = document.createElement('input');
@@ -914,24 +704,17 @@ dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classL
 dropZone.addEventListener('dragleave', e => { e.preventDefault(); dropZone.classList.remove("dragover"); });
 dropZone.addEventListener('drop', e => { e.preventDefault(); dropZone.classList.remove("dragover"); addImages(e.dataTransfer.files); });
 
-// Asynchronous image loading
 async function addImages(fileList) {
   if (fileList.length > 0) imageListContainer.style.display = 'flex';
-  
   const filesToProcess = Array.from(fileList).filter(file => file.type.startsWith('image/'));
-  
-  // Show a status update and disable button
   showStatus(`Processing ${filesToProcess.length} images...`, 'info');
   generateBtn.disabled = true;
 
   for (let i = 0; i < filesToProcess.length; i++) {
     const file = filesToProcess[i];
-    // Update status for every image
     statusMessage.textContent = `Processing image ${i + 1} of ${filesToProcess.length}...`;
-
     try {
       const previewDataUrl = await convertImageToJpgDataUrl(file);
-
       const wrapper = document.createElement('div');
       wrapper.classList.add('image-wrapper');
       wrapper.draggable = true;
@@ -939,17 +722,15 @@ async function addImages(fileList) {
       const previewImg = document.createElement('img');
       previewImg.src = previewDataUrl; 
       previewImg.classList.add('image-item');
-
       previewImg.onclick = () => {
         const index = Array.from(imageListContainer.children).indexOf(wrapper);
         openImageModal(index);
       };
       
       const removeBtn = document.createElement('button');
-      removeBtn.innerHTML = "ﾃ;
+      removeBtn.innerHTML = "&times;";
       removeBtn.classList.add('remove-image-btn');
       removeBtn.ariaLabel = "Remove image"; 
-      
       removeBtn.onclick = () => {
         const index = Array.from(imageListContainer.children).indexOf(wrapper);
         if (index > -1) {
@@ -969,7 +750,7 @@ async function addImages(fileList) {
       imageListContainer.appendChild(wrapper);
 
       const newImageData = {
-          file: file, // Store the ORIGINAL file (HEIC or JPG)
+          file: file,
           comment: '',
           id: 'img-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9)
       };
@@ -984,17 +765,13 @@ async function addImages(fileList) {
       wrapper.addEventListener('dragend', handleDragEnd, false);
       wrapper.addEventListener('touchstart', handleTouchStart, { passive: true });
 
-      // After each image, pause briefly to let the UI update
       await new Promise(res => setTimeout(res, 0)); 
-
     } catch (err) {
         console.error("Failed to process image:", file.name, err);
         showStatus(`Failed to load image: ${file.name}.`, "error");
     }
   }
-
-  // Done! Re-enable button
-  showStatus(`Added ${filesToProcess.length} images. Hint: Long-press to re-order.`, 'success');
+  showStatus(`Added ${filesToProcess.length} images.`, 'success');
   generateBtn.disabled = false;
 }
 
@@ -1005,7 +782,6 @@ document.getElementById('removeAllBtn').addEventListener('click', () => {
   showStatus('All images removed.', 'info');
 });
 
-// Modal Functions
 function openImageModal(index) {
   if (index < 0 || index >= images.length) return;
   activeImageIndex = index;
@@ -1022,17 +798,12 @@ function closeImageModal() {
 
 modalSaveBtn.addEventListener('click', () => {
   if (activeImageIndex > -1) {
-    const imageData = images[activeImageIndex];
-    imageData.comment = imageCommentTextarea.value.trim();
-    
+    images[activeImageIndex].comment = imageCommentTextarea.value.trim();
     const wrapper = imageListContainer.children[activeImageIndex];
     if (wrapper) {
         const commentIcon = wrapper.querySelector('.comment-icon');
-        if (imageData.comment) {
-          commentIcon.classList.add('visible');
-        } else {
-          commentIcon.classList.remove('visible');
-        }
+        if (images[activeImageIndex].comment) commentIcon.classList.add('visible');
+        else commentIcon.classList.remove('visible');
     }
   }
   closeImageModal();
@@ -1051,16 +822,12 @@ modalDeleteBtn.addEventListener('click', () => {
 });
 
 modalCancelBtn.addEventListener('click', closeImageModal);
-imageModal.addEventListener('click', (e) => {
-    if (e.target === imageModal) closeImageModal();
-});
-
+imageModal.addEventListener('click', (e) => { if (e.target === imageModal) closeImageModal(); });
 
 attachmentsDropZone.addEventListener('click', () => {
   const fileInput = document.createElement('input');
   fileInput.type = 'file';
   fileInput.multiple = true;
-  // No 'accept' attribute here, to allow any file type as an attachment
   fileInput.onchange = () => addAttachments(fileInput.files);
   fileInput.click();
 });
@@ -1085,68 +852,6 @@ document.getElementById('removeAllAttachmentsBtn').addEventListener('click', () 
   showStatus('All attachments removed.', 'info');
 });
 
-async function compressPdfWithILovePdf(pdfBlob, publicKey) {
-    const authUrl = 'https://api.ilovepdf.com/v1/auth';
-    const startUrl = 'https://api.ilovepdf.com/v1/start/compress';
-
-    // 1. Authenticate
-    showStatus('Authenticating with compression service...', 'info');
-    const authResponse = await fetch(authUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ public_key: publicKey })
-    });
-    if (!authResponse.ok) throw new Error(`iLovePDF authentication failed (${authResponse.status})`);
-    const { token } = await authResponse.json();
-    const authHeader = { 'Authorization': `Bearer ${token}` };
-
-    // 2. Start Task
-    showStatus('Starting compression task...', 'info');
-    const startResponse = await fetch(startUrl, { headers: authHeader });
-    if (!startResponse.ok) throw new Error('Failed to start iLovePDF task.');
-    const { server, task } = await startResponse.json();
-
-    // Use the dynamic server for all subsequent calls for this task
-    const uploadUrl = `https://${server}/v1/upload`;
-    const processUrl = `https://${server}/v1/process`;
-    const downloadUrl = `https://${server}/v1/download`;
-
-    // 3. Upload File
-    showStatus('Uploading PDF for compression...', 'info');
-    const formData = new FormData();
-    formData.append('task', task);
-    formData.append('file', pdfBlob, 'document.pdf');
-    const uploadResponse = await fetch(uploadUrl, {
-        method: 'POST',
-        headers: authHeader,
-        body: formData
-    });
-    if (!uploadResponse.ok) throw new Error('Failed to upload file to iLovePDF.');
-    const { server_filename } = await uploadResponse.json();
-
-    // 4. Process File
-    showStatus('Compressing PDF...', 'info');
-    const processBody = {
-        task: task,
-        tool: 'compress',
-        files: [{ server_filename: server_filename, filename: 'document.pdf' }],
-        compression_level: 'recommended',
-    };
-    const processResponse = await fetch(processUrl, {
-        method: 'POST',
-        headers: { ...authHeader, 'Content-Type': 'application/json' },
-        body: JSON.stringify(processBody)
-    });
-    if (!processResponse.ok) throw new Error('Failed to process file with iLovePDF.');
-    
-    // 5. Download File
-    showStatus('Downloading compressed PDF...', 'info');
-    const downloadResponse = await fetch(`${downloadUrl}/${task}`, { headers: authHeader });
-    if (!downloadResponse.ok) throw new Error('Failed to download compressed file from iLovePDF.');
-    
-    return downloadResponse.blob();
-}
-
 generateBtn.addEventListener('click', async () => {
   statusMessage.className = 'status-message';
   generateBtn.disabled = true;
@@ -1157,18 +862,13 @@ generateBtn.addEventListener('click', async () => {
     let valid = true;
     requiredIds.forEach(id => {
       const f = document.getElementById(id);
-      if (!f.value.trim()) {
-        f.classList.add("invalid");
-        valid = false;
-      } else {
-        f.classList.remove("invalid");
-      }
+      if (!f.value.trim()) { f.classList.add("invalid"); valid = false; }
+      else { f.classList.remove("invalid"); }
     });
     if (!valid) throw new Error("Please fill all required fields!");
-
     if (images.length === 0 && attachments.length === 0) throw new Error("Add at least one image or attachment.");
 
-    showStatus("Generating PDF and output files...", "info");
+    showStatus("Generating PDF...", "info");
 
     const vessel = document.getElementById('vesselName').value.trim();
     const antenna = document.getElementById('antennaModel').value.trim();
@@ -1183,7 +883,7 @@ generateBtn.addEventListener('click', async () => {
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
 
-    // 4. UPDATE JS TO USE CENTRAL LOGO IN GENERATED PDF
+    // Load central logo for PDF
     const logoUrl = 'https://pgarciafer.github.io/shared-design-system/icons/logo.png';
     const logo = await loadImage(logoUrl);
     if (logo) {
@@ -1205,80 +905,44 @@ generateBtn.addEventListener('click', async () => {
       pdf.addPage();
       let pageNum = 2;
       for (let i = 0; i < images.length; i += perPage) {
-        
-        // Asynchronous PDF page generation
-        const pageCount = Math.ceil(images.length / perPage);
-        const currentPage = (i / perPage) + 1;
-        showStatus(`Processing PDF page ${currentPage} of ${pageCount}...`, 'info');
-        
-        // Pause for UI update
+        showStatus(`Processing PDF page ${Math.ceil((i + 1)/perPage)}...`, 'info');
         await new Promise(res => setTimeout(res, 0)); 
 
         const chunk = images.slice(i, i + perPage);
         const spacingX = 10, spacingY = 10;
         const cellWidth = (pageWidth - (perPage + 1) * spacingX) / perPage;
         const cellHeight = pageHeight - 2 * spacingY;
-
-        const processedChunk = [];
+        const anyComment = chunk.some(d => d.comment && d.comment.trim() !== '');
+        const reservedSpace = anyComment ? 50 : 0;
+        const imgContainerHeight = cellHeight - reservedSpace;
         let maxImageBottom = 0;
-        
-        const anyCommentInChunk = chunk.some(d => d.comment && d.comment.trim() !== '');
-        const reservedCommentSpace = anyCommentInChunk ? 50 : 0;
-        const imgContainerHeight = cellHeight - reservedCommentSpace;
 
         for (let idx = 0; idx < chunk.length; idx++) {
-            const imgData = chunk[idx];
-            // processImageForPdf handles the original file (HEIC or JPG)
-            const dataUrl = await processImageForPdf(imgData.file, 2000, compressionQuality);
-            if (!dataUrl) continue;
-
-            const img = new Image();
-            img.src = dataUrl;
+            const dataUrl = await processImageForPdf(chunk[idx].file, 2000, compressionQuality);
+            const img = new Image(); img.src = dataUrl;
             await new Promise(res => { img.onload = res; });
             
             const cellAspect = cellWidth / imgContainerHeight;
             const imgAspect = img.width / img.height;
             let finalW, finalH;
-
-            if (imgAspect > cellAspect) {
-                finalW = cellWidth * 0.95;
-                finalH = finalW / imgAspect;
-            } else {
-                finalH = imgContainerHeight * 0.95;
-                finalW = finalH * imgAspect;
-            }
+            if (imgAspect > cellAspect) { finalW = cellWidth * 0.95; finalH = finalW / imgAspect; }
+            else { finalH = imgContainerHeight * 0.95; finalW = finalH * imgAspect; }
 
             const cellX = spacingX + idx * (cellWidth + spacingX);
             const cellY = spacingY;
-
             const imgX = cellX + (cellWidth - finalW) / 2;
             const imgY = cellY + (imgContainerHeight - finalH) / 2;
             
-            const imageBottom = imgY + finalH;
-            if (imageBottom > maxImageBottom) {
-                maxImageBottom = imageBottom;
-            }
-
-            processedChunk.push({
-                dataUrl,
-                comment: imgData.comment,
-                imgX, imgY, finalW, finalH,
-                cellX, cellWidth
-            });
-        }
-
-        const textY = maxImageBottom > 0 ? maxImageBottom + 15 : imgContainerHeight + 15;
-
-        for (const pImg of processedChunk) {
-            pdf.addImage(pImg.dataUrl, "JPEG", pImg.imgX, pImg.imgY, pImg.finalW, pImg.finalH);
-
-            if (pImg.comment && pImg.comment.trim() !== '') {
+            pdf.addImage(dataUrl, "JPEG", imgX, imgY, finalW, finalH);
+            
+            if (chunk[idx].comment) {
+                const textY = (imgY + finalH) + 15;
+                if (textY > maxImageBottom) maxImageBottom = textY;
                 pdf.setFontSize(10).setFont('helvetica', 'normal');
-                const textLines = pdf.splitTextToSize(pImg.comment, pImg.cellWidth * 0.9);
-                pdf.text(textLines, pImg.cellX + pImg.cellWidth / 2, textY, { align: 'center' });
+                const lines = pdf.splitTextToSize(chunk[idx].comment, cellWidth * 0.9);
+                pdf.text(lines, cellX + cellWidth / 2, textY, { align: 'center' });
             }
         }
-        
         pdf.setFontSize(12).text(`Page ${pageNum}`, pageWidth / 2, pageHeight - 10, { align: 'center' });
         if (i + perPage < images.length) pdf.addPage();
         pageNum++;
@@ -1286,8 +950,6 @@ generateBtn.addEventListener('click', async () => {
     }
 
     if (attachments.length > 0) {
-      showStatus('Adding attachments...', 'info');
-      await new Promise(res => setTimeout(res, 0));
       pdf.addPage();
       pdf.setFontSize(16).setFont('helvetica', 'bold');
       pdf.text("Attached Files", pageWidth / 2, 30, { align: 'center' });
@@ -1296,89 +958,27 @@ generateBtn.addEventListener('click', async () => {
       for (const att of attachments) {
         pdf.text(`梼 ${att.name}`, 20, startY);
         startY += 25;
-        if (startY > pageHeight - 40) {
-          pdf.addPage();
-          startY = 40;
-        }
       }
-    }
-
-    let pdfBlob = pdf.output('blob');
-
-    const compressPdfCheckbox = document.getElementById('compressPdf');
-    if (compressPdfCheckbox.checked) {
-        if (ILOVEPDF_PUBLIC_KEY === 'YOUR_PUBLIC_KEY_HERE' || !ILOVEPDF_PUBLIC_KEY) {
-            throw new Error('Please enter your iLovePDF public key in the script to enable compression.');
-        }
-        try {
-            const originalSize = (pdfBlob.size / 1024 / 1024).toFixed(2);
-            showStatus(`PDF generated (${originalSize} MB). Now compressing...`, 'info');
-            pdfBlob = await compressPdfWithILovePdf(pdfBlob, ILOVEPDF_PUBLIC_KEY);
-            const compressedSize = (pdfBlob.size / 1024 / 1024).toFixed(2);
-            showStatus(`Compression complete! Size reduced from ${originalSize} MB to ${compressedSize} MB.`, 'success');
-            await new Promise(res => setTimeout(res, 2000));
-        } catch (compressionError) {
-            console.error("PDF compression failed:", compressionError);
-            showStatus(`PDF compression failed: ${compressionError.message}. Using uncompressed PDF.`, 'error');
-            await new Promise(res => setTimeout(res, 3000));
-        }
     }
 
     const pdfFilename = `${vessel}_PicArray_${antenna}_${location.replace(/ /g, '')}_Case${caseNum}_${dateStr.replace(/-/g,'')}.pdf`;
     
     if (attachments.length > 0) {
-      showStatus('Compressing files into ZIP...', 'info');
-      await new Promise(res => setTimeout(res, 0));
+      showStatus('Compressing ZIP...', 'info');
       const zip = new JSZip();
-      zip.file(pdfFilename, pdfBlob);
-
-      const attachmentsFolder = zip.folder("attachments");
-      for (const att of attachments) {
-        attachmentsFolder.file(att.name, att);
-      }
-
-      const zipFilename = pdfFilename.replace('.pdf', '.zip');
-      zip.generateAsync({ type: "blob" }).then(content => {
-        saveAs(content, zipFilename);
-        showStatus('PDF and ZIP generated successfully!', 'success');
-      });
+      zip.file(pdfFilename, pdf.output('blob'));
+      const folder = zip.folder("attachments");
+      attachments.forEach(f => folder.file(f.name, f));
+      const content = await zip.generateAsync({ type: "blob" });
+      saveAs(content, pdfFilename.replace('.pdf', '.zip'));
+      showStatus('Success!', 'success');
     } else {
-      function isMobile() {
-        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-      }
-
-      if (isMobile() && images.length > 0) {
-        showStatus('Generating PDF for preview...', 'info');
-        await new Promise(res => setTimeout(res, 0));
-        
-        const blobUrl = URL.createObjectURL(pdfBlob);
-        const previewWindow = window.open('', '_blank');
-
-        if (previewWindow) {
-          previewWindow.document.title = pdfFilename;
-          previewWindow.document.body.style.margin = '0';
-          previewWindow.document.body.style.overflow = 'hidden';
-          const iframe = previewWindow.document.createElement('iframe');
-          iframe.src = blobUrl;
-          iframe.style.width = '100vw';
-          iframe.style.height = '100vh';
-          iframe.style.border = 'none';
-          previewWindow.document.body.appendChild(iframe);
-          showStatus('PDF generated! Check the new tab to view or share.', 'success');
-        } else {
-          showStatus('Popup blocked. Downloading PDF directly.', 'error');
-          saveAs(pdfBlob, pdfFilename);
-        }
-      } else {
-        showStatus('Saving PDF...', 'info');
-        await new Promise(res => setTimeout(res, 0));
-        saveAs(pdfBlob, pdfFilename);
-        showStatus('PDF generated successfully!', 'success');
-      }
+      pdf.save(pdfFilename);
+      showStatus('Success!', 'success');
     }
 
   } catch (err) {
-    showStatus(err.message || "Error generating PDF/ZIP.", "error");
+    showStatus(err.message || "Error generating PDF.", "error");
     console.error(err);
   } finally {
     generateBtn.disabled = false;
@@ -1386,86 +986,127 @@ generateBtn.addEventListener('click', async () => {
   }
 });
 
-
 function loadImage(src){
   return new Promise(res=>{
-    const img=new Image();
-    img.crossOrigin='Anonymous';
-    img.src=src;
-    img.onload=()=>res(img);
-    img.onerror=()=>res(null);
+    const img=new Image(); img.crossOrigin='Anonymous'; img.src=src;
+    img.onload=()=>res(img); img.onerror=()=>res(null);
   });
 }
 
-// === Drag and Drop Functions (Desktop) ===
+// Drag & Drop
 function handleDragStart(e) {
   this.classList.add('dragging');
   dragSrcEl = this;
   e.dataTransfer.effectAllowed = 'move';
   e.dataTransfer.setData('text/plain', this.dataset.id);
 }
-
-function handleDragOver(e) {
-  if (e.preventDefault) {
-    e.preventDefault();
-  }
-  e.dataTransfer.dropEffect = 'move';
-  return false;
-}
-
-function handleDragEnter(e) {
-  if (this !== dragSrcEl) {
-    this.classList.add('over');
-  }
-}
-
-function handleDragLeave(e) {
-  this.classList.remove('over');
-}
-
+function handleDragOver(e) { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; return false; }
+function handleDragEnter(e) { if (this !== dragSrcEl) this.classList.add('over'); }
+function handleDragLeave(e) { this.classList.remove('over'); }
 function handleDrop(e) {
-  if (e.stopPropagation) {
-    e.stopPropagation();
-  }
-  
+  e.stopPropagation();
   if (dragSrcEl !== this) {
     const allItems = Array.from(imageListContainer.children);
     const srcIndex = allItems.indexOf(dragSrcEl);
     const targetIndex = allItems.indexOf(this);
-
-    if (srcIndex < targetIndex) {
-        imageListContainer.insertBefore(dragSrcEl, this.nextSibling);
-    } else {
-        imageListContainer.insertBefore(dragSrcEl, this);
-    }
+    if (srcIndex < targetIndex) imageListContainer.insertBefore(dragSrcEl, this.nextSibling);
+    else imageListContainer.insertBefore(dragSrcEl, this);
   }
   return false;
 }
-
 function handleDragEnd(e) {
-  const items = document.querySelectorAll('.image-list-container .image-wrapper');
-  items.forEach(function (item) {
+  document.querySelectorAll('.image-wrapper').forEach(item => {
     item.classList.remove('over');
     item.classList.remove('dragging');
   });
-
-  // Re-sync the `images` array with the new DOM order
-  const newDomOrder = [...imageListContainer.children];
-  const newImagesArray = newDomOrder
-    .map(wrapper => images.find(img => img.id === wrapper.dataset.id))
-    .filter(Boolean); // Filter out any undefined if something went wrong
-  images = newImagesArray;
-  
+  const newOrder = [...imageListContainer.children];
+  images = newOrder.map(w => images.find(i => i.id === w.dataset.id)).filter(Boolean);
   dragSrcEl = null;
 }
 
-// === Touch Drag and Drop Functions (Mobile) ===
+// Touch Drag
 let touchDragEl = null, isDraggingTouch = false, placeholder = null, longPressTimer = null;
 let initialTouchX = 0, initialTouchY = 0, startRect = null;
-const LONG_PRESS_DURATION = 300; // ms
 
 function handleTouchStart(e) {
   if (e.target.classList.contains('remove-image-btn')) return;
-
   touchDragEl = this;
   const touch = e.touches[0];
+  const startX = touch.clientX, startY = touch.clientY;
+
+  const cancelDrag = () => {
+    clearTimeout(longPressTimer);
+    document.removeEventListener('touchmove', onMove);
+    document.removeEventListener('touchend', cancelDrag);
+  };
+  const onMove = (moveEvent) => {
+    if (Math.abs(moveEvent.touches[0].clientX - startX) > 10 || Math.abs(moveEvent.touches[0].clientY - startY) > 10) cancelDrag();
+  };
+  document.addEventListener('touchmove', onMove);
+  document.addEventListener('touchend', cancelDrag);
+
+  longPressTimer = setTimeout(() => {
+    cancelDrag();
+    isDraggingTouch = true;
+    startRect = touchDragEl.getBoundingClientRect();
+    initialTouchX = touch.clientX; initialTouchY = touch.clientY;
+    
+    placeholder = document.createElement('div');
+    placeholder.classList.add('placeholder');
+    placeholder.style.width = `${startRect.width}px`;
+    placeholder.style.height = `${startRect.height}px`;
+    touchDragEl.parentNode.insertBefore(placeholder, touchDragEl);
+
+    Object.assign(touchDragEl.style, {
+        position: 'fixed', zIndex: '1000',
+        width: `${startRect.width}px`, height: `${startRect.height}px`,
+        left: `${startRect.left}px`, top: `${startRect.top}px`, margin: '0'
+    });
+    touchDragEl.classList.add('touch-dragging');
+
+    document.addEventListener('touchmove', handleTouchMove, { passive: false });
+    document.addEventListener('touchend', handleTouchEnd);
+  }, 300);
+}
+
+function handleTouchMove(e) {
+  if (!isDraggingTouch) return;
+  e.preventDefault();
+  const touch = e.touches[0];
+  touchDragEl.style.transform = `translate(${touch.clientX - initialTouchX}px, ${touch.clientY - initialTouchY}px)`;
+  
+  touchDragEl.style.visibility = 'hidden';
+  const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+  touchDragEl.style.visibility = 'visible';
+  if (!elementBelow) return;
+
+  const dropTarget = elementBelow.closest('.image-wrapper');
+  if (dropTarget && dropTarget !== touchDragEl && dropTarget !== placeholder) {
+      const rect = dropTarget.getBoundingClientRect();
+      if (touch.clientX > rect.left + rect.width / 2) dropTarget.parentNode.insertBefore(placeholder, dropTarget.nextSibling);
+      else dropTarget.parentNode.insertBefore(placeholder, dropTarget);
+  }
+}
+
+function handleTouchEnd(e) {
+  if (!isDraggingTouch) return;
+  document.removeEventListener('touchmove', handleTouchMove);
+  document.removeEventListener('touchend', handleTouchEnd);
+
+  if (touchDragEl && placeholder) {
+    placeholder.parentNode.insertBefore(touchDragEl, placeholder);
+    placeholder.remove();
+    touchDragEl.classList.remove('touch-dragging');
+    touchDragEl.style.cssText = '';
+  }
+  
+  const newOrder = [...imageListContainer.children];
+  images = newOrder.map(w => images.find(i => i.id === w.dataset.id)).filter(Boolean);
+  isDraggingTouch = false; touchDragEl = null; placeholder = null;
+}
+
+jobInfoInputIds.forEach(id => document.getElementById(id).addEventListener('input', saveFormToLocalStorage));
+document.addEventListener('DOMContentLoaded', loadFormFromLocalStorage);
+</script>
+</body>
+</html>
